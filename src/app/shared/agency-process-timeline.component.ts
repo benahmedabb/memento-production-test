@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, PLATFORM_ID, QueryList, Renderer2, RendererStyleFlags2, ViewChild, ViewChildren, inject } from '@angular/core';
+import { KineticTextComponent } from './kinetic-text.component';
 
 interface AgencyProcessStage {
   readonly number: string;
@@ -37,12 +38,13 @@ const processStages: readonly AgencyProcessStage[] = [
 
 @Component({
   selector: 'app-agency-process-timeline',
+  imports: [KineticTextComponent],
   template: `
     <section #timelineRoot class="section section--dark agency-process" [class.agency-process--enhanced]="isEnhanced" [class.agency-process--ready]="isReady">
       <div class="shell">
         <header class="agency-process__intro">
           <p class="eyebrow eyebrow--gold">Metodo</p>
-          <h2>Un processo chiaro, senza formule preconfezionate.</h2>
+          <h2><app-kinetic-text text="Un processo chiaro, senza formule preconfezionate." /></h2>
         </header>
 
         <div class="agency-process__timeline">

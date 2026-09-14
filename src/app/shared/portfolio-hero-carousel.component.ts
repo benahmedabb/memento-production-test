@@ -1,13 +1,16 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, PLATFORM_ID, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, PLATFORM_ID, ViewChild, inject } from '@angular/core';
 import { PortfolioProject } from '../core/site.config';
+import { ScrollSceneDirective } from './scroll-scene.directive';
 
 @Component({
   selector: 'app-portfolio-hero-carousel',
+  imports: [ScrollSceneDirective],
   template: `
     <section
       #carouselRoot
-      class="page-hero page-hero--portfolio portfolio-carousel"
+      class="page-hero page-hero--portfolio portfolio-carousel chapter-hero"
+      appScrollScene="hero"
       role="region"
       aria-roledescription="carousel"
       aria-label="Copertine dei progetti Memento Production"
@@ -24,12 +27,17 @@ import { PortfolioProject } from '../core/site.config';
         }
       </div>
       <div class="portfolio-carousel__wash" aria-hidden="true"></div>
+      <span class="chapter-hero__frame" aria-hidden="true"></span>
 
       <div class="portfolio-carousel__content">
         <ng-content />
       </div>
 
       @if (projects.length > 1) {
+        @if (!prefersReducedMotion) {
+          <button class="portfolio-carousel__pause" type="button" [attr.aria-pressed]="userPaused" (click)="togglePlayback()">{{ userPaused ? 'Riprendi slideshow' : 'Pausa slideshow' }}</button>
+        }
+        <span class="portfolio-carousel__caption" aria-hidden="true">0{{ activeIndex + 1 }} / {{ projects[activeIndex].client }}</span>
         <button class="portfolio-carousel__arrow portfolio-carousel__arrow--previous" type="button" (click)="previous()" aria-label="Mostra la copertina precedente"><span aria-hidden="true">←</span></button>
         <button class="portfolio-carousel__arrow portfolio-carousel__arrow--next" type="button" (click)="next()" aria-label="Mostra la copertina successiva"><span aria-hidden="true">→</span></button>
         <div class="portfolio-carousel__dots" role="group" aria-label="Selezione copertina">
@@ -46,15 +54,19 @@ export class PortfolioHeroCarouselComponent implements AfterViewInit, OnDestroy 
 
   activeIndex = 0;
   prefersReducedMotion = false;
+  userPaused = false;
 
   @ViewChild('carouselRoot') private readonly carouselRoot?: ElementRef<HTMLElement>;
 
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly changeDetector = inject(ChangeDetectorRef);
   private interval?: number;
   private motionQuery?: MediaQueryList;
   private isBrowser = false;
   private isPointerPaused = false;
   private isFocusPaused = false;
+  private isVisible = true;
+  private visibilityObserver?: IntersectionObserver;
 
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) {
@@ -66,11 +78,20 @@ export class PortfolioHeroCarouselComponent implements AfterViewInit, OnDestroy 
     this.prefersReducedMotion = this.motionQuery.matches;
     this.motionQuery.addEventListener('change', this.handleMotionPreferenceChange);
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    if ('IntersectionObserver' in window && this.carouselRoot) {
+      this.visibilityObserver = new IntersectionObserver(([entry]) => {
+        this.isVisible = entry.isIntersecting;
+        this.syncAutoAdvance();
+      });
+      this.visibilityObserver.observe(this.carouselRoot.nativeElement);
+    }
     this.syncAutoAdvance();
+    this.changeDetector.detectChanges();
   }
 
   ngOnDestroy(): void {
     this.clearAutoAdvance();
+    this.visibilityObserver?.disconnect();
     this.motionQuery?.removeEventListener('change', this.handleMotionPreferenceChange);
 
     if (this.isBrowser) {
@@ -88,6 +109,12 @@ export class PortfolioHeroCarouselComponent implements AfterViewInit, OnDestroy 
 
   goTo(index: number): void {
     this.activeIndex = index;
+    this.syncAutoAdvance();
+    this.changeDetector.markForCheck();
+  }
+
+  togglePlayback(): void {
+    this.userPaused = !this.userPaused;
     this.syncAutoAdvance();
   }
 
@@ -110,6 +137,7 @@ export class PortfolioHeroCarouselComponent implements AfterViewInit, OnDestroy 
   private readonly handleMotionPreferenceChange = (event: MediaQueryListEvent): void => {
     this.prefersReducedMotion = event.matches;
     this.syncAutoAdvance();
+    this.changeDetector.markForCheck();
   };
 
   private readonly handleVisibilityChange = (): void => this.syncAutoAdvance();
@@ -117,7 +145,7 @@ export class PortfolioHeroCarouselComponent implements AfterViewInit, OnDestroy 
   private syncAutoAdvance(): void {
     this.clearAutoAdvance();
 
-    if (!this.isBrowser || this.projects.length < 2 || this.prefersReducedMotion || this.isPointerPaused || this.isFocusPaused || document.hidden) {
+    if (!this.isBrowser || this.projects.length < 2 || this.prefersReducedMotion || this.userPaused || !this.isVisible || this.isPointerPaused || this.isFocusPaused || document.hidden) {
       return;
     }
 

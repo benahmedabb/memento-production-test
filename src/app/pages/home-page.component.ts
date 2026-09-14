@@ -3,32 +3,42 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { ConsentService } from '../core/consent.service';
 import { SeoService } from '../core/seo.service';
-import { pageMetadata, siteConfig } from '../core/site.config';
+import { pageMetadata, serviceEntries, siteConfig } from '../core/site.config';
 import { TrackingService } from '../core/tracking.service';
 import { AnimatedMetricComponent } from '../shared/animated-metric.component';
 import { PageMotionDirective } from '../shared/page-motion.directive';
+import { CinematicHeroComponent } from '../shared/cinematic-hero.component';
+import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 
 type VideoProject = (typeof siteConfig.portfolio)[number];
 
 @Component({
-  imports: [AnimatedMetricComponent, PageMotionDirective, RouterLink],
+  imports: [AnimatedMetricComponent, PageMotionDirective, RouterLink, CinematicHeroComponent, ScrollSceneDirective],
   template: `
-    <section class="hero hero--home">
-      <img appPageMotion="hero" class="hero-media" [src]="config.images.hero.src" [srcset]="config.images.hero.srcset" [sizes]="config.images.hero.sizes" [alt]="config.images.hero.alt" width="1920" height="1080" fetchpriority="high" />
-      <div class="hero-wash"></div>
-      <div class="shell hero-content">
-        <p appPageMotion="hero" [motionDelay]="140" class="eyebrow eyebrow--light">Memento Production</p>
-        <h1 appPageMotion="hero" [motionDelay]="330">Le immagini cambiano il modo in cui un brand viene ricordato.</h1>
-        <p appPageMotion="hero" [motionDelay]="560" class="hero-lead">Produzione, strategia e design per costruire una presenza che non passa inosservata.</p>
-        <div appPageMotion="hero" [motionDelay]="800" class="button-row">
-          <a class="button" routerLink="/contatti">Iniziamo una conversazione <span aria-hidden="true">↗</span></a>
-          <a class="text-link text-link--light" routerLink="/portfolio">Guarda i lavori <span aria-hidden="true">↓</span></a>
+    <app-cinematic-hero />
+
+    <section class="memory-statement" appScrollScene aria-labelledby="memory-title">
+      <div class="shell memory-statement__inner">
+        <div class="memory-statement__aside" appPageMotion="rise">
+          <p class="eyebrow">Il nostro punto di vista</p>
+          <span class="memory-statement__asterisk" aria-hidden="true">✳</span>
+        </div>
+        <div>
+          <h2 id="memory-title" class="memory-statement__text" aria-label="Non basta farsi vedere. Bisogna farsi ricordare.">
+            @for (word of statementWords; track $index) {
+              <span aria-hidden="true" [style.--word-index]="$index">{{ word }} </span>
+            }
+          </h2>
+          <div class="memory-statement__footer" appPageMotion="rise">
+            <p>Uniamo immagini, strategia e identità. Per trasformare l’attenzione di un momento in un’impressione che dura.</p>
+            <a class="text-link" routerLink="/agenzia">Dentro Memento <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </div>
-      <a class="hero-credit" [href]="config.images.hero.sourceUrl" target="_blank" rel="noopener noreferrer">Foto: {{ config.images.hero.credit }}</a>
+      <div class="memory-statement__rule" aria-hidden="true"></div>
     </section>
 
-    <section class="section">
+    <section id="progetti" class="section home-projects">
       <div class="shell section-heading section-heading--stack-mobile">
         <div appPageMotion="rise">
           <p class="eyebrow">Progetti selezionati</p>
@@ -40,7 +50,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
         @for (project of config.portfolio; track project.client) {
           <article appPageMotion="rise" [motionDelay]="$index * 200" class="video-case">
             <button class="video-case__trigger" type="button" aria-haspopup="dialog" [attr.aria-label]="'Guarda il video ' + project.title + ' per ' + project.client" (click)="openVideo(project, $event)">
-              <span class="video-case__media">
+              <span appPageMotion="mask" [motionDelay]="$index * 120" class="video-case__media">
                 <img [src]="project.coverUrl" [alt]="'Copertina del video ' + project.title + ' per ' + project.client" loading="lazy" width="1280" height="720" />
                 <span class="video-case__top"><span class="video-case__play" aria-hidden="true">▶</span></span>
               </span>
@@ -65,7 +75,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       </div>
     </section>
 
-    <section class="section section--dark services-showcase">
+    <section class="section section--dark services-showcase home-services">
       <div class="shell section-heading">
         <div appPageMotion="rise">
           <p class="eyebrow eyebrow--gold">Cosa facciamo</p>
@@ -76,11 +86,12 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       <div class="shell service-grid">
         @for (service of serviceEntries; track service.key) {
           @let image = config.images[service.service.image];
-          <a appPageMotion="rise" [motionDelay]="$index * 360" class="service-card" [routerLink]="service.path" [attr.aria-label]="'Scopri il servizio ' + service.service.shortTitle">
+          <a appPageMotion="rise" [motionDelay]="$index * 140" class="service-card" [routerLink]="service.path" [attr.aria-label]="'Scopri il servizio ' + service.service.shortTitle">
             <span class="service-card__media">
               <img [src]="image.src" [srcset]="image.srcset" [sizes]="image.sizes" [alt]="image.alt" width="1280" height="801" loading="lazy" decoding="async" />
             </span>
             <span class="service-card__body">
+              <span class="service-card__number" aria-hidden="true">0{{ $index + 1 }}</span>
               <h3>{{ service.service.shortTitle }}</h3>
               <p>{{ service.service.description }}</p>
               <span class="card-arrow" aria-hidden="true">↗</span>
@@ -115,7 +126,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       </div>
     }
 
-    <section class="section section--accent cta-band cta-band--home-project">
+    <section class="section section--accent cta-band cta-band--home-project home-closing" appScrollScene>
       <div class="cta-band__image" aria-hidden="true">
         <img src="/images/banner-prossimo-progetto-verde-oro.webp" alt="" loading="lazy" decoding="async" width="2048" height="768" />
       </div>
@@ -133,6 +144,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
   `,
 })
 export class HomePageComponent implements OnInit {
+  readonly statementWords = ['Non', 'basta', 'farsi', 'vedere.', 'Bisogna', 'farsi', 'ricordare.'];
   readonly config = siteConfig;
   readonly tracking = inject(TrackingService);
   readonly consent = inject(ConsentService);
@@ -147,12 +159,7 @@ export class HomePageComponent implements OnInit {
   private videoTrigger: HTMLButtonElement | null = null;
 
   @ViewChild('videoDialog') private videoDialog?: ElementRef<HTMLElement>;
-  readonly serviceEntries = [
-    { key: 'production', path: '/produzione-video-fotografia', service: siteConfig.services.production },
-    { key: 'social', path: '/social-media', service: siteConfig.services.social },
-    { key: 'ads', path: '/google-meta-ads', service: siteConfig.services.ads },
-    { key: 'branding', path: '/branding-siti-web', service: siteConfig.services.branding },
-  ];
+  readonly serviceEntries = serviceEntries;
 
   openVideo(project: VideoProject, event: MouseEvent): void {
     this.videoTrigger = event.currentTarget as HTMLButtonElement;

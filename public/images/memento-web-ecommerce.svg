@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+  <defs>
+    <linearGradient id="room" x1="70" y1="40" x2="1110" y2="850" gradientUnits="userSpaceOnUse"><stop stop-color="#3f5e4b"/><stop offset="1" stop-color="#0b1c15"/></linearGradient>
+    <linearGradient id="metal" x1="220" y1="640" x2="900" y2="720" gradientUnits="userSpaceOnUse"><stop stop-color="#9a9f91"/><stop offset=".45" stop-color="#e4e0d3"/><stop offset="1" stop-color="#6c7569"/></linearGradient>
+    <linearGradient id="vase" x1="620" y1="270" x2="770" y2="460" gradientUnits="userSpaceOnUse"><stop stop-color="#e7c88e"/><stop offset=".45" stop-color="#c39b5b"/><stop offset="1" stop-color="#87683a"/></linearGradient>
+    <linearGradient id="glass" x1="850" y1="280" x2="1140" y2="720" gradientUnits="userSpaceOnUse"><stop stop-color="#516251"/><stop offset="1" stop-color="#15251b"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="170%" height="190%"><feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#06100b" flood-opacity=".4"/></filter>
+  </defs>
+  <path fill="url(#room)" d="M0 0h1200v800H0z"/>
+  <circle cx="1060" cy="84" r="365" stroke="#d1ac67" stroke-opacity=".13"/>
+  <circle cx="1060" cy="84" r="290" stroke="#d1ac67" stroke-opacity=".13"/>
+  <ellipse cx="590" cy="728" rx="500" ry="40" fill="#07140d" opacity=".35"/>
+  <g filter="url(#shadow)">
+    <rect x="105" y="107" width="866" height="539" rx="19" fill="#101a15" stroke="#728271" stroke-width="2"/>
+    <rect x="120" y="125" width="836" height="500" rx="7" fill="#f4f1eb"/>
+    <path d="M127 125h822a7 7 0 0 1 7 7v28H120v-28a7 7 0 0 1 7-7Z" fill="#e4e4db"/>
+    <g fill="#a8afa0"><circle cx="140" cy="142" r="4"/><circle cx="155" cy="142" r="4"/><circle cx="170" cy="142" r="4"/></g>
+    <rect x="364" y="133" width="335" height="18" rx="5" fill="#f6f5ef"/>
+    <path d="M74 646h927l49 30c3 4-6 13-19 13H55c-13 0-22-9-19-13l38-30Z" fill="url(#metal)"/>
+    <path d="M429 646h208l-9 12H438l-9-12Z" fill="#8d9589"/>
+  </g>
+  <g font-family="Arial, sans-serif" fill="#173226">
+    <text x="157" y="198" font-size="16" font-weight="700" letter-spacing="4">MEMENTO</text>
+    <text x="735" y="196" font-size="10" letter-spacing="1">COLLEZIONE</text>
+    <text x="851" y="196" font-size="10" letter-spacing="1">STORIE</text>
+    <path d="M146 214h784" stroke="#173226" stroke-opacity=".16"/>
+    <text x="161" y="267" font-size="10" letter-spacing="2">CONCEPT STORE</text>
+    <text x="157" y="319" font-family="Georgia, serif" font-size="43">Dettagli che</text>
+    <text x="157" y="366" font-family="Georgia, serif" font-size="43">fanno casa.</text>
+    <text x="160" y="398" font-size="11" fill="#6c796c">Forme essenziali. Un carattere unico.</text>
+    <rect x="160" y="421" width="183" height="35" fill="#173226"/>
+    <text x="177" y="443" font-size="9" letter-spacing="1.2" fill="#f4f1eb">ESPLORA LA COLLEZIONE</text>
+    <rect x="560" y="238" width="357" height="238" fill="#e7e0d3"/>
+    <path d="M654 447V352a89 89 0 0 1 178 0v95" fill="#d7cbb5"/>
+    <ellipse cx="735" cy="444" rx="71" ry="10" fill="#ab9b7d" opacity=".35"/>
+    <path d="M710 287h48l-7 34c-3 16 24 36 29 65 6 34-3 58-45 58s-51-24-45-58c5-29 32-49 29-65l-9-34Z" fill="url(#vase)"/>
+    <ellipse cx="734" cy="287" rx="24" ry="5" fill="#8b713f"/>
+    <path d="M741 298c-7 24 15 42 20 65" stroke="#edd4a4" stroke-width="2" opacity=".65"/>
+    <text x="158" y="513" font-size="10" letter-spacing="1.7">OGGETTI DA VIVERE</text>
+    <g>
+      <rect x="157" y="530" width="236" height="75" fill="#e9e5db"/>
+      <rect x="418" y="530" width="236" height="75" fill="#e5e8df"/>
+      <rect x="679" y="530" width="236" height="75" fill="#e9e2d6"/>
+      <path d="M238 576h73l-10 22h-53l-10-22Z" fill="#ad8950"/>
+      <ellipse cx="274" cy="576" rx="36" ry="6" fill="#d1ac67"/>
+      <path d="M512 589v-27a23 23 0 0 1 46 0v27" stroke="#59795e" stroke-width="7"/>
+      <path d="M502 592h66" stroke="#59795e" stroke-width="7"/>
+      <rect x="773" y="550" width="50" height="48" rx="5" fill="#b7a78c"/>
+      <ellipse cx="798" cy="550" rx="25" ry="5" fill="#d5c7ad"/>
+    </g>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="903" y="308" width="200" height="378" rx="30" fill="url(#glass)" stroke="#899480" stroke-width="2"/>
+    <rect x="913" y="319" width="180" height="356" rx="22" fill="#f4f1eb"/>
+    <rect x="971" y="326" width="64" height="10" rx="5" fill="#18291e"/>
+    <text x="932" y="365" font-family="Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="2" fill="#173226">MEMENTO</text>
+    <path d="M1064 355h12m-12 5h12" stroke="#173226"/>
+    <rect x="927" y="381" width="152" height="164" fill="#e7e0d3"/>
+    <ellipse cx="1003" cy="523" rx="40" ry="6" fill="#c3b59b"/>
+    <path d="M988 416h30l-4 18c-2 10 15 24 19 43 4 22-3 43-30 43s-34-21-30-43c4-19 21-33 19-43l-4-18Z" fill="url(#vase)"/>
+    <ellipse cx="1003" cy="416" rx="15" ry="3" fill="#8b713f"/>
+    <text x="929" y="573" font-family="Georgia, serif" font-size="21" fill="#173226">Forma, materia.</text>
+    <text x="929" y="592" font-family="Arial, sans-serif" font-size="9" fill="#6c796c">La collezione essenziale.</text>
+    <rect x="927" y="609" width="152" height="34" fill="#173226"/>
+    <text x="945" y="630" font-family="Arial, sans-serif" font-size="9" letter-spacing=".5" fill="#f4f1eb">AGGIUNGI AL CARRELLO</text>
+    <rect x="976" y="660" width="54" height="3" rx="1.5" fill="#173226"/>
+  </g>
+</svg>

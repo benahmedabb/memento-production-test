@@ -1,7 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, PLATFORM_ID, Renderer2, inject } from '@angular/core';
 
-export type PageMotionVariant = 'hero' | 'rise';
+export type PageMotionVariant = 'hero' | 'rise' | 'mask' | 'type' | 'fan';
 
 @Directive({
   selector: '[appPageMotion]',
@@ -59,7 +59,9 @@ export class PageMotionDirective implements AfterViewInit, OnDestroy {
       this.reveal();
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
 
-    this.observer.observe(host);
+    // A fully clipped image cannot intersect until its mask opens. Observe its
+    // visible container so the reveal can start as it enters the viewport.
+    this.observer.observe(this.variant === 'mask' ? host.parentElement ?? host : host);
   }
 
   private reveal(): void {

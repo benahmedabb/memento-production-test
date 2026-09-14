@@ -1,4 +1,4 @@
-export type ServiceKey = 'production' | 'social' | 'ads' | 'branding';
+export type ServiceKey = 'production' | 'social' | 'ads' | 'branding' | 'web';
 
 export interface ServiceDefinition {
   readonly key: ServiceKey;
@@ -20,7 +20,7 @@ export interface SiteImage {
   readonly credit: string;
 }
 
-export type SiteImageKey = 'hero' | 'production' | 'social' | 'ads' | 'branding' | 'architecture';
+export type SiteImageKey = 'hero' | 'production' | 'social' | 'ads' | 'branding' | 'web' | 'architecture';
 
 export interface PageMetadata {
   readonly title: string;
@@ -118,6 +118,14 @@ export const siteConfig = {
       sourceUrl: 'https://unsplash.com/s/photos/branding-design-desk',
       credit: 'Unsplash',
     },
+    web: {
+      src: '/images/memento-web-ecommerce.svg',
+      srcset: '',
+      sizes: '(min-width: 860px) 45vw, 100vw',
+      alt: 'Progetto di un negozio online su desktop e smartphone, nei colori verde e oro di Memento',
+      sourceUrl: '/images/memento-web-ecommerce.svg',
+      credit: 'Illustrazione Memento Production',
+    },
     architecture: {
       src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
       srcset: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=640&q=78 640w, https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80 1200w',
@@ -160,13 +168,23 @@ export const siteConfig = {
     },
     branding: {
       key: 'branding',
-      eyebrow: 'Branding e siti web',
+      eyebrow: 'Grafica e branding',
       title: 'Un sistema di brand che sa stare in scena.',
-      shortTitle: 'Branding e siti web',
-      description: 'Identità, design e siti web compongono un’unica esperienza: distintiva, leggibile e pronta a crescere.',
+      shortTitle: 'Grafica e branding',
+      description: 'Identità visiva, direzione artistica e materiali grafici per dare al brand un carattere chiaro e riconoscibile.',
       image: 'branding',
-      deliverables: ['Posizionamento e identità visiva', 'Art direction e materiali grafici', 'Siti web responsive e accessibili', 'Linee guida per comunicare con coerenza'],
-      approach: ['Mettiamo a fuoco ciò che rende il brand riconoscibile.', 'Traduciamo la direzione in un sistema visivo.', 'Costruiamo touchpoint semplici da usare e mantenere.'],
+      deliverables: ['Posizionamento, logo e identità visiva', 'Art direction e materiali grafici', 'Grafica per stampa, campagne e canali digitali', 'Linee guida per comunicare con coerenza'],
+      approach: ['Mettiamo a fuoco ciò che rende il brand riconoscibile.', 'Traduciamo la direzione in un sistema visivo.', 'Decliniamo l’identità in materiali coerenti, pronti da utilizzare.'],
+    },
+    web: {
+      key: 'web',
+      eyebrow: 'Siti web ed e-commerce',
+      title: 'Il tuo brand, uno spazio da esplorare.',
+      shortTitle: 'Siti web ed e-commerce',
+      description: 'Progettiamo siti e negozi online che uniscono identità, chiarezza e facilità d’uso, dalla prima visita all’acquisto.',
+      image: 'web',
+      deliverables: ['Siti web aziendali e landing page', 'E-commerce con catalogo prodotti, carrello e pagamenti', 'Design responsive e percorsi di navigazione accessibili', 'Ottimizzazione tecnica, prestazioni e gestione dei contenuti'],
+      approach: ['Definiamo obiettivi, contenuti e percorsi delle persone.', 'Progettiamo interfacce coerenti con il brand e sviluppiamo il sito.', 'Verifichiamo navigazione, moduli e acquisti prima della pubblicazione.'],
     },
   } satisfies Record<ServiceKey, ServiceDefinition>,
   portfolio: [
@@ -259,7 +277,7 @@ export const siteConfig = {
 export const pageMetadata = {
   home: {
     title: 'Memento Production | Comunicazione, contenuti e crescita digitale',
-    description: 'Memento Production unisce produzione audiovisiva, social media, advertising, branding e siti web per dare forma a una presenza riconoscibile.',
+    description: 'Memento Production unisce produzione audiovisiva, social media, advertising, grafica e branding, siti web ed e-commerce per dare forma a una presenza riconoscibile.',
     path: '/',
   },
   agency: {
@@ -269,7 +287,7 @@ export const pageMetadata = {
   },
   services: {
     title: 'Servizi | Memento Production',
-    description: 'Produzione video e fotografia, social media, Google e Meta Ads, branding e siti web: servizi coordinati per il tuo brand.',
+    description: 'Video e fotografia, social media, Google e Meta Ads, grafica e branding, siti web ed e-commerce: cinque servizi coordinati per il tuo brand.',
     path: '/servizi',
   },
   production: {
@@ -288,9 +306,14 @@ export const pageMetadata = {
     path: '/google-meta-ads',
   },
   branding: {
-    title: 'Branding e siti web | Memento Production',
-    description: 'Identità visiva, art direction e siti web responsive per far emergere il carattere del tuo brand.',
-    path: '/branding-siti-web',
+    title: 'Grafica e branding | Memento Production',
+    description: 'Logo, identità visiva, art direction e materiali grafici per far emergere il carattere del tuo brand, sulla carta e sui canali digitali.',
+    path: '/grafica-branding',
+  },
+  web: {
+    title: 'Siti web ed e-commerce | Memento Production',
+    description: 'Siti web aziendali, landing page e negozi online: design responsive e sviluppo per esperienze di navigazione e acquisto semplici e coerenti con il brand.',
+    path: '/siti-web-ecommerce',
   },
   portfolio: {
     title: 'Portfolio | Memento Production',
@@ -319,3 +342,10 @@ export const pageMetadata = {
     noIndex: true,
   },
 } as const satisfies Record<string, PageMetadata>;
+
+// Keep the home, service directory and contact choices in the same order.
+export const serviceEntries = Object.values(siteConfig.services).map((service) => ({
+  key: service.key,
+  path: pageMetadata[service.key].path,
+  service,
+}));

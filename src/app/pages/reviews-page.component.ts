@@ -4,27 +4,30 @@ import { SeoService } from '../core/seo.service';
 import { pageMetadata, siteConfig } from '../core/site.config';
 import { TrackingService } from '../core/tracking.service';
 import { PageMotionDirective } from '../shared/page-motion.directive';
+import { KineticTextComponent } from '../shared/kinetic-text.component';
+import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 
 @Component({
-  imports: [PageMotionDirective, RouterLink],
+  imports: [KineticTextComponent, ScrollSceneDirective, PageMotionDirective, RouterLink],
   template: `
-    <section class="page-hero page-hero--reviews">
+    <section class="page-hero page-hero--reviews chapter-hero" appScrollScene="hero">
+      <span class="chapter-hero__frame" aria-hidden="true"></span>
       <div class="page-hero__image" aria-hidden="true">
         <img src="/images/hero-recensioni-verde-oro.webp" alt="" width="1600" height="900" fetchpriority="high" />
       </div>
       <span class="reviews-hero__quote" aria-hidden="true">“</span>
       <div class="shell page-hero__content">
         <p appPageMotion="hero" [motionDelay]="140" class="eyebrow">Testimonianze</p>
-        <h1 appPageMotion="hero" [motionDelay]="330">Esperienze reali, raccontate da chi ha lavorato con noi.</h1>
+        <h1><app-kinetic-text text="Esperienze reali, raccontate da chi ha lavorato con noi." [delay]="160" /></h1>
         <p appPageMotion="hero" [motionDelay]="560">Dalle produzioni fotografiche alla gestione social, ogni progetto nasce da un rapporto diretto. Qui trovi alcune recensioni condivise dai clienti su Google.</p>
       </div>
     </section>
 
     <section class="section reviews-intro">
       <div class="shell reviews-intro__grid">
-        <div appPageMotion="rise">
+        <div>
           <p class="eyebrow">Oltre le parole</p>
-          <h2>Non sono slogan. Sono segnali di fiducia costruiti nel lavoro quotidiano.</h2>
+          <h2><app-kinetic-text mode="ink" text="Non sono slogan. Sono segnali di fiducia costruiti nel lavoro quotidiano." /></h2>
         </div>
         <div appPageMotion="rise" [motionDelay]="180" class="reviews-intro__pillars" aria-label="Valori ricorrenti nelle recensioni">
           <span>Cura</span>
@@ -34,10 +37,11 @@ import { PageMotionDirective } from '../shared/page-motion.directive';
       </div>
     </section>
 
-    <section class="section reviews-section">
+    <section class="section reviews-section reviews-scene" appScrollScene>
+      <span class="reviews-scene__quote" aria-hidden="true">“</span>
       <div class="shell reviews-grid">
         @for (review of config.reviews; track review.person) {
-          <blockquote appPageMotion="rise" [motionDelay]="$index * 90" class="review-card">
+          <blockquote appPageMotion="fan" [motionDelay]="($index % 3) * 120" [style.--fan-angle]="$index % 2 === 0 ? '-3deg' : '3deg'" class="review-card">
             <div class="review-card__top">
               <span class="review-card__mark" aria-hidden="true">{{ review.person.slice(0, 1) }}</span>
               <div>
@@ -52,14 +56,14 @@ import { PageMotionDirective } from '../shared/page-motion.directive';
       </div>
     </section>
 
-    <section class="section section--accent reviews-cta">
+    <section class="section section--accent reviews-cta chapter-closing" appScrollScene>
       <div class="cta-band__image" aria-hidden="true">
         <img src="/images/banner-prossimo-progetto-verde-oro.webp" alt="" loading="lazy" decoding="async" width="2048" height="768" />
       </div>
       <div class="shell reviews-cta__inner">
         <div appPageMotion="rise">
           <p class="eyebrow">Il prossimo racconto</p>
-          <h2>Vuoi capire che forma può avere il tuo progetto?</h2>
+          <h2><app-kinetic-text text="Vuoi capire che forma può avere il tuo progetto?" /></h2>
           <p>Partiamo da una conversazione concreta: obiettivi, materiali disponibili e canali più adatti.</p>
         </div>
         <div appPageMotion="rise" [motionDelay]="180" class="button-row">

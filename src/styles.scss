@@ -1,3 +1,6 @@
+@use './home-motion';
+@use './chapter-motion';
+
 :root {
   --gold: #d1ac67;
   --gold-pale: #eee0c8;
@@ -503,6 +506,6 @@ app-agency-process-timeline { display: block; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
-  .page-motion--armed { opacity: 1; transform: none; }
+  .has-page-motion .page-motion-target, .page-motion--armed { opacity: 1; transform: none; }
   .portfolio-carousel__slide { transition: none; }
 }
