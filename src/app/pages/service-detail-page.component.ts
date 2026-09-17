@@ -37,7 +37,7 @@ const SERVICE_METADATA: Record<ServiceKey, PageMetadata> = {
       <div class="shell two-column two-column--offset">
         <div><p class="eyebrow">Cosa può includere</p><h2><app-kinetic-text mode="ink" text="Una cassetta degli attrezzi da comporre." /></h2></div>
         <ul class="detail-list detail-list--animated">
-          @for (item of service.deliverables; track item) { <li appPageMotion="rise" [motionDelay]="$index * 100">{{ item }} <span aria-hidden="true">↗</span></li> }
+          @for (item of service.deliverables; track item) { <li appPageMotion="rise" [motionDelay]="$index * 100">{{ item }}</li> }
         </ul>
       </div>
     </section>

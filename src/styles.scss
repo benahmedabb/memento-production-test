@@ -287,14 +287,14 @@ app-portfolio-hero-carousel { display: block; }
 .tag-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.2rem; color: var(--green); }
 .portfolio-stats { display: grid; align-content: end; gap: 0.2rem; color: var(--green); font-size: 0.76rem; font-weight: 800; letter-spacing: 0.03em; }
 
-.reviews-intro { position: relative; color: var(--ink); background: var(--paper); }
+section.reviews-intro { position: relative; color: var(--ink); background: var(--paper); }
 .reviews-intro__grid { display: grid; gap: 2rem; align-items: end; }
 .reviews-intro h2 { max-width: 820px; margin-bottom: 0; }
 .reviews-intro__pillars { display: grid; gap: 0.65rem; }
 .reviews-intro .eyebrow { color: var(--gold); }
 .reviews-intro__pillars span { display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem; padding: 0.9rem 1rem; border: 1px solid var(--line); border-left: 2px solid var(--gold); color: var(--green-deep); background: rgba(255, 255, 255, 0.45); font-size: 0.76rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .reviews-intro__pillars span::after { width: 0.42rem; height: 0.42rem; border-radius: 50%; background: var(--gold); content: ''; }
-.reviews-section { background: var(--mist); }
+section.reviews-section { background: #486956; }
 .reviews-grid { display: grid; gap: 1rem; }
 .review-card { display: flex; min-height: 18rem; flex-direction: column; justify-content: space-between; padding: 1.45rem; margin: 0; border: 1px solid rgba(17, 36, 29, 0.1); border-top: 2px solid var(--gold); background: var(--paper); box-shadow: 0 1rem 2.4rem rgba(17, 36, 29, 0.08); }
 .review-card__top { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
