@@ -30,6 +30,7 @@ app-cinematic-hero { display: block; }
 .cinema__frame {
   position: absolute;
   inset: 0;
+  view-transition-name: home-hero-frame;
   clip-path: inset(12% 5% 17% 55% round 14rem 14rem 0 0);
 
   .scroll-scene--active & {
