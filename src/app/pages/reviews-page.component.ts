@@ -23,7 +23,7 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
       </div>
     </section>
 
-    <section class="section reviews-intro">
+    <section class="section reviews-intro section--sage">
       <div class="shell reviews-intro__grid">
         <div>
           <p class="eyebrow">Oltre le parole</p>
@@ -37,7 +37,7 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
       </div>
     </section>
 
-    <section class="section reviews-section reviews-scene" appScrollScene>
+    <section class="section reviews-section reviews-scene section--sage-soft" appScrollScene>
       <span class="reviews-scene__quote" aria-hidden="true">“</span>
       <div class="shell reviews-grid">
         @for (review of config.reviews; track review.person) {

@@ -12,7 +12,7 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
   template: `
     <app-agency-opening />
 
-    <section class="section agency-manifesto" appScrollScene>
+    <section class="section agency-manifesto section--sage" appScrollScene>
       <div class="shell two-column two-column--offset">
         <div><p class="eyebrow">Il nostro punto di vista</p><h2><app-kinetic-text mode="ink" text="Estetica e strategia non sono due reparti separati." /></h2></div>
         <div appPageMotion="rise" [motionDelay]="180" class="intro-copy"><p>Lavoriamo sulle domande prima dei deliverable: cosa deve restare impresso, a chi stiamo parlando e come una singola idea può vivere bene su più canali.</p><p>Il risultato è un sistema di comunicazione più coerente, dove contenuti, campagne e touchpoint digitali parlano la stessa lingua.</p></div>

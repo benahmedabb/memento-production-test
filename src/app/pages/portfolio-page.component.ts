@@ -19,7 +19,7 @@ import { PortfolioHeroCarouselComponent } from '../shared/portfolio-hero-carouse
       </div>
     </app-portfolio-hero-carousel>
 
-    <section class="section portfolio-gallery">
+    <section class="section portfolio-gallery section--sage-soft">
       <div class="shell portfolio-stack">
         @for (project of config.portfolio; track project.client) {
           <article class="portfolio-entry" appScrollScene>

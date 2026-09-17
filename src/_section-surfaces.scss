@@ -1,0 +1,50 @@
+// Quiet, nearly solid surfaces for the light sections outside the Services page.
+section.section--sage,
+section.section--sage-soft {
+  --green: #35533f;
+  --section-surface: #c7d1c2;
+  --section-surface-end: #becaba;
+  --section-card: #dce3d6;
+  color: var(--ink);
+  background: linear-gradient(120deg, var(--section-surface), var(--section-surface-end));
+}
+
+section.section--sage-soft {
+  --section-surface: #d4dccf;
+  --section-surface-end: #cad4c4;
+}
+
+.section--sage,
+.section--sage-soft {
+  &.home-projects {
+    .video-case,
+    .video-case__trigger,
+    .video-case__body,
+    .video-case__results {
+      background: transparent;
+    }
+  }
+
+  &.reviews-intro {
+    .eyebrow { color: var(--green); }
+    .reviews-intro__pillars span { background: var(--section-card); }
+  }
+
+  &.reviews-section .review-card,
+  &.policy-section .policy-card,
+  &.contact-section .contact-form {
+    background: var(--section-card);
+  }
+
+  &.portfolio-gallery .portfolio-index > span { color: var(--green); }
+
+  &.contact-section {
+    .field input,
+    .field textarea,
+    .field select,
+    .form-error,
+    .form-status {
+      background: #eef1e9;
+    }
+  }
+}

@@ -21,7 +21,7 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
       </div>
     </section>
 
-    <section class="section policy-section">
+    <section class="section policy-section section--sage-soft">
       <div class="shell policy-grid">
         <article appPageMotion="rise" class="policy-card">
           <p class="eyebrow">Privacy</p>

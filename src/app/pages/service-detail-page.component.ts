@@ -17,7 +17,7 @@ const SERVICE_METADATA: Record<ServiceKey, PageMetadata> = {
 @Component({
   imports: [KineticTextComponent, ScrollSceneDirective, PageMotionDirective, RouterLink],
   template: `
-    <section class="service-hero detail-scene" appScrollScene="hero">
+    <section class="service-hero detail-scene section--sage-soft" appScrollScene="hero">
       <div class="shell service-hero__grid">
         <div class="service-hero__content">
           <a appPageMotion="hero" [motionDelay]="100" class="back-link" routerLink="/servizi"><span aria-hidden="true">←</span> Tutti i servizi</a>
@@ -33,7 +33,7 @@ const SERVICE_METADATA: Record<ServiceKey, PageMetadata> = {
       </div>
     </section>
 
-    <section class="section">
+    <section class="section section--sage">
       <div class="shell two-column two-column--offset">
         <div><p class="eyebrow">Cosa può includere</p><h2><app-kinetic-text mode="ink" text="Una cassetta degli attrezzi da comporre." /></h2></div>
         <ul class="detail-list detail-list--animated">
@@ -42,7 +42,7 @@ const SERVICE_METADATA: Record<ServiceKey, PageMetadata> = {
       </div>
     </section>
 
-    <section class="section section--muted detail-process" appScrollScene>
+    <section class="section section--muted detail-process section--sage-soft" appScrollScene>
       <div class="shell"><div><p class="eyebrow">Il percorso</p><h2 class="section-title"><app-kinetic-text text="Dal contesto a un output pronto a vivere." /></h2></div>
         <ol class="process-list process-list--compact">
           @for (step of service.approach; track step) {

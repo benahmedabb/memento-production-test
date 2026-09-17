@@ -17,7 +17,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
   template: `
     <app-cinematic-hero />
 
-    <section class="memory-statement" appScrollScene aria-labelledby="memory-title">
+    <section class="memory-statement section--sage" appScrollScene aria-labelledby="memory-title">
       <div class="shell memory-statement__inner">
         <div class="memory-statement__aside" appPageMotion="rise">
           <p class="eyebrow">Il nostro punto di vista</p>
@@ -38,7 +38,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       <div class="memory-statement__rule" aria-hidden="true"></div>
     </section>
 
-    <section id="progetti" class="section home-projects">
+    <section id="progetti" class="section home-projects section--sage-soft">
       <div class="shell section-heading section-heading--stack-mobile">
         <div appPageMotion="rise">
           <p class="eyebrow">Progetti selezionati</p>

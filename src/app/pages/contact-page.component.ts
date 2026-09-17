@@ -14,7 +14,7 @@ type SubmissionState = 'idle' | 'unconfigured' | 'sending' | 'success' | 'error'
 @Component({
   imports: [BrandOrbitComponent, KineticTextComponent, ScrollSceneDirective, PageMotionDirective, ReactiveFormsModule],
   template: `
-    <section class="page-hero page-hero--contact chapter-hero contact-opening" appScrollScene="hero">
+    <section class="page-hero page-hero--contact chapter-hero contact-opening section--sage" appScrollScene="hero">
       <app-brand-orbit />
       <div class="shell page-hero__content">
         <p appPageMotion="hero" class="eyebrow">Contatti / Il prossimo capitolo</p>
@@ -23,7 +23,7 @@ type SubmissionState = 'idle' | 'unconfigured' | 'sending' | 'success' | 'error'
         <a class="text-link contact-opening__link" href="#raccontaci">Raccontaci la tua idea <span aria-hidden="true">↓</span></a>
       </div>
     </section>
-    <section id="raccontaci" class="section contact-section" appScrollScene>
+    <section id="raccontaci" class="section contact-section section--sage-soft" appScrollScene>
       <div class="shell contact-grid">
         <aside class="contact-details">
           <div appPageMotion="rise" class="contact-signature" aria-hidden="true">
