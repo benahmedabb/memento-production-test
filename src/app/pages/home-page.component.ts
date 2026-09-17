@@ -64,7 +64,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
               <dl class="video-case__stats">
                 @for (stat of project.stats; track stat.label) {
                   <div class="video-case__metric">
-                    <dd><app-animated-metric [metric]="stat" [delay]="$index * 200" /></dd>
+                    <dd><app-animated-metric [metric]="stat" [delay]="$index * 90" /></dd>
                     <dt>{{ stat.label }}</dt>
                   </div>
                 }

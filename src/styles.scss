@@ -1,5 +1,6 @@
 @use './home-motion';
 @use './chapter-motion';
+@use './agency-motion';
 
 :root {
   --gold: #d1ac67;
@@ -247,38 +248,6 @@ app-portfolio-hero-carousel { display: block; }
 .process-list--compact { max-width: 850px; }
 .process-list--compact h3 { font-family: var(--sans); font-size: 1rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.35; }
 
-app-agency-process-timeline { display: block; }
-.agency-process { --agency-process-progress: 1; position: relative; overflow: clip; background: var(--green-deep); }
-.agency-process::before { position: absolute; top: -20rem; right: -14rem; width: 38rem; height: 38rem; border: 1px solid rgba(209, 172, 103, 0.14); border-radius: 50%; box-shadow: inset 0 0 0 5rem rgba(209, 172, 103, 0.025); content: ''; pointer-events: none; }
-.agency-process__intro { position: relative; max-width: 780px; }
-.agency-process__intro h2 { max-width: 760px; margin-bottom: 0; }
-.agency-process__intro::after { display: block; width: clamp(4rem, 14vw, 10rem); height: 2px; margin-top: 1.8rem; background: var(--gold); content: ''; transform-origin: left; }
-.agency-process__timeline { position: relative; margin-top: 3.5rem; }
-.agency-process__track { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.agency-process__track--desktop { display: none; }
-.agency-process__track--mobile { left: 0; width: 1.5rem; }
-.agency-process__track-base, .agency-process__track-progress { fill: none; vector-effect: non-scaling-stroke; }
-.agency-process__track-base { stroke: rgba(209, 172, 103, 0.32); stroke-width: 2px; }
-.agency-process__track-progress { stroke: var(--gold); stroke-width: 3.5px; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--agency-process-progress)); filter: drop-shadow(0 0 0.35rem rgba(209, 172, 103, 0.56)); }
-.agency-process__steps { display: grid; gap: 1.4rem; padding: 0 0 0 2.9rem; margin: 0; list-style: none; }
-.agency-process__step { position: relative; }
-.agency-process__node { position: absolute; z-index: 1; top: 2.05rem; left: -2.9rem; display: grid; width: 1.5rem; height: 1.5rem; place-items: center; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%; background: var(--green-deep); }
-.agency-process__node span { display: block; width: 0.35rem; height: 0.35rem; border-radius: 50%; background: rgba(255, 255, 255, 0.5); }
-.agency-process__card { display: grid; gap: 1.1rem; padding: 1.55rem 1.35rem 1.65rem; color: var(--ink); background: var(--paper); box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.13); }
-.agency-process__number { margin: 0; color: var(--gold); font-family: var(--serif); font-size: 4.4rem; font-weight: 600; letter-spacing: -0.08em; line-height: 0.72; }
-.agency-process__card h3 { margin: 0 0 0.55rem; color: var(--green-deep); font-size: clamp(2.1rem, 7vw, 3rem); }
-.agency-process__card p:last-child { max-width: 31rem; margin: 0; color: rgba(24, 33, 30, 0.74); font-size: 0.92rem; }
-.agency-process--enhanced .agency-process__intro::after { transform: scaleX(0); }
-.agency-process--enhanced.agency-process--ready .agency-process__intro::after { transform: scaleX(1); transition: transform 1100ms cubic-bezier(0.22, 0.61, 0.36, 1); }
-.agency-process--enhanced .agency-process__track-progress { transition: stroke-dashoffset 1100ms cubic-bezier(0.22, 0.61, 0.36, 1); }
-.agency-process--enhanced .agency-process__card { opacity: 0.42; transform: translate3d(0, 1.35rem, 0); transition: opacity 900ms cubic-bezier(0.22, 0.61, 0.36, 1), transform 1050ms cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 650ms ease; }
-.agency-process--enhanced .agency-process__step--complete .agency-process__card { opacity: 1; transform: translate3d(0, 0, 0); }
-.agency-process--enhanced .agency-process__node { transition: border-color 650ms ease, background-color 650ms ease, box-shadow 850ms cubic-bezier(0.22, 0.61, 0.36, 1), transform 850ms cubic-bezier(0.22, 0.61, 0.36, 1); }
-.agency-process--enhanced .agency-process__node span { transition: background-color 650ms ease; }
-.agency-process--enhanced .agency-process__step--complete .agency-process__node { border-color: var(--gold); background: var(--gold); }
-.agency-process--enhanced .agency-process__step--complete .agency-process__node span { background: var(--green-deep); }
-.agency-process--enhanced .agency-process__step--active .agency-process__node { box-shadow: 0 0 0 0.5rem rgba(209, 172, 103, 0.13), 0 0 1.5rem rgba(209, 172, 103, 0.35); transform: scale(1.12); }
-.agency-process--enhanced .agency-process__step--active .agency-process__card { box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.23), 0 0 0 1px rgba(209, 172, 103, 0.78); }
 .media-split { display: grid; gap: 2rem; }
 .media-split__image { overflow: hidden; min-height: 360px; background: var(--green); }
 .media-split__image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.72); }
@@ -461,19 +430,6 @@ app-agency-process-timeline { display: block; }
   .reviews-cta__inner { grid-template-columns: minmax(0, 1fr) auto; }
   .page-hero { display: grid; min-height: 490px; align-items: center; }
   .process-list li { grid-template-columns: 12% 1fr; padding-block: 1.8rem; }
-  .agency-process__timeline { min-height: 1020px; margin-top: 4.5rem; }
-  .agency-process__track--mobile { display: none; }
-  .agency-process__track--desktop { display: block; }
-  .agency-process__steps { grid-template-rows: repeat(4, minmax(240px, 1fr)); gap: 0; padding: 0; }
-  .agency-process__step { display: grid; min-height: 240px; grid-template-columns: 38% 24% 38%; align-items: center; }
-  .agency-process__step:nth-child(odd) .agency-process__card { grid-column: 1; margin-right: 0; }
-  .agency-process__step:nth-child(even) .agency-process__card { grid-column: 3; margin-left: 0; }
-  .agency-process__node { top: 50%; left: 38%; transform: translate(-50%, -50%); }
-  .agency-process__step:nth-child(even) .agency-process__node { left: 62%; }
-  .agency-process__card { grid-template-columns: 5.4rem minmax(0, 1fr); align-items: start; gap: 1.3rem; padding: 2rem; }
-  .agency-process__number { padding-top: 0.25rem; font-size: 5.1rem; }
-  .agency-process__card h3 { font-size: clamp(2.3rem, 3.5vw, 3.4rem); }
-  .agency-process--enhanced .agency-process__step--active .agency-process__node { transform: translate(-50%, -50%) scale(1.12); }
   .media-split { grid-template-columns: 1.04fr 0.78fr; gap: 5rem; }
   .media-split__image { min-height: 590px; }
   .service-row { grid-template-columns: 11% 1fr auto; gap: 1rem; padding-block: 3.2rem; }

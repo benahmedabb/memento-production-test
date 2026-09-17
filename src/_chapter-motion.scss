@@ -185,6 +185,5 @@ app-kinetic-text { display: inline; }
   .has-page-motion .page-motion-target.page-motion--fan { opacity: 1; transform: none; }
   .brand-orbit__drawing circle, .brand-orbit__drawing ellipse { stroke-dashoffset: 0; }
   .chapter-hero.portfolio-carousel .portfolio-carousel__slide { transition: none; }
-  .agency-process--enhanced .agency-process__card { opacity: 1; transform: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }

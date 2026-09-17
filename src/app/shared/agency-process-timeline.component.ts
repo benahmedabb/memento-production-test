@@ -1,182 +1,94 @@
-import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, PLATFORM_ID, QueryList, Renderer2, RendererStyleFlags2, ViewChild, ViewChildren, inject } from '@angular/core';
-import { KineticTextComponent } from './kinetic-text.component';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { siteConfig } from '../core/site.config';
+import { ScrollSceneDirective } from './scroll-scene.directive';
 
-interface AgencyProcessStage {
-  readonly number: string;
-  readonly title: string;
-  readonly description: string;
-  readonly progress: number;
-}
-
-const processStages: readonly AgencyProcessStage[] = [
+const stages = [
   {
-    number: '01',
-    title: 'Ascolto',
+    number: '01', title: 'Ascolto', label: 'Prima le domande.',
     description: 'Mettiamo in comune obiettivi, pubblico, materiale esistente e contesto competitivo.',
-    progress: 0.02,
+    detail: 'Ogni direzione comincia da una conversazione.',
+    image: '/images/memento-ufficio-hero.webp', srcset: '',
+    alt: 'Lo spazio di lavoro di Memento Production',
   },
   {
-    number: '02',
-    title: 'Direzione',
+    number: '02', title: 'Direzione', label: 'Un’idea, una rotta.',
     description: 'Trasformiamo le priorità in un impianto creativo, editoriale o digitale concreto.',
-    progress: 0.35,
+    detail: 'Diamo un carattere preciso a ciò che vuoi comunicare.',
+    image: siteConfig.images.branding.src, srcset: siteConfig.images.branding.srcset,
+    alt: siteConfig.images.branding.alt,
   },
   {
-    number: '03',
-    title: 'Produzione',
+    number: '03', title: 'Produzione', label: 'Il pensiero prende forma.',
     description: 'Coordiniamo persone, immagini, copy e canali per arrivare a un risultato coerente.',
-    progress: 0.68,
+    detail: 'Dal primo ciak all’ultimo dettaglio.',
+    image: siteConfig.images.production.src, srcset: siteConfig.images.production.srcset,
+    alt: siteConfig.images.production.alt,
   },
   {
-    number: '04',
-    title: 'Evoluzione',
+    number: '04', title: 'Evoluzione', label: 'È solo l’inizio.',
     description: 'Osserviamo ciò che accade e usiamo i segnali utili per scegliere il passo successivo.',
-    progress: 1,
+    detail: 'Un progetto continua a crescere, insieme al brand.',
+    image: siteConfig.images.ads.src, srcset: siteConfig.images.ads.srcset,
+    alt: siteConfig.images.ads.alt,
   },
-];
+] as const;
 
 @Component({
   selector: 'app-agency-process-timeline',
-  imports: [KineticTextComponent],
+  imports: [ScrollSceneDirective],
   template: `
-    <section #timelineRoot class="section section--dark agency-process" [class.agency-process--enhanced]="isEnhanced" [class.agency-process--ready]="isReady">
-      <div class="shell">
-        <header class="agency-process__intro">
-          <p class="eyebrow eyebrow--gold">Metodo</p>
-          <h2><app-kinetic-text text="Un processo chiaro, senza formule preconfezionate." /></h2>
-        </header>
+    <section #sequence id="metodo" class="agency-method agency-scroll" appScrollScene="cover" aria-labelledby="agency-method-title">
+      <div class="agency-method__stage">
+        <div class="shell agency-method__layout">
+          <header class="agency-method__heading">
+            <div><p class="eyebrow eyebrow--gold">Il nostro metodo</p><h2 id="agency-method-title">Un processo chiaro.<br /><em>Una visione che prende forma.</em></h2></div>
+            <a class="agency-scroll-link" href="/servizi">Scopri le competenze <span aria-hidden="true">↘</span></a>
+          </header>
 
-        <div class="agency-process__timeline">
-          <svg class="agency-process__track agency-process__track--desktop" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path class="agency-process__track-base" pathLength="1" d="M38 12.5 C38 20 62 30 62 37.5 C62 45 38 55 38 62.5 C38 70 62 80 62 87.5" />
-            <path class="agency-process__track-progress" pathLength="1" d="M38 12.5 C38 20 62 30 62 37.5 C62 45 38 55 38 62.5 C38 70 62 80 62 87.5" />
-          </svg>
-          <svg class="agency-process__track agency-process__track--mobile" viewBox="0 0 24 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path class="agency-process__track-base" pathLength="1" d="M12 0 V1000" />
-            <path class="agency-process__track-progress" pathLength="1" d="M12 0 V1000" />
-          </svg>
-
-          <ol class="agency-process__steps">
+          <ol class="agency-method__deck">
             @for (stage of stages; track stage.number; let index = $index) {
-              <li #stageElement class="agency-process__step" [class.agency-process__step--complete]="index <= completedIndex" [class.agency-process__step--active]="index === completedIndex">
-                <span class="agency-process__node" aria-hidden="true"><span></span></span>
-                <article class="agency-process__card">
-                  <p class="agency-process__number" aria-hidden="true">{{ stage.number }}</p>
-                  <div>
-                    <h3>{{ stage.title }}</h3>
-                    <p>{{ stage.description }}</p>
-                  </div>
-                </article>
+              <li class="agency-method__card" [id]="'metodo-' + stage.number" [style.--step-index]="index">
+                <div class="agency-method__media"><img [src]="stage.image" [srcset]="stage.srcset" sizes="(min-width: 860px) 50vw, 100vw" [alt]="stage.alt" width="1200" height="800" loading="lazy" decoding="async" /><span class="agency-method__image-label" aria-hidden="true">Memento / {{ stage.number }}</span></div>
+                <div class="agency-method__copy">
+                  <span class="agency-method__number" aria-hidden="true">{{ stage.number }}</span>
+                  <p class="eyebrow">{{ stage.label }}</p>
+                  <h3>{{ stage.title }}</h3>
+                  <p class="agency-method__description">{{ stage.description }}</p>
+                  <p class="agency-method__detail">{{ stage.detail }}</p>
+                </div>
               </li>
             }
           </ol>
+
+          <nav class="agency-method__navigation" aria-label="Esplora le fasi del metodo">
+            @for (stage of stages; track stage.number; let index = $index) {
+              <button type="button" (click)="goToStep(index)" [attr.aria-label]="'Vai alla fase ' + stage.title"><span>{{ stage.number }}</span> {{ stage.title }}</button>
+            }
+            <span class="agency-method__progress" aria-hidden="true"></span>
+          </nav>
         </div>
       </div>
     </section>
   `,
 })
-export class AgencyProcessTimelineComponent implements AfterViewInit, OnDestroy {
-  readonly stages = processStages;
-  completedIndex = 0;
-  isEnhanced = false;
-  isReady = false;
+export class AgencyProcessTimelineComponent {
+  readonly stages = stages;
+  @ViewChild('sequence') private sequence?: ElementRef<HTMLElement>;
 
-  @ViewChild('timelineRoot') private readonly timelineRoot?: ElementRef<HTMLElement>;
-  @ViewChildren('stageElement') private readonly stageElements!: QueryList<ElementRef<HTMLElement>>;
+  goToStep(index: number): void {
+    const root = this.sequence?.nativeElement;
+    const stage = root?.querySelector<HTMLElement>('.agency-method__stage');
+    if (!root || !stage || index < 0 || index >= this.stages.length) return;
 
-  private readonly platformId = inject(PLATFORM_ID);
-  private readonly renderer = inject(Renderer2);
-  private readonly changeDetector = inject(ChangeDetectorRef);
-  private observer?: IntersectionObserver;
-  private animationFrame?: number;
-  private readonly fullyVisibleStages = new Set<HTMLElement>();
-
-  ngAfterViewInit(): void {
-    if (!isPlatformBrowser(this.platformId) || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (getComputedStyle(stage).position !== 'sticky') {
+      root.querySelectorAll<HTMLElement>('.agency-method__card')[index]?.scrollIntoView({ block: 'start', behavior: 'auto' });
       return;
     }
 
-    this.setCompletedIndex(this.getInitialIndex(), true);
-    this.isEnhanced = true;
-    this.changeDetector.detectChanges();
-
-    this.observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        const stage = entry.target as HTMLElement;
-
-        if (entry.isIntersecting && entry.intersectionRatio >= 1) {
-          this.fullyVisibleStages.add(stage);
-        } else {
-          this.fullyVisibleStages.delete(stage);
-        }
-      }
-
-      this.setCompletedIndex(this.getFullyVisibleIndex());
-    }, { threshold: [0, 1] });
-
-    this.stageElements.forEach(({ nativeElement }) => this.observer?.observe(nativeElement));
-    this.animationFrame = requestAnimationFrame(() => {
-      this.isReady = true;
-      this.changeDetector.detectChanges();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.observer?.disconnect();
-
-    if (this.animationFrame !== undefined) {
-      cancelAnimationFrame(this.animationFrame);
-    }
-  }
-
-  private getInitialIndex(): number {
-    let index = 0;
-
-    this.stageElements.forEach(({ nativeElement }, stageIndex) => {
-      const bounds = nativeElement.getBoundingClientRect();
-      const visibleHeight = Math.max(0, Math.min(bounds.bottom, window.innerHeight) - Math.max(bounds.top, 0));
-
-      if (visibleHeight / bounds.height >= 1) {
-        index = stageIndex;
-      }
-    });
-
-    return index;
-  }
-
-  private getFullyVisibleIndex(): number {
-    if (!this.fullyVisibleStages.size) {
-      return this.completedIndex;
-    }
-
-    let index = this.completedIndex;
-
-    this.stageElements.forEach(({ nativeElement }, stageIndex) => {
-      if (this.fullyVisibleStages.has(nativeElement)) {
-        index = stageIndex;
-      }
-    });
-
-    return index;
-  }
-
-  private setCompletedIndex(index: number, force = false): void {
-    const nextIndex = force ? index : Math.max(this.completedIndex, index);
-
-    if (!force && nextIndex === this.completedIndex) {
-      return;
-    }
-
-    this.completedIndex = nextIndex;
-    const stage = this.stages[nextIndex];
-
-    if (stage && this.timelineRoot) {
-      this.renderer.setStyle(this.timelineRoot.nativeElement, '--agency-process-progress', stage.progress.toString(), RendererStyleFlags2.DashCase);
-    }
-
-    if (this.isEnhanced) {
-      this.changeDetector.detectChanges();
-    }
+    const header = parseFloat(getComputedStyle(stage).top) || 0;
+    const travel = root.offsetHeight - stage.offsetHeight;
+    // Cards finish arriving at index / 3.4; stop just after that point.
+    const progress = Math.min(1, index / 3.4 + 0.035);
+    window.scrollTo({ top: window.scrollY + root.getBoundingClientRect().top - header + travel * progress, behavior: 'auto' });
   }
 }

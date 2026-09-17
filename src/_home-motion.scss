@@ -134,13 +134,17 @@ app-cinematic-hero { display: block; }
 
 .home-projects { scroll-margin-top: 6rem; }
 .home-projects .video-case { border: 0; background: transparent; }
-.home-projects .video-case__media { aspect-ratio: 4 / 5; }
+.home-projects .video-case__media { aspect-ratio: 9 / 16; }
+.home-projects .video-case__media img { object-fit: contain; object-position: center; }
 .home-projects .video-case__body { padding: 1.5rem 0; background: var(--paper); }
 .home-projects .video-case__results { padding-inline: 0; }
 .home-projects .video-case__trigger { background: transparent; }
 .home-projects .video-case__title { min-height: 2.85em; }
 .home-projects .video-case__play { width: 3.5rem; height: 3.5rem; }
 .home-projects .video-case__top { right: 1.25rem; bottom: 1.25rem; }
+.home-projects .case-metric__value { font-size: clamp(1.85rem, 5vw, 2.55rem); font-weight: 400; letter-spacing: -0.025em; line-height: 0.92; }
+.home-projects .video-case:hover .video-case__media img,
+.home-projects .video-case:focus-within .video-case__media img { transform: none; }
 
 .home-services { overflow: hidden; }
 .home-services .service-card__number { display: block; margin-bottom: 1.5rem; color: var(--gold); font-size: 0.65rem; letter-spacing: 0.12em; }

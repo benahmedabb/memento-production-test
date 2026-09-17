@@ -25,10 +25,17 @@ export class AnimatedMetricComponent implements AfterViewInit, OnDestroy {
   private observer?: IntersectionObserver;
   private animationFrame?: number;
   private animationStart?: number;
+  private readonly animationFrom = 0.92;
+  private readonly animationDuration = 720;
 
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId) || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
+    }
+
+    if (this.metricData) {
+      this.displayedValue = this.formatValue(this.metricData, this.animationFrom);
+      this.changeDetector.markForCheck();
     }
 
     this.observer = new IntersectionObserver((entries) => {
@@ -66,16 +73,22 @@ export class AnimatedMetricComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const progress = Math.min((timestamp - this.animationStart) / 1500, 1);
-    const easedProgress = 1 - Math.pow(1 - progress, 3);
-    const currentValue = metric.value * easedProgress;
-    const roundedValue = metric.decimals === 1 ? currentValue.toFixed(1) : Math.round(currentValue).toString();
+    const progress = Math.min((timestamp - this.animationStart) / this.animationDuration, 1);
+    const easedProgress = 1 - Math.pow(1 - progress, 2);
+    const valueProgress = this.animationFrom + (1 - this.animationFrom) * easedProgress;
 
-    this.displayedValue = progress === 1 ? metric.displayValue : `${roundedValue}${metric.suffix}`;
+    this.displayedValue = progress === 1 ? metric.displayValue : this.formatValue(metric, valueProgress);
     this.changeDetector.markForCheck();
 
     if (progress < 1) {
       this.animationFrame = requestAnimationFrame((nextTimestamp) => this.animate(nextTimestamp));
     }
+  }
+
+  private formatValue(metric: CaseStudyMetric, progress: number): string {
+    const currentValue = metric.value * progress;
+    const roundedValue = metric.decimals === 1 ? currentValue.toFixed(1) : Math.round(currentValue).toString();
+
+    return `${roundedValue}${metric.suffix}`;
   }
 }
