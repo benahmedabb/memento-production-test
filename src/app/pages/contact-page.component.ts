@@ -20,7 +20,7 @@ type SubmissionState = 'idle' | 'unconfigured' | 'sending' | 'success' | 'error'
         <p appPageMotion="hero" class="eyebrow">Contatti / Il prossimo capitolo</p>
         <h1><app-kinetic-text text="Parliamo di ciò che verrà." [delay]="120" /></h1>
         <p appPageMotion="hero" [motionDelay]="320">Ogni progetto comincia con una conversazione. La prossima potrebbe essere la nostra.</p>
-        <a class="text-link contact-opening__link" href="#raccontaci">Raccontaci la tua idea <span aria-hidden="true">↓</span></a>
+        <a class="text-link contact-opening__link" href="#raccontaci">Raccontaci la tua idea <span aria-hidden="true">↓&#xFE0E;</span></a>
       </div>
     </section>
     <section id="raccontaci" class="section contact-section section--sage-soft" appScrollScene>
@@ -53,7 +53,7 @@ type SubmissionState = 'idle' | 'unconfigured' | 'sending' | 'success' | 'error'
           @if (state() === 'unconfigured') { <p class="form-status" role="status">Il modulo è in attesa di collegamento. Puoi contattarci via email, telefono o WhatsApp.</p> }
           @if (state() === 'success') { <p class="form-status form-status--success" role="status">Grazie, la richiesta è stata inviata.</p> }
           @if (state() === 'error') { <p class="form-status form-status--error" role="alert">L’invio non è riuscito. Riprovare oppure usa uno dei contatti diretti.</p> }
-          <button class="button" type="submit" [disabled]="state() === 'sending'">{{ state() === 'sending' ? 'Invio in corso…' : 'Invia richiesta' }} <span aria-hidden="true">↗</span></button>
+          <button class="button" type="submit" [disabled]="state() === 'sending'">{{ state() === 'sending' ? 'Invio in corso…' : 'Invia richiesta' }} <span aria-hidden="true">↗&#xFE0E;</span></button>
         </form>
       </div>
     </section>

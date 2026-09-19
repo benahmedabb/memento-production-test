@@ -42,7 +42,7 @@ const stages = [
         <div class="shell agency-method__layout">
           <header class="agency-method__heading">
             <div><p class="eyebrow eyebrow--gold">Il nostro metodo</p><h2 id="agency-method-title">Un processo chiaro.<br /><em>Una visione che prende forma.</em></h2></div>
-            <a class="agency-scroll-link" href="/servizi">Scopri le competenze <span aria-hidden="true">↘</span></a>
+            <a class="agency-scroll-link" href="/servizi">Scopri le competenze <span aria-hidden="true">↘&#xFE0E;</span></a>
           </header>
 
           <ol class="agency-method__deck">

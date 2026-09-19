@@ -21,7 +21,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       <div class="shell memory-statement__inner">
         <div class="memory-statement__aside" appPageMotion="rise">
           <p class="eyebrow">Il nostro punto di vista</p>
-          <span class="memory-statement__asterisk" aria-hidden="true">✳</span>
+          <span class="memory-statement__asterisk" aria-hidden="true">✳&#xFE0E;</span>
         </div>
         <div>
           <h2 id="memory-title" class="memory-statement__text" aria-label="Non basta farsi vedere. Bisogna farsi ricordare.">
@@ -31,7 +31,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
           </h2>
           <div class="memory-statement__footer" appPageMotion="rise">
             <p>Uniamo immagini, strategia e identità. Per trasformare l’attenzione di un momento in un’impressione che dura.</p>
-            <a class="text-link" routerLink="/agenzia">Dentro Memento <span aria-hidden="true">↗</span></a>
+            <a class="text-link" routerLink="/agenzia">Dentro Memento <span aria-hidden="true">↗&#xFE0E;</span></a>
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
           <p class="eyebrow">Progetti selezionati</p>
           <h2>Quando il messaggio trova la sua forma.</h2>
         </div>
-        <a appPageMotion="rise" [motionDelay]="180" class="text-link" routerLink="/portfolio">Apri il portfolio <span aria-hidden="true">→</span></a>
+        <a appPageMotion="rise" [motionDelay]="180" class="text-link" routerLink="/portfolio">Apri il portfolio <span aria-hidden="true">→&#xFE0E;</span></a>
       </div>
       <div class="shell video-case-rail" aria-label="Video case study">
         @for (project of config.portfolio; track project.client) {
@@ -57,7 +57,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
               <span class="video-case__body">
                 <span class="video-case__client">{{ project.client }}</span>
                 <span class="video-case__title">{{ project.title }}</span>
-                <span class="video-case__cta">Guarda il video <span aria-hidden="true">↗</span></span>
+                <span class="video-case__cta">Guarda il video <span aria-hidden="true">↗&#xFE0E;</span></span>
               </span>
             </button>
             <div class="video-case__results">
@@ -81,7 +81,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
           <p class="eyebrow eyebrow--gold">Cosa facciamo</p>
           <h2>Strumenti diversi. Una presenza più nitida.</h2>
         </div>
-        <a appPageMotion="rise" [motionDelay]="180" class="text-link text-link--light" routerLink="/servizi">Tutti i servizi <span aria-hidden="true">→</span></a>
+        <a appPageMotion="rise" [motionDelay]="180" class="text-link text-link--light" routerLink="/servizi">Tutti i servizi <span aria-hidden="true">→&#xFE0E;</span></a>
       </div>
       <div class="shell service-grid">
         @for (service of serviceEntries; track service.key) {
@@ -94,7 +94,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
               <span class="service-card__number" aria-hidden="true">0{{ $index + 1 }}</span>
               <h3>{{ service.service.shortTitle }}</h3>
               <p>{{ service.service.description }}</p>
-              <span class="card-arrow" aria-hidden="true">↗</span>
+              <span class="card-arrow" aria-hidden="true">↗&#xFE0E;</span>
             </span>
           </a>
         }
@@ -118,7 +118,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
               <p>L’embed Instagram viene caricato solo dopo il consenso. Puoi anche aprire il post direttamente su Instagram.</p>
               <div class="button-row">
                 <button class="button" type="button" (click)="openConsentPreferences()">Modifica preferenze</button>
-                <a class="text-link" [href]="project.instagramPostUrl" target="_blank" rel="noopener noreferrer">Apri Instagram <span aria-hidden="true">↗</span></a>
+                <a class="text-link" [href]="project.instagramPostUrl" target="_blank" rel="noopener noreferrer">Apri Instagram <span aria-hidden="true">↗&#xFE0E;</span></a>
               </div>
             </div>
           }
@@ -136,8 +136,8 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
           <h2>Diamo alla tua idea una direzione memorabile.</h2>
         </div>
         <div appPageMotion="rise" [motionDelay]="180" class="cta-band__links">
-          <a class="button button--ink" routerLink="/contatti">Parla con noi <span aria-hidden="true">↗</span></a>
-          <a class="text-link" [href]="config.contact.whatsappUrl" target="_blank" rel="noopener noreferrer" (click)="tracking.trackContact('whatsapp', 'home_cta')">WhatsApp <span aria-hidden="true">→</span></a>
+          <a class="button button--ink" routerLink="/contatti">Parla con noi <span aria-hidden="true">↗&#xFE0E;</span></a>
+          <a class="text-link" [href]="config.contact.whatsappUrl" target="_blank" rel="noopener noreferrer" (click)="tracking.trackContact('whatsapp', 'home_cta')">WhatsApp <span aria-hidden="true">→&#xFE0E;</span></a>
         </div>
       </div>
     </section>

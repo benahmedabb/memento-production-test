@@ -32,7 +32,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
           </h1>
           <div class="agency-opening__bottom">
             <p>Una digital agency per brand che cercano una direzione riconoscibile, dal pensiero al formato finale.</p>
-            <a href="/agenzia#metodo" class="agency-scroll-link">Entra nel nostro metodo <span aria-hidden="true">↓</span></a>
+            <a href="/agenzia#metodo" class="agency-scroll-link">Entra nel nostro metodo <span aria-hidden="true">↓&#xFE0E;</span></a>
           </div>
           <div class="agency-opening__timeline" aria-hidden="true"><span>01 / Lo sguardo</span><div><span></span></div><span>02 / La visione</span></div>
         </div>

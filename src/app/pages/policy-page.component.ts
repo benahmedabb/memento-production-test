@@ -27,13 +27,13 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
           <p class="eyebrow">Privacy</p>
           <h2><app-kinetic-text text="Informativa sul trattamento dei dati" /></h2>
           <p>L’informativa completa descrive i dati trattati, le finalità, i diritti dell’interessato e i contatti del titolare.</p>
-          <a class="button button--outline" [href]="config.iubenda.privacyPolicyUrl" target="_blank" rel="noopener noreferrer">Apri Privacy Policy <span aria-hidden="true">↗</span></a>
+          <a class="button button--outline" [href]="config.iubenda.privacyPolicyUrl" target="_blank" rel="noopener noreferrer">Apri Privacy Policy <span aria-hidden="true">↗&#xFE0E;</span></a>
         </article>
         <article appPageMotion="rise" [motionDelay]="180" class="policy-card">
           <p class="eyebrow">Cookie</p>
           <h2><app-kinetic-text text="Informativa cookie e preferenze" /></h2>
           <p>Puoi consultare l’informativa cookie o modificare in ogni momento le preferenze memorizzate sul dispositivo.</p>
-          <div class="button-row"><a class="button button--outline" [href]="config.iubenda.cookiePolicyUrl" target="_blank" rel="noopener noreferrer">Apri Cookie Policy <span aria-hidden="true">↗</span></a><button type="button" class="text-link" (click)="consent.openPreferences()">Modifica preferenze <span aria-hidden="true">→</span></button></div>
+          <div class="button-row"><a class="button button--outline" [href]="config.iubenda.cookiePolicyUrl" target="_blank" rel="noopener noreferrer">Apri Cookie Policy <span aria-hidden="true">↗&#xFE0E;</span></a><button type="button" class="text-link" (click)="consent.openPreferences()">Modifica preferenze <span aria-hidden="true">→&#xFE0E;</span></button></div>
         </article>
       </div>
 

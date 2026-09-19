@@ -45,7 +45,7 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
             <div class="review-card__top">
               <span class="review-card__mark" aria-hidden="true">{{ review.person.slice(0, 1) }}</span>
               <div>
-                <div class="review-card__rating" role="img" [attr.aria-label]="review.rating + ' stelle su 5'"><span aria-hidden="true">★★★★★</span></div>
+                <div class="review-card__rating" role="img" [attr.aria-label]="review.rating + ' stelle su 5'"><span aria-hidden="true">★&#xFE0E;★&#xFE0E;★&#xFE0E;★&#xFE0E;★&#xFE0E;</span></div>
                 <span class="review-card__source">Recensione Google</span>
               </div>
             </div>
@@ -67,8 +67,8 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
           <p>Partiamo da una conversazione concreta: obiettivi, materiali disponibili e canali più adatti.</p>
         </div>
         <div appPageMotion="rise" [motionDelay]="180" class="button-row">
-          <a class="button button--ink" routerLink="/contatti">Apri i contatti <span aria-hidden="true">↗</span></a>
-          <a class="text-link" [href]="config.contact.whatsappUrl" target="_blank" rel="noopener noreferrer" (click)="tracking.trackContact('whatsapp', 'reviews_cta')">WhatsApp <span aria-hidden="true">→</span></a>
+          <a class="button button--ink" routerLink="/contatti">Apri i contatti <span aria-hidden="true">↗&#xFE0E;</span></a>
+          <a class="text-link" [href]="config.contact.whatsappUrl" target="_blank" rel="noopener noreferrer" (click)="tracking.trackContact('whatsapp', 'reviews_cta')">WhatsApp <span aria-hidden="true">→&#xFE0E;</span></a>
         </div>
       </div>
     </section>

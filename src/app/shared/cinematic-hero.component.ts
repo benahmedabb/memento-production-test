@@ -40,10 +40,10 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
 
           <div class="cinema__bottom">
             <p class="cinema__lead">Produzione, strategia e design per costruire una presenza che non passa inosservata.</p>
-            <a class="cinema__cta" routerLink="/contatti">Iniziamo una conversazione <span aria-hidden="true">↗</span></a>
+            <a class="cinema__cta" routerLink="/contatti">Iniziamo una conversazione <span aria-hidden="true">↗&#xFE0E;</span></a>
           </div>
           <div class="cinema__footnote">
-            <a class="cinema__scroll" href="#progetti"><span aria-hidden="true">↓</span> Scorri per scoprire</a>
+            <a class="cinema__scroll" href="#progetti"><span aria-hidden="true">↓&#xFE0E;</span> Scorri per scoprire</a>
             <span class="cinema__progress" aria-hidden="true"><span></span></span>
             <a class="cinema__credit" [href]="image.sourceUrl" target="_blank" rel="noopener noreferrer">Foto: {{ image.credit }}</a>
           </div>

@@ -38,8 +38,8 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
           <button class="portfolio-carousel__pause" type="button" [attr.aria-pressed]="userPaused" (click)="togglePlayback()">{{ userPaused ? 'Riprendi slideshow' : 'Pausa slideshow' }}</button>
         }
         <span class="portfolio-carousel__caption" aria-hidden="true">0{{ activeIndex + 1 }} / {{ projects[activeIndex].client }}</span>
-        <button class="portfolio-carousel__arrow portfolio-carousel__arrow--previous" type="button" (click)="previous()" aria-label="Mostra la copertina precedente"><span aria-hidden="true">←</span></button>
-        <button class="portfolio-carousel__arrow portfolio-carousel__arrow--next" type="button" (click)="next()" aria-label="Mostra la copertina successiva"><span aria-hidden="true">→</span></button>
+        <button class="portfolio-carousel__arrow portfolio-carousel__arrow--previous" type="button" (click)="previous()" aria-label="Mostra la copertina precedente"><span aria-hidden="true">←&#xFE0E;</span></button>
+        <button class="portfolio-carousel__arrow portfolio-carousel__arrow--next" type="button" (click)="next()" aria-label="Mostra la copertina successiva"><span aria-hidden="true">→&#xFE0E;</span></button>
         <div class="portfolio-carousel__dots" role="group" aria-label="Selezione copertina">
           @for (project of projects; track project.client; let index = $index) {
             <button class="portfolio-carousel__dot" type="button" [class.is-active]="index === activeIndex" [attr.aria-label]="'Mostra la copertina di ' + project.client" [attr.aria-current]="index === activeIndex ? 'true' : null" (click)="goTo(index)"><span class="sr-only">{{ project.client }}</span></button>

@@ -39,7 +39,7 @@ import { PortfolioHeroCarouselComponent } from '../shared/portfolio-hero-carouse
                   <div><dd><app-animated-metric [metric]="stat" [delay]="$index * 120" /></dd><dt>{{ stat.label }}</dt></div>
                 }
               </dl>
-              <a class="text-link" [href]="project.instagramPostUrl" target="_blank" rel="noopener noreferrer">Guarda il progetto <span aria-hidden="true">↗</span></a>
+              <a class="text-link" [href]="project.instagramPostUrl" target="_blank" rel="noopener noreferrer">Guarda il progetto <span aria-hidden="true">↗&#xFE0E;</span></a>
             </div>
           </article>
         }
@@ -52,7 +52,7 @@ import { PortfolioHeroCarouselComponent } from '../shared/portfolio-hero-carouse
       </div>
       <div class="shell cta-band__inner">
         <div><p class="eyebrow">Il tuo caso</p><h2><app-kinetic-text text="Hai una storia che merita la sua forma?" /></h2></div>
-        <a appPageMotion="rise" [motionDelay]="180" class="button button--ink" routerLink="/contatti">Contattaci <span aria-hidden="true">↗</span></a>
+        <a appPageMotion="rise" [motionDelay]="180" class="button button--ink" routerLink="/contatti">Contattaci <span aria-hidden="true">↗&#xFE0E;</span></a>
       </div>
     </section>
   `,

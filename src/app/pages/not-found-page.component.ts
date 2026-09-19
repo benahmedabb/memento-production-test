@@ -15,7 +15,7 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
         <p appPageMotion="hero" [motionDelay]="140" class="eyebrow">Errore 404</p>
         <h1><app-kinetic-text text="Questa scena non è più qui." [delay]="160" /></h1>
         <p appPageMotion="hero" [motionDelay]="560">La pagina che stai cercando potrebbe essere stata spostata o non essere mai esistita.</p>
-        <a appPageMotion="hero" [motionDelay]="760" class="button" routerLink="/">Torna alla home <span aria-hidden="true">→</span></a>
+        <a appPageMotion="hero" [motionDelay]="760" class="button" routerLink="/">Torna alla home <span aria-hidden="true">→&#xFE0E;</span></a>
       </div>
     </section>
   `,

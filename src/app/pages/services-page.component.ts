@@ -34,7 +34,7 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
                 <p class="eyebrow">{{ item.service.eyebrow }}</p>
                 <h2><app-kinetic-text [text]="item.service.shortTitle" /></h2>
                 <p>{{ item.service.description }}</p>
-                <span class="service-chapter__link">Esplora il servizio <span aria-hidden="true">↗</span></span>
+                <span class="service-chapter__link">Esplora il servizio <span aria-hidden="true">↗&#xFE0E;</span></span>
               </div>
               <div class="service-chapter__media"><img [src]="image.src" [srcset]="image.srcset" sizes="(min-width: 980px) 45vw, 100vw" [alt]="image.alt" loading="lazy" decoding="async" width="1200" height="800" /></div>
             </a>
@@ -46,7 +46,7 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
     <section class="section section--dark chapter-closing" appScrollScene>
       <div class="shell two-column two-column--offset">
         <div><p class="eyebrow eyebrow--gold">Come lavoriamo</p><h2><app-kinetic-text mode="ink" text="Ogni servizio è più efficace quando sa dialogare con gli altri." /></h2></div>
-        <div appPageMotion="rise" [motionDelay]="180" class="intro-copy intro-copy--light"><p>Possiamo intervenire su un singolo progetto o costruire un percorso più ampio. In entrambi i casi, iniziamo da una priorità chiara e scegliamo solo gli strumenti utili.</p><a class="button button--gold" routerLink="/contatti">Raccontaci il progetto <span aria-hidden="true">→</span></a></div>
+        <div appPageMotion="rise" [motionDelay]="180" class="intro-copy intro-copy--light"><p>Possiamo intervenire su un singolo progetto o costruire un percorso più ampio. In entrambi i casi, iniziamo da una priorità chiara e scegliamo solo gli strumenti utili.</p><a class="button button--gold" routerLink="/contatti">Raccontaci il progetto <span aria-hidden="true">→&#xFE0E;</span></a></div>
       </div>
     </section>
   `,

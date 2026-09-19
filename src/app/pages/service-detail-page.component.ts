@@ -20,11 +20,11 @@ const SERVICE_METADATA: Record<ServiceKey, PageMetadata> = {
     <section class="service-hero detail-scene section--sage-soft" appScrollScene="hero">
       <div class="shell service-hero__grid">
         <div class="service-hero__content">
-          <a appPageMotion="hero" [motionDelay]="100" class="back-link" routerLink="/servizi"><span aria-hidden="true">←</span> Tutti i servizi</a>
+          <a appPageMotion="hero" [motionDelay]="100" class="back-link" routerLink="/servizi"><span aria-hidden="true">←&#xFE0E;</span> Tutti i servizi</a>
           <p appPageMotion="hero" [motionDelay]="220" class="eyebrow">{{ service.eyebrow }}</p>
           <h1><app-kinetic-text [text]="service.title" [delay]="160" /></h1>
           <p appPageMotion="hero" [motionDelay]="590">{{ service.description }}</p>
-          <a appPageMotion="hero" [motionDelay]="780" class="button" routerLink="/contatti">Parliamo del progetto <span aria-hidden="true">↗</span></a>
+          <a appPageMotion="hero" [motionDelay]="780" class="button" routerLink="/contatti">Parliamo del progetto <span aria-hidden="true">↗&#xFE0E;</span></a>
         </div>
         <div class="detail-scene__visual"><div appPageMotion="mask" [motionDelay]="160" class="service-hero__image" [class.service-hero__image--illustration]="serviceKey === 'web'">
           <img [src]="image.src" [srcset]="image.srcset" [sizes]="image.sizes" [alt]="image.alt" loading="eager" width="1200" height="800" />
@@ -56,7 +56,7 @@ const SERVICE_METADATA: Record<ServiceKey, PageMetadata> = {
       <div class="shell cta-centered">
         <p appPageMotion="rise" class="eyebrow eyebrow--gold">Un progetto su misura</p>
         <h2><app-kinetic-text text="Partiamo da ciò che il tuo brand deve far ricordare." /></h2>
-        <a appPageMotion="rise" [motionDelay]="360" class="button button--gold" routerLink="/contatti">Scrivici <span aria-hidden="true">→</span></a>
+        <a appPageMotion="rise" [motionDelay]="360" class="button button--gold" routerLink="/contatti">Scrivici <span aria-hidden="true">→&#xFE0E;</span></a>
       </div>
     </section>
   `,
