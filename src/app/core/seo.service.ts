@@ -13,6 +13,7 @@ export class SeoService {
 
   setPage(metadata: PageMetadata, schema: JsonLd): void {
     const canonicalUrl = `${siteConfig.origin}${metadata.path}`;
+    const socialPreviewImage = `${siteConfig.origin}${siteConfig.socialPreviewImage}`;
 
     this.title.setTitle(metadata.title);
     this.updateName('description', metadata.description);
@@ -25,8 +26,12 @@ export class SeoService {
     this.updateProperty('og:title', metadata.title);
     this.updateProperty('og:description', metadata.description);
     this.updateProperty('og:url', canonicalUrl);
-    this.updateProperty('og:image', siteConfig.images.hero.src);
-    this.updateName('twitter:image', siteConfig.images.hero.src);
+    this.updateProperty('og:image', socialPreviewImage);
+    this.updateProperty('og:image:secure_url', socialPreviewImage);
+    this.updateProperty('og:image:type', 'image/png');
+    this.updateProperty('og:image:width', '1672');
+    this.updateProperty('og:image:height', '941');
+    this.updateName('twitter:image', socialPreviewImage);
     this.updateName('robots', metadata.noIndex ? 'noindex, nofollow' : 'index, follow');
     this.updateCanonical(canonicalUrl);
     this.updateSchema(schema);

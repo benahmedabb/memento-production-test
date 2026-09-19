@@ -57,6 +57,7 @@ export interface Review {
 
 export const siteConfig = {
   origin: 'https://mementoproduction.it',
+  socialPreviewImage: '/images/sala_riunioni_moderna_con_logo_memento.png',
   analytics: {
     gtmId: 'GTM-WNM2C5VK',
   },
