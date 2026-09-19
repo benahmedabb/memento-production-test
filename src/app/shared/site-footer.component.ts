@@ -35,7 +35,7 @@ import { TrackingService } from '../core/tracking.service';
       </div>
 
       <div class="shell footer-bottom">
-        <span>© {{ currentYear }} Memento Production</span>
+        <span>© {{ currentYear }} Memento Production · P. IVA {{ config.contact.vatNumber }}</span>
         <div class="footer-legal">
           <a routerLink="/privacy-policy">Privacy e cookie</a>
           <a [href]="config.iubenda.privacyPolicyUrl" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
