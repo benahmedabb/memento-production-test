@@ -375,6 +375,12 @@ section.reviews-section { background: #486956; }
 .footer-legal a:hover, .link-button:hover { color: var(--gold); }
 .link-button { padding: 0; border: 0; color: inherit; background: transparent; font-size: inherit; }
 
+.whatsapp-fab { position: fixed; z-index: 40; right: 1rem; bottom: 4rem; display: grid; width: 3.5rem; height: 3.5rem; place-items: center; border: 0; border-radius: 50%; color: #fff; background: #25d366; box-shadow: 0 0.65rem 1.5rem rgba(10, 82, 40, 0.35); transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+.whatsapp-fab svg { width: 1.9rem; height: 1.9rem; fill: currentColor; }
+.whatsapp-fab:hover { background: #1fb85a; box-shadow: 0 0.85rem 1.8rem rgba(10, 82, 40, 0.45); transform: translateY(-0.18rem) scale(1.04); }
+
+html body .iubenda-tp-btn { right: auto !important; bottom: 1rem !important; left: 1rem !important; }
+
 .consent-banner { position: fixed; z-index: 60; right: 1rem; bottom: 1rem; left: 1rem; display: grid; gap: 1rem; max-width: 700px; padding: 1.25rem; border: 1px solid rgba(209, 172, 103, 0.5); color: var(--paper); background: var(--green-deep); box-shadow: 0 15px 45px rgba(7, 15, 12, 0.35); }
 .consent-banner h2 { margin-bottom: 0.4rem; font-size: 2rem; }
 .consent-banner p:not(.eyebrow) { max-width: 480px; margin-bottom: 0; color: rgba(255, 255, 255, 0.7); font-size: 0.78rem; }
@@ -406,6 +412,9 @@ section.reviews-section { background: #486956; }
   .form-grid { grid-template-columns: repeat(2, 1fr); }
   .field--full { grid-column: 1 / -1; }
   .policy-grid { grid-template-columns: repeat(2, 1fr); }
+  .whatsapp-fab { right: 1rem; bottom: 4.5rem; width: 4rem; height: 4rem; }
+  .whatsapp-fab svg { width: 2.1rem; height: 2.1rem; }
+  html body .iubenda-tp-btn { bottom: 1.5rem !important; left: 1.5rem !important; }
   .consent-banner { left: auto; }
   .consent-dialog-backdrop { place-items: center; }
 }

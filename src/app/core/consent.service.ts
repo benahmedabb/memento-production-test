@@ -118,6 +118,7 @@ export class ConsentService {
       countryDetection: true,
       perPurposeConsent: true,
       consentOnContinuedBrowsing: false,
+      floatingPreferencesButtonDisplay: 'bottom-left',
       banner: {
         acceptButtonDisplay: true,
         customizeButtonDisplay: true,
