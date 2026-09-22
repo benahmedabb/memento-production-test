@@ -103,6 +103,26 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       </div>
     </section>
 
+    <section id="territorio" class="section section--sage local-presence" aria-labelledby="local-title">
+      <div class="shell two-column">
+        <div>
+          <p class="eyebrow">La nostra zona</p>
+          <h2 id="local-title">Comunicazione per le aziende di Torino e provincia.</h2>
+        </div>
+        <div class="local-presence__copy">
+          <p>La sede di Memento Production è a Moncalieri. Affianchiamo le imprese di Torino, Pinerolo e Chieri con produzione video e fotografia, social media, campagne pubblicitarie, identità visiva e siti web.</p>
+          <p>Puoi partire da un’esigenza concreta: presentare un prodotto, promuovere un servizio, rinnovare l’immagine aziendale o rendere più semplice ricevere richieste online. Definiamo attività e priorità in base al progetto; eventuali incontri e riprese vengono concordati insieme.</p>
+          <ul class="local-presence__cities" aria-label="Zone servite">
+            @for (city of config.serviceCities; track city) { <li>{{ city }}</li> }
+          </ul>
+          <div class="button-row">
+            <a class="button" routerLink="/contatti" (click)="tracking.trackQuote('home_local')">Richiedi un preventivo <span aria-hidden="true">↗&#xFE0E;</span></a>
+            <a class="text-link" routerLink="/recensioni">Leggi le recensioni <span aria-hidden="true">→&#xFE0E;</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     @if (activeProject(); as project) {
       <div class="video-dialog-backdrop" (click)="closeVideo()">
         <section #videoDialog class="video-dialog" role="dialog" aria-modal="true" aria-labelledby="video-dialog-title" tabindex="-1" (click)="$event.stopPropagation()" (keydown.escape)="closeVideo()">
@@ -138,7 +158,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
           <h2>Diamo alla tua idea una direzione memorabile.</h2>
         </div>
         <div appPageMotion="rise" [motionDelay]="180" class="cta-band__links">
-          <a class="button button--ink" routerLink="/contatti">Parla con noi <span aria-hidden="true">↗&#xFE0E;</span></a>
+          <a class="button button--ink" routerLink="/contatti" (click)="tracking.trackQuote('home_cta')">Richiedi un preventivo <span aria-hidden="true">↗&#xFE0E;</span></a>
           <a class="text-link" [href]="config.contact.whatsappUrl" target="_blank" rel="noopener noreferrer" (click)="tracking.trackContact('whatsapp', 'home_cta')">WhatsApp <span aria-hidden="true">→&#xFE0E;</span></a>
         </div>
       </div>
@@ -184,26 +204,11 @@ export class HomePageComponent implements OnInit {
     this.seo.setPage(pageMetadata.home, [
       {
         '@context': 'https://schema.org',
-        '@type': 'ProfessionalService',
-        '@id': `${siteConfig.origin}/#organization`,
-        name: 'Memento Production',
-        url: siteConfig.origin,
-        email: siteConfig.contact.email,
-        telephone: '+393295571533',
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: 'Via Fortunato Postiglione 46',
-          addressLocality: 'Moncalieri',
-          addressRegion: 'TO',
-          addressCountry: 'IT',
-        },
-        areaServed: { '@type': 'Country', name: 'Italia' },
-      },
-      {
-        '@context': 'https://schema.org',
         '@type': 'WebSite',
+        '@id': `${siteConfig.origin}/#website`,
         name: 'Memento Production',
         url: siteConfig.origin,
+        publisher: { '@id': `${siteConfig.origin}/#organization` },
       },
     ]);
   }

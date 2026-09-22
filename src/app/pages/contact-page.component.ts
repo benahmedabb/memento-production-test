@@ -19,7 +19,11 @@ type SubmissionState = 'idle' | 'unconfigured' | 'sending' | 'success' | 'error'
       <div class="shell page-hero__content">
         <p appPageMotion="hero" class="eyebrow">Contatti / Il prossimo capitolo</p>
         <h1><app-kinetic-text text="Parliamo di ciò che verrà." [delay]="120" /></h1>
-        <p appPageMotion="hero" [motionDelay]="320">Ogni progetto comincia con una conversazione. La prossima potrebbe essere la nostra.</p>
+        <p appPageMotion="hero" [motionDelay]="320">Raccontaci cosa vuoi ottenere. Dalla sede di Moncalieri seguiamo progetti di comunicazione per aziende di Torino, Pinerolo e Chieri.</p>
+        <div class="button-row contact-opening__actions">
+          <a class="button" [href]="config.contact.whatsappUrl" target="_blank" rel="noopener noreferrer" (click)="tracking.trackContact('whatsapp', 'contact_hero')">Scrivici su WhatsApp <span aria-hidden="true">↗&#xFE0E;</span></a>
+          <a class="text-link" [href]="config.contact.phoneHref" (click)="tracking.trackContact('phone', 'contact_hero')">Chiama {{ config.contact.phoneDisplay }}</a>
+        </div>
         <a class="text-link contact-opening__link" href="#raccontaci">Raccontaci la tua idea <span aria-hidden="true">↓&#xFE0E;</span></a>
       </div>
     </section>
@@ -36,6 +40,7 @@ type SubmissionState = 'idle' | 'unconfigured' | 'sending' | 'success' | 'error'
             <a [href]="'mailto:' + config.contact.email" (click)="tracking.trackContact('email', 'contacts')"><span>Email</span>{{ config.contact.email }}</a>
             <a [href]="config.contact.whatsappUrl" target="_blank" rel="noopener noreferrer" (click)="tracking.trackContact('whatsapp', 'contacts')"><span>WhatsApp</span>Apri la chat</a>
             <p class="contact-address"><span>Sede</span>{{ config.contact.address }}</p>
+            <a [href]="config.contact.mapUrl" target="_blank" rel="noopener noreferrer">Indicazioni per raggiungerci</a>
           </div>
         </aside>
 

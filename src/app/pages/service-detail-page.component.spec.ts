@@ -23,7 +23,7 @@ describe('Separate branding and web services', () => {
     await harness.navigateByUrl('/siti-web-ecommerce', ServiceDetailPageComponent);
     expect(harness.routeNativeElement?.textContent).toContain('Siti web ed e-commerce');
     expect(harness.routeNativeElement?.textContent).toContain('E-commerce con catalogo prodotti, carrello e pagamenti');
-    expect(document.title).toBe('Siti web ed e-commerce | Memento Production');
+    expect(document.title).toBe('Siti web ed e-commerce a Torino | Memento Production');
     expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://mementoproduction.it/siti-web-ecommerce');
     const schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
     expect(schema[0].name).toBe('Siti web ed e-commerce');

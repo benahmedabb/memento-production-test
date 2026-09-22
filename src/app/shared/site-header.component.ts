@@ -1,6 +1,7 @@
-import { Component, ElementRef, ViewChild, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { serviceEntries } from '../core/site.config';
+import { TrackingService } from '../core/tracking.service';
 
 @Component({
   selector: 'app-site-header',
@@ -61,13 +62,14 @@ import { serviceEntries } from '../core/site.config';
               </a>
             }
           }
-          <a class="button button--small nav-cta" routerLink="/contatti" (click)="closeMenu()">Parliamone</a>
+          <a class="button button--small nav-cta" routerLink="/contatti" (click)="closeMenu(); tracking.trackQuote('header')">Preventivo</a>
         </nav>
       </div>
     </header>
   `,
 })
 export class SiteHeaderComponent {
+  readonly tracking = inject(TrackingService);
   readonly menuOpen = signal(false);
   readonly servicesOpen = signal(false);
   readonly services = serviceEntries;

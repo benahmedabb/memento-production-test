@@ -12,14 +12,14 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
   template: `
     <app-agency-opening />
 
+    <app-agency-process-timeline />
+
     <section class="section agency-manifesto section--sage" appScrollScene>
       <div class="shell two-column two-column--offset">
         <div><p class="eyebrow">Il nostro punto di vista</p><h2><app-kinetic-text mode="ink" text="Estetica e strategia non sono due reparti separati." /></h2></div>
-        <div appPageMotion="rise" [motionDelay]="180" class="intro-copy"><p>Lavoriamo sulle domande prima dei deliverable: cosa deve restare impresso, a chi stiamo parlando e come una singola idea può vivere bene su più canali.</p><p>Il risultato è un sistema di comunicazione più coerente, dove contenuti, campagne e touchpoint digitali parlano la stessa lingua.</p></div>
+        <div appPageMotion="rise" [motionDelay]="180" class="intro-copy"><p>La nostra sede è a Moncalieri. Affianchiamo le aziende di Torino, Pinerolo e Chieri nella comunicazione: produzione video e fotografia, gestione social, campagne Google e Meta, grafica e sviluppo web.</p><p>Partiamo da ciò che deve restare impresso, dal pubblico e dall’obiettivo del progetto. Coordiniamo contenuti, identità e canali, così ogni attività contribuisce a una presenza riconoscibile.</p></div>
       </div>
     </section>
-
-    <app-agency-process-timeline />
   `,
 })
 export class AgencyPageComponent implements OnInit {

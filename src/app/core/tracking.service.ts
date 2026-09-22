@@ -26,4 +26,8 @@ export class TrackingService {
   trackContact(method: 'phone' | 'email' | 'whatsapp', location: string): void {
     this.track(`contact_${method}_click`, { contact_method: method, link_location: location });
   }
+
+  trackQuote(location: string, service?: string): void {
+    this.track('quote_request_click', { link_location: location, ...(service ? { service } : {}) });
+  }
 }

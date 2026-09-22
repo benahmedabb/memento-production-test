@@ -25,13 +25,12 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
             <p class="eyebrow eyebrow--gold">Dentro Memento / Agenzia</p>
             <span aria-hidden="true">Una questione di sguardo.</span>
           </div>
-          <h1 id="agency-title" class="agency-opening__title">
-            <span class="sr-only">Non aggiungiamo rumore. Mettiamo a fuoco ciò che conta.</span>
-            <span class="agency-opening__first" aria-hidden="true"><span>Non aggiungiamo</span><em>rumore.</em></span>
-            <span class="agency-opening__second" aria-hidden="true"><span>Mettiamo a fuoco</span><em>ciò che conta.</em></span>
+          <h1 id="agency-title" class="agency-opening__title" aria-label="Non aggiungiamo rumore. Mettiamo a fuoco ciò che conta.">
+            <span class="agency-opening__first" aria-hidden="true"><span>Non aggiungiamo</span>{{ ' ' }}<em>rumore.</em></span>{{ ' ' }}
+            <span class="agency-opening__second" aria-hidden="true"><span>Mettiamo a fuoco</span>{{ ' ' }}<em>ciò che conta.</em></span>
           </h1>
           <div class="agency-opening__bottom">
-            <p>Una digital agency per brand che cercano una direzione riconoscibile, dal pensiero al formato finale.</p>
+            <p>Agenzia di comunicazione e marketing a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Dalla strategia ai contenuti, fino ai canali digitali.</p>
             <a href="/agenzia#metodo" class="agency-scroll-link">Entra nel nostro metodo <span aria-hidden="true">↓&#xFE0E;</span></a>
           </div>
           <div class="agency-opening__timeline" aria-hidden="true"><span>01 / Lo sguardo</span><div><span></span></div><span>02 / La visione</span></div>

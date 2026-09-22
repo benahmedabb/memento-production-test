@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../core/seo.service';
+import { TrackingService } from '../core/tracking.service';
 import { pageMetadata, serviceEntries, siteConfig } from '../core/site.config';
 import { PageMotionDirective } from '../shared/page-motion.directive';
 import { KineticTextComponent } from '../shared/kinetic-text.component';
@@ -18,8 +19,8 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
       </div>
       <div class="shell page-hero__content">
         <p appPageMotion="hero" [motionDelay]="140" class="eyebrow">Servizi</p>
-        <h1><app-kinetic-text text="La tua comunicazione, vista nel suo insieme." [delay]="160" /></h1>
-        <p appPageMotion="hero" [motionDelay]="560">Dall’immagine alla campagna, costruiamo un percorso su misura intorno al carattere e agli obiettivi del tuo brand.</p>
+        <h1>Servizi di comunicazione e marketing a Torino.</h1>
+        <p>Dalla sede di Moncalieri, video e fotografia, social media, advertising, branding e siti web per aziende di Torino, Pinerolo e Chieri. Scegli un servizio o un percorso coordinato in base al tuo obiettivo.</p>
       </div>
     </section>
 
@@ -46,12 +47,13 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
     <section class="section section--dark chapter-closing" appScrollScene>
       <div class="shell two-column two-column--offset">
         <div><p class="eyebrow eyebrow--gold">Come lavoriamo</p><h2><app-kinetic-text mode="ink" text="Ogni servizio è più efficace quando sa dialogare con gli altri." /></h2></div>
-        <div appPageMotion="rise" [motionDelay]="180" class="intro-copy intro-copy--light"><p>Possiamo intervenire su un singolo progetto o costruire un percorso più ampio. In entrambi i casi, iniziamo da una priorità chiara e scegliamo solo gli strumenti utili.</p><a class="button button--gold" routerLink="/contatti">Raccontaci il progetto <span aria-hidden="true">→&#xFE0E;</span></a></div>
+        <div appPageMotion="rise" [motionDelay]="180" class="intro-copy intro-copy--light"><p>Possiamo intervenire su un singolo progetto o costruire un percorso più ampio. In entrambi i casi, iniziamo da una priorità chiara e scegliamo solo gli strumenti utili.</p><a class="button button--gold" routerLink="/contatti" (click)="tracking.trackQuote('services_cta')">Richiedi un preventivo <span aria-hidden="true">→&#xFE0E;</span></a></div>
       </div>
     </section>
   `,
 })
 export class ServicesPageComponent implements OnInit {
+  readonly tracking = inject(TrackingService);
   readonly config = siteConfig;
   private readonly seo = inject(SeoService);
   readonly services = serviceEntries;

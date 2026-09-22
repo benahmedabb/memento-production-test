@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { siteConfig } from '../core/site.config';
+import { TrackingService } from '../core/tracking.service';
 import { ScrollSceneDirective } from './scroll-scene.directive';
 
 @Component({
@@ -25,9 +26,9 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
 
           <div class="cinema__intro">
             <h1 id="home-title" class="cinema__title">
-              <span class="cinema__line"><span>Le immagini</span></span>
-              <span class="cinema__line"><span>cambiano il modo</span></span>
-              <span class="cinema__line cinema__line--small"><span>in cui un brand viene</span></span>
+              <span class="cinema__line"><span>Le immagini</span></span>{{ ' ' }}
+              <span class="cinema__line"><span>cambiano il modo</span></span>{{ ' ' }}
+              <span class="cinema__line cinema__line--small"><span>in cui un brand viene</span></span>{{ ' ' }}
               <span class="cinema__line cinema__line--gold"><span>ricordato.</span></span>
             </h1>
             <span class="cinema__annotation" aria-hidden="true"><span>01 / Il primo sguardo</span><span class="cinema__cross">+</span></span>
@@ -39,8 +40,8 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
           </div>
 
           <div class="cinema__bottom">
-            <p class="cinema__lead">Produzione, strategia e design per costruire una presenza che non passa inosservata.</p>
-            <a class="cinema__cta" routerLink="/contatti">Iniziamo una conversazione <span aria-hidden="true">↗&#xFE0E;</span></a>
+            <p class="cinema__lead">Agenzia di comunicazione e marketing a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Video, fotografia, social, campagne pubblicitarie, branding e siti web per far crescere il tuo progetto.</p>
+            <a class="cinema__cta" routerLink="/contatti" (click)="tracking.trackQuote('home_hero')">Richiedi un preventivo <span aria-hidden="true">↗&#xFE0E;</span></a>
           </div>
           <div class="cinema__footnote">
             <a class="cinema__scroll" href="#progetti"><span aria-hidden="true">↓&#xFE0E;</span> Scorri per scoprire</a>
@@ -53,5 +54,6 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
   `,
 })
 export class CinematicHeroComponent {
+  readonly tracking = inject(TrackingService);
   readonly image = siteConfig.images.hero;
 }

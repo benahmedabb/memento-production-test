@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Injectable, inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { PageMetadata, siteConfig } from './site.config';
+import { organizationSchema } from './site-schema';
 
 type JsonLd = Record<string, unknown> | readonly Record<string, unknown>[];
 
@@ -34,7 +35,8 @@ export class SeoService {
     this.updateName('twitter:image', socialPreviewImage);
     this.updateName('robots', metadata.noIndex ? 'noindex, nofollow' : 'index, follow');
     this.updateCanonical(canonicalUrl);
-    this.updateSchema(schema);
+    const pageSchema = Array.isArray(schema) ? schema : [schema];
+    this.updateSchema([...pageSchema, organizationSchema]);
   }
 
   private updateName(name: string, content: string): void {

@@ -68,6 +68,7 @@ export const siteConfig = {
     cookiePolicyUrl: 'https://www.iubenda.com/privacy-policy/93767367/cookie-policy',
   },
   formEndpoint: '',
+  serviceCities: ['Torino', 'Moncalieri', 'Pinerolo', 'Chieri'],
   contact: {
     legalName: 'Memento Production di Vidinaru Stefan',
     vatNumber: '12716680017',
@@ -75,7 +76,11 @@ export const siteConfig = {
     phoneHref: 'tel:+393295571533',
     whatsappUrl: 'https://wa.me/393295571533',
     email: 'info@mementoproduction.it',
-    address: 'Via Fortunato Postiglione 46, Moncalieri (TO)',
+    address: 'Via Fortunato Postiglione 46, 10024 Moncalieri (TO)',
+    streetAddress: 'Via Fortunato Postiglione 46',
+    city: 'Moncalieri',
+    postalCode: '10024',
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Via%20Fortunato%20Postiglione%2046%2C%2010024%20Moncalieri',
     instagramUrl: 'https://www.instagram.com/memento.production/',
   },
   images: {
@@ -140,9 +145,9 @@ export const siteConfig = {
     production: {
       key: 'production',
       eyebrow: 'Produzione video e fotografia',
-      title: 'Immagini pensate per fermare lo sguardo.',
+      title: 'Video e fotografia aziendale a Torino.',
       shortTitle: 'Video e fotografia',
-      description: 'Dalla direzione creativa alla consegna, costruiamo immagini con ritmo, materia e intenzione.',
+      description: 'Video aziendali, fotografia di prodotto e contenuti per eventi, social e campagne: dalla preparazione delle riprese alla consegna dei formati utili.',
       image: 'production',
       deliverables: ['Video corporate e commerciali', 'Fotografia editoriale e prodotto', 'Contenuti verticali per campagne e social', 'Riprese aeree quando pertinenti al progetto'],
       approach: ['Allineiamo linguaggio visivo e obiettivo.', 'Progettiamo riprese, set e formato.', 'Montiamo versioni coerenti con i canali di distribuzione.'],
@@ -150,9 +155,9 @@ export const siteConfig = {
     social: {
       key: 'social',
       eyebrow: 'Social media',
-      title: 'Una presenza riconoscibile, pubblicazione dopo pubblicazione.',
+      title: 'Gestione social media per aziende a Torino.',
       shortTitle: 'Social media',
-      description: 'Strategia, rubriche e contenuti che rendono il brand chiaro e costante sui canali giusti.',
+      description: 'Strategia social, piano editoriale e produzione di foto e video per raccontare la tua azienda con continuità e leggere i risultati dei contenuti.',
       image: 'social',
       deliverables: ['Strategia e tono di voce', 'Piani editoriali e format', 'Creazione di contenuti foto e video', 'Lettura delle performance e ottimizzazioni'],
       approach: ['Definiamo il ruolo dei canali.', 'Costruiamo una grammatica editoriale.', 'Osserviamo i segnali utili per affinare il lavoro.'],
@@ -160,9 +165,9 @@ export const siteConfig = {
     ads: {
       key: 'ads',
       eyebrow: 'Google e Meta Ads',
-      title: 'Campagne con una direzione creativa e una lettura continua.',
+      title: 'Campagne Google Ads e Meta Ads a Torino.',
       shortTitle: 'Google e Meta Ads',
-      description: 'Progettiamo messaggi, asset e percorsi di campagna per una presenza pubblicitaria più ordinata e misurabile.',
+      description: 'Campagne Google e Meta Ads con creatività, testi e pagine di destinazione coerenti: definiamo gli obiettivi e monitoriamo i segnali utili a migliorarle.',
       image: 'ads',
       deliverables: ['Architettura delle campagne', 'Creatività statiche e video', 'Copy e pagine di destinazione', 'Monitoraggio e sintesi periodiche'],
       approach: ['Partiamo dall’offerta e dal contesto.', 'Separiamo messaggi, pubblici e momenti.', 'Rileggiamo dati e creatività insieme, senza scorciatoie.'],
@@ -170,7 +175,7 @@ export const siteConfig = {
     branding: {
       key: 'branding',
       eyebrow: 'Grafica e branding',
-      title: 'Un sistema di brand che sa stare in scena.',
+      title: 'Grafica e brand identity a Torino.',
       shortTitle: 'Grafica e branding',
       description: 'Identità visiva, direzione artistica e materiali grafici per dare al brand un carattere chiaro e riconoscibile.',
       image: 'branding',
@@ -180,7 +185,7 @@ export const siteConfig = {
     web: {
       key: 'web',
       eyebrow: 'Siti web ed e-commerce',
-      title: 'Il tuo brand, uno spazio da esplorare.',
+      title: 'Siti web ed e-commerce a Torino.',
       shortTitle: 'Siti web ed e-commerce',
       description: 'Progettiamo siti e negozi online che uniscono identità, chiarezza e facilità d’uso, dalla prima visita all’acquisto.',
       image: 'web',
@@ -277,43 +282,43 @@ export const siteConfig = {
 
 export const pageMetadata = {
   home: {
-    title: 'Memento Production | Comunicazione, contenuti e crescita digitale',
-    description: 'Memento Production unisce produzione audiovisiva, social media, advertising, grafica e branding, siti web ed e-commerce per dare forma a una presenza riconoscibile.',
+    title: 'Agenzia di comunicazione a Torino | Memento Production',
+    description: 'Agenzia di comunicazione e marketing con sede a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Video, social, Ads, branding e siti web.',
     path: '/',
   },
   agency: {
-    title: 'Agenzia | Memento Production',
-    description: 'Scopri l’approccio di Memento Production: direzione creativa, contenuti e distribuzione in un unico processo.',
+    title: 'Agenzia di marketing a Moncalieri | Memento Production',
+    description: 'Conosci Memento Production: agenzia di comunicazione a Moncalieri per aziende di Torino, Pinerolo e Chieri. Contenuti, strategia e progetti digitali.',
     path: '/agenzia',
   },
   services: {
-    title: 'Servizi | Memento Production',
-    description: 'Video e fotografia, social media, Google e Meta Ads, grafica e branding, siti web ed e-commerce: cinque servizi coordinati per il tuo brand.',
+    title: 'Servizi di comunicazione a Torino | Memento Production',
+    description: 'Video e fotografia, social media, Google e Meta Ads, branding e siti web. Cinque servizi per le aziende di Torino, Moncalieri, Pinerolo e Chieri.',
     path: '/servizi',
   },
   production: {
-    title: 'Produzione video e fotografia | Memento Production',
-    description: 'Video e fotografia per raccontare prodotti, persone, spazi e progetti con una direzione creativa precisa.',
+    title: 'Video aziendali e fotografia a Torino | Memento Production',
+    description: 'Video aziendali, foto di prodotto e contenuti per social ed eventi. Da Moncalieri per aziende di Torino, Pinerolo e Chieri. Richiedi un preventivo.',
     path: '/produzione-video-fotografia',
   },
   social: {
-    title: 'Social media | Memento Production',
-    description: 'Strategia social, piani editoriali e contenuti per costruire una presenza coerente e riconoscibile.',
+    title: 'Gestione social media a Torino | Memento Production',
+    description: 'Strategia social, piani editoriali e contenuti foto e video per aziende di Torino e provincia. Agenzia a Moncalieri, attiva anche per Pinerolo e Chieri.',
     path: '/social-media',
   },
   ads: {
-    title: 'Google e Meta Ads | Memento Production',
-    description: 'Campagne Google e Meta Ads che connettono messaggi, creatività, pagine di destinazione e analisi.',
+    title: 'Google Ads e Meta Ads a Torino | Memento Production',
+    description: 'Campagne Google e Meta Ads per aziende di Torino, Moncalieri, Pinerolo e Chieri: creatività, pagine di destinazione e monitoraggio. Parliamo del progetto.',
     path: '/google-meta-ads',
   },
   branding: {
-    title: 'Grafica e branding | Memento Production',
-    description: 'Logo, identità visiva, art direction e materiali grafici per far emergere il carattere del tuo brand, sulla carta e sui canali digitali.',
+    title: 'Grafica e brand identity a Torino | Memento Production',
+    description: 'Logo, identità visiva e materiali grafici per aziende di Torino e provincia. Da Moncalieri, per progetti anche a Pinerolo e Chieri. Chiedi un preventivo.',
     path: '/grafica-branding',
   },
   web: {
-    title: 'Siti web ed e-commerce | Memento Production',
-    description: 'Siti web aziendali, landing page e negozi online: design responsive e sviluppo per esperienze di navigazione e acquisto semplici e coerenti con il brand.',
+    title: 'Siti web ed e-commerce a Torino | Memento Production',
+    description: 'Siti aziendali, landing page ed e-commerce per le imprese di Torino, Moncalieri, Pinerolo e Chieri. Design, sviluppo e percorsi di contatto chiari.',
     path: '/siti-web-ecommerce',
   },
   portfolio: {
@@ -327,8 +332,8 @@ export const pageMetadata = {
     path: '/recensioni',
   },
   contact: {
-    title: 'Contatti | Memento Production',
-    description: 'Contatta Memento Production per parlare del tuo prossimo progetto di comunicazione.',
+    title: 'Contatti e preventivi a Moncalieri | Memento Production',
+    description: 'Richiedi un preventivo per la tua comunicazione. Memento Production ha sede a Moncalieri e segue progetti per Torino, Pinerolo e Chieri.',
     path: '/contatti',
   },
   policy: {

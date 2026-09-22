@@ -8,8 +8,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
   template: `
     @if (mode() === 'ink') {
       <span class="kinetic-ink" appScrollScene>
-        <span class="sr-only">{{ text() }}</span>
-        <span aria-hidden="true">
+        <span>
           @for (word of words(); track $index) {
             <span class="kinetic-ink__word" [style.--word-start]="$index / words().length">{{ word }} </span>
           }
@@ -17,8 +16,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
       </span>
     } @else {
       <span class="kinetic-text" appPageMotion="type" [motionDelay]="delay()">
-        <span class="sr-only">{{ text() }}</span>
-        <span aria-hidden="true">
+        <span>
           @for (word of words(); track $index) {
             <span class="kinetic-text__mask"><span class="kinetic-text__word" [style.--word-delay]="wordDelay($index)">{{ word }}</span></span>{{ ' ' }}
           }

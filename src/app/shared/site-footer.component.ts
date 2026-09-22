@@ -14,7 +14,7 @@ import { TrackingService } from '../core/tracking.service';
           <a class="footer-logo" routerLink="/" aria-label="Memento Production, home">
             <img src="/images/logo-memento-footer.png" alt="" width="1350" height="1200" />
           </a>
-          <p class="footer-intro">Comunicazione, immagini e sistemi digitali per brand che vogliono lasciare un segno.</p>
+          <p class="footer-intro">Agenzia di comunicazione e marketing con sede a Moncalieri, per imprese di Torino, Pinerolo e Chieri.</p>
         </div>
 
         <div class="footer-column">
