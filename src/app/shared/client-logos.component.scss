@@ -16,6 +16,11 @@
   overflow: hidden;
 }
 
+.client-logos__filters {
+  position: absolute;
+  pointer-events: none;
+}
+
 .client-logos__group {
   display: flex;
   flex-wrap: wrap;
@@ -39,6 +44,7 @@
     width: 100%;
     height: 4rem;
     object-fit: contain;
+    filter: brightness(0) invert(1);
   }
 }
 
@@ -46,12 +52,28 @@
   height: 5.5rem;
 }
 
-// This original includes generous transparent margins around the mark.
+// These originals include generous transparent margins around the mark.
 .client-logos__item--padded img {
   flex-shrink: 0;
   width: 12rem;
   max-width: none;
   height: 12rem;
+}
+
+.client-logos__item--dark-background {
+  isolation: isolate;
+  background: var(--green-deep);
+
+  img {
+    // Keep the JPEG's black background neutral while rendering its artwork white.
+    filter: grayscale(1) brightness(4) contrast(2);
+    mix-blend-mode: screen;
+  }
+}
+
+// Remove translucent shadows and strengthen partially transparent lettering.
+.client-logos__item--solid-white img {
+  filter: url('#client-logos-solid-white');
 }
 
 .client-logos__group--copy,
@@ -94,7 +116,7 @@
     display: flex;
     width: max-content;
     min-width: 200%;
-    animation: client-logos-scroll 60s linear infinite;
+    animation: client-logos-scroll var(--logo-duration, 60s) linear infinite;
   }
 
   .client-logos__track--paused {
