@@ -1,0 +1,127 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.client-logos {
+  --logo-width: clamp(8.5rem, 14vw, 11rem);
+  --logo-gap: clamp(2.5rem, 5vw, 5rem);
+  padding-block: 2.5rem 1rem;
+  border-top: 1px solid var(--light-line);
+  color: var(--paper);
+  background: var(--green-deep);
+}
+
+.client-logos__viewport {
+  overflow: hidden;
+}
+
+.client-logos__group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem var(--logo-gap);
+  margin: 0;
+  padding: 0 1.25rem;
+  list-style: none;
+}
+
+.client-logos__item {
+  display: flex;
+  flex: 0 0 var(--logo-width);
+  width: var(--logo-width);
+  height: 5.5rem;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 4rem;
+    object-fit: contain;
+  }
+}
+
+.client-logos__item--compact img {
+  height: 5.5rem;
+}
+
+// This original includes generous transparent margins around the mark.
+.client-logos__item--padded img {
+  flex-shrink: 0;
+  width: 12rem;
+  max-width: none;
+  height: 12rem;
+}
+
+.client-logos__group--copy,
+.client-logos__controls {
+  display: none;
+}
+
+.client-logos__toggle {
+  display: inline-flex;
+  min-width: 6rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 0;
+  border-radius: 0.25rem;
+  color: var(--paper);
+  background: transparent;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+
+  svg {
+    fill: currentColor;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--gold-pale);
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .client-logos__viewport {
+    mask-image: linear-gradient(to right, transparent, #000 3rem, #000 calc(100% - 3rem), transparent);
+  }
+
+  .client-logos__track {
+    display: flex;
+    width: max-content;
+    min-width: 200%;
+    animation: client-logos-scroll 60s linear infinite;
+  }
+
+  .client-logos__track--paused {
+    animation-play-state: paused;
+  }
+
+  .client-logos__group {
+    flex: 1 0 auto;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    // Half a gap at each end preserves spacing at both sequence boundaries.
+    padding-inline: calc(var(--logo-gap) / 2);
+  }
+
+  .client-logos__group--copy {
+    display: flex;
+  }
+
+  .client-logos__controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.75rem;
+  }
+}
+
+@keyframes client-logos-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}

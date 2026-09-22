@@ -8,14 +8,16 @@ import { TrackingService } from '../core/tracking.service';
 import { AnimatedMetricComponent } from '../shared/animated-metric.component';
 import { PageMotionDirective } from '../shared/page-motion.directive';
 import { CinematicHeroComponent } from '../shared/cinematic-hero.component';
+import { ClientLogosComponent } from '../shared/client-logos.component';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 
 type VideoProject = (typeof siteConfig.portfolio)[number];
 
 @Component({
-  imports: [AnimatedMetricComponent, PageMotionDirective, RouterLink, CinematicHeroComponent, ScrollSceneDirective],
+  imports: [AnimatedMetricComponent, PageMotionDirective, RouterLink, CinematicHeroComponent, ClientLogosComponent, ScrollSceneDirective],
   template: `
     <app-cinematic-hero />
+    <app-client-logos />
 
     <section class="memory-statement section--sage" appScrollScene aria-labelledby="memory-title">
       <div class="shell memory-statement__inner">
