@@ -9,10 +9,11 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'google-meta-ads', renderMode: RenderMode.Prerender },
   { path: 'grafica-branding', renderMode: RenderMode.Prerender },
   { path: 'siti-web-ecommerce', renderMode: RenderMode.Prerender },
-  { path: 'branding-siti-web', renderMode: RenderMode.Server, status: 301, headers: { Location: '/grafica-branding' } },
+  { path: 'branding-siti-web', renderMode: RenderMode.Prerender },
   { path: 'portfolio', renderMode: RenderMode.Prerender },
   { path: 'recensioni', renderMode: RenderMode.Prerender },
   { path: 'contatti', renderMode: RenderMode.Prerender },
   { path: 'privacy-policy', renderMode: RenderMode.Prerender },
-  { path: '**', renderMode: RenderMode.Server, status: 404 },
+  { path: '404', renderMode: RenderMode.Prerender },
+  { path: '**', renderMode: RenderMode.Client },
 ];

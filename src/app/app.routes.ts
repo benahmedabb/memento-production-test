@@ -23,5 +23,6 @@ export const routes: Routes = [
   { path: 'recensioni', component: ReviewsPageComponent },
   { path: 'contatti', component: ContactPageComponent },
   { path: 'privacy-policy', component: PolicyPageComponent },
-  { path: '**', component: NotFoundPageComponent },
+  { path: '404', component: NotFoundPageComponent },
+  { path: '**', redirectTo: '404' },
 ];

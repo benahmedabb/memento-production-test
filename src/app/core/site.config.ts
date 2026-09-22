@@ -67,7 +67,12 @@ export const siteConfig = {
     privacyPolicyUrl: 'https://www.iubenda.com/privacy-policy/93767367',
     cookiePolicyUrl: 'https://www.iubenda.com/privacy-policy/93767367/cookie-policy',
   },
-  formEndpoint: '',
+  emailjs: {
+    endpoint: 'https://api.emailjs.com/api/v1.0/email/send',
+    serviceId: 'service_yr8edlh',
+    templateId: 'template_f2umr4h',
+    publicKey: 'djDM2ON0vYwP0Y8IL',
+  },
   serviceCities: ['Torino', 'Moncalieri', 'Pinerolo', 'Chieri'],
   contact: {
     legalName: 'Memento Production di Vidinaru Stefan',
@@ -344,7 +349,7 @@ export const pageMetadata = {
   notFound: {
     title: 'Pagina non trovata | Memento Production',
     description: 'La pagina richiesta non è disponibile.',
-    path: '',
+    path: '/404',
     noIndex: true,
   },
 } as const satisfies Record<string, PageMetadata>;

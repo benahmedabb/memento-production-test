@@ -36,6 +36,12 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Pubblicazione statica su Hostinger
+
+La build è completamente statica: non richiede un processo Node.js sul server. Dopo la build, carica il contenuto di `dist/memento-production/browser` nella cartella `public_html` del dominio.
+
+Il file `public/.htaccess` viene incluso nella build e mantiene il dominio senza `www`, il redirect da `/branding-siti-web` a `/grafica-branding` e la pagina 404.
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:

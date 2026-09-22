@@ -9,7 +9,7 @@ import { KineticTextComponent } from '../shared/kinetic-text.component';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 import { BrandOrbitComponent } from '../shared/brand-orbit.component';
 
-type SubmissionState = 'idle' | 'unconfigured' | 'sending' | 'success' | 'error';
+type SubmissionState = 'idle' | 'sending' | 'success' | 'error';
 
 @Component({
   imports: [BrandOrbitComponent, KineticTextComponent, ScrollSceneDirective, PageMotionDirective, ReactiveFormsModule],
@@ -55,7 +55,6 @@ type SubmissionState = 'idle' | 'unconfigured' | 'sending' | 'success' | 'error'
           </div>
           <label class="privacy-check"><input type="checkbox" formControlName="privacyAccepted" /><span>Ho letto la <a [href]="config.iubenda.privacyPolicyUrl" target="_blank" rel="noopener noreferrer">Privacy Policy</a> e autorizzo il trattamento della richiesta. <b aria-hidden="true">*</b></span></label>
           @if (showError('privacyAccepted')) { <p class="form-error" role="alert">Per procedere è necessario prendere visione dell’informativa.</p> }
-          @if (state() === 'unconfigured') { <p class="form-status" role="status">Il modulo è in attesa di collegamento. Puoi contattarci via email, telefono o WhatsApp.</p> }
           @if (state() === 'success') { <p class="form-status form-status--success" role="status">Grazie, la richiesta è stata inviata.</p> }
           @if (state() === 'error') { <p class="form-status form-status--error" role="alert">L’invio non è riuscito. Riprovare oppure usa uno dei contatti diretti.</p> }
           <button class="button" type="submit" [disabled]="state() === 'sending'">{{ state() === 'sending' ? 'Invio in corso…' : 'Invia richiesta' }} <span aria-hidden="true">↗&#xFE0E;</span></button>
@@ -105,14 +104,15 @@ export class ContactPageComponent {
 
     this.tracking.track('contact_form_submit', { form_location: 'contatti', form_status: 'attempt' });
 
-    if (!siteConfig.formEndpoint) {
-      this.state.set('unconfigured');
-      this.tracking.track('contact_form_unconfigured', { form_location: 'contatti' });
-      return;
-    }
-
     this.state.set('sending');
-    this.http.post(siteConfig.formEndpoint, this.form.getRawValue()).subscribe({
+    const { privacyAccepted, ...contact } = this.form.getRawValue();
+
+    this.http.post(siteConfig.emailjs.endpoint, {
+      service_id: siteConfig.emailjs.serviceId,
+      template_id: siteConfig.emailjs.templateId,
+      user_id: siteConfig.emailjs.publicKey,
+      template_params: contact,
+    }, { responseType: 'text' }).subscribe({
       next: () => {
         this.state.set('success');
         this.tracking.track('contact_form_success', { form_location: 'contatti' });

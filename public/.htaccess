@@ -1,0 +1,12 @@
+Options -MultiViews
+RewriteEngine On
+
+# One public address for the site.
+RewriteCond %{HTTP_HOST} ^www\.mementoproduction\.it$ [NC]
+RewriteRule ^ https://mementoproduction.it%{REQUEST_URI} [R=301,L,NE]
+
+# Preserve the old combined service URL when the static site replaces Horizons.
+RewriteRule ^branding-siti-web/?$ /grafica-branding [R=301,L,NE]
+
+# Hostinger serves this prerendered Angular page while retaining the HTTP 404 status.
+ErrorDocument 404 /404/
