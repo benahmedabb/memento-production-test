@@ -42,11 +42,11 @@ app-kinetic-text { display: inline; }
 .service-chapter__surface { display: grid; grid-template-columns: 1fr 0.9fr; min-height: 490px; overflow: hidden; border: 1px solid var(--line); color: var(--ink); background: var(--paper); box-shadow: 0 1.2rem 3rem rgba(17, 36, 29, 0.07); }
 .service-chapter:nth-child(even) .service-chapter__surface { color: var(--paper); background: var(--green-deep); }
 .service-chapter__copy { position: relative; display: flex; flex-direction: column; align-items: start; padding: clamp(2rem, 4vw, 4rem); }
-.service-chapter__number { display: block; margin-bottom: 2.7rem; color: var(--gold); font-family: var(--serif); font-size: 4.5rem; line-height: 0.8; }
+.service-chapter__number { display: block; margin-bottom: 2.7rem; color: var(--gold); font-family: var(--font-heading); font-size: 4.5rem; line-height: 0.8; }
 .service-chapter__copy h2 { font-size: clamp(2.8rem, 5vw, 4.5rem); }
 .service-chapter__copy > p:not(.eyebrow) { max-width: 380px; margin-bottom: 2rem; font-size: 0.9rem; opacity: 0.75; }
 .service-chapter:nth-child(even) .eyebrow { color: var(--gold); }
-.service-chapter__link { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 1rem; margin-top: auto; padding-top: 1.2rem; border-top: 1px solid rgba(209, 172, 103, 0.5); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.service-chapter__link { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 1rem; margin-top: auto; padding-top: 1.2rem; border-top: 1px solid rgba(209, 172, 103, 0.5); font-size: 0.65rem; font-family: var(--font-heading); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
 .service-chapter__link > span { font-size: 1.5rem; transition: transform 350ms; }
 .service-chapter__media { overflow: hidden; }
 .service-chapter__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 850ms cubic-bezier(0.22, 1, 0.36, 1), filter 850ms; filter: saturate(0.65); }
@@ -71,7 +71,7 @@ app-kinetic-text { display: inline; }
 
 .portfolio-gallery .portfolio-entry { position: relative; grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); gap: 2rem 5rem; padding-block: clamp(3rem, 7vw, 7rem); }
 .portfolio-gallery .portfolio-index { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 1.5rem; }
-.portfolio-gallery .portfolio-index > span { color: var(--gold); font-family: var(--serif); font-size: 4.5rem; letter-spacing: -0.05em; line-height: 1; }
+.portfolio-gallery .portfolio-index > span { color: var(--gold); font-family: var(--font-heading); font-size: 4.5rem; letter-spacing: -0.05em; line-height: 1; }
 .portfolio-gallery .portfolio-entry__visual { min-width: 0; }
 .portfolio-gallery .portfolio-entry__media { aspect-ratio: 4 / 5; }
 .portfolio-gallery .portfolio-entry__body { grid-column: 2; align-self: center; min-width: 0; padding-block: 1rem; }
@@ -79,7 +79,7 @@ app-kinetic-text { display: inline; }
 .portfolio-gallery .portfolio-entry.scroll-scene--active .portfolio-entry__media img { transform: scale(calc(1.08 - var(--scene-progress) * 0.06)); }
 .portfolio-numbers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.8rem; margin-block: 2.5rem; padding-top: 1.8rem; border-top: 1px solid var(--line); }
 .portfolio-numbers dd { margin: 0; }
-.portfolio-numbers dt { margin-top: 0.6rem; color: var(--green); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.portfolio-numbers dt { margin-top: 0.6rem; color: var(--green); font-size: 0.62rem; font-family: var(--font-heading); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 .portfolio-numbers .case-metric__value { font-size: clamp(3rem, 5vw, 4.5rem); }
 .chapter-hero.portfolio-carousel .portfolio-carousel__content { padding-block: 2rem 7rem; }
 .chapter-hero.portfolio-carousel { padding-block: 4rem; }
@@ -94,7 +94,7 @@ app-kinetic-text { display: inline; }
 .chapter-hero.portfolio-carousel.scroll-scene--active .portfolio-carousel__slides { transform: translateY(calc(var(--scene-progress) * 65px)) scale(1.1); }
 
 .reviews-scene { position: relative; overflow: clip; }
-.reviews-scene__quote { position: absolute; top: -2rem; right: 0; color: rgba(72, 105, 86, 0.1); font-family: var(--serif); font-size: clamp(30rem, 80vw, 75rem); line-height: 1; pointer-events: none; }
+.reviews-scene__quote { position: absolute; top: -2rem; right: 0; color: rgba(72, 105, 86, 0.1); font-family: var(--font-heading); font-size: clamp(30rem, 80vw, 75rem); line-height: 1; pointer-events: none; }
 .reviews-scene.scroll-scene--active .reviews-scene__quote { transform: translateY(calc(var(--scene-progress) * 200px)) rotate(calc(var(--scene-progress) * 15deg)); }
 .reviews-scene .reviews-grid { position: relative; gap: 1.5rem; perspective: 1400px; }
 .has-page-motion .page-motion-target.page-motion--fan,
@@ -123,7 +123,7 @@ app-kinetic-text { display: inline; }
 .policy-section .policy-card { position: relative; border-top: 2px solid var(--gold); }
 .policy-section .policy-card::after { position: absolute; top: 1.5rem; right: 1.5rem; width: 1rem; height: 1rem; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); content: ''; }
 .lost-scene { position: relative; overflow: hidden; isolation: isolate; }
-.lost-scene__number { position: absolute; z-index: -1; top: 50%; left: 50%; color: transparent; -webkit-text-stroke: 1px rgba(209, 172, 103, 0.26); font-family: var(--serif); font-size: min(52vw, 45rem); line-height: 1; letter-spacing: -0.08em; pointer-events: none; transform: translate(-50%, -50%); }
+.lost-scene__number { position: absolute; z-index: -1; top: 50%; left: 50%; color: transparent; -webkit-text-stroke: 1px rgba(209, 172, 103, 0.26); font-family: var(--font-heading); font-size: min(52vw, 45rem); line-height: 1; letter-spacing: -0.08em; pointer-events: none; transform: translate(-50%, -50%); }
 .lost-scene.scroll-scene--active .lost-scene__number { transform: translate(-50%, calc(-50% + var(--scene-progress) * 80px)) scale(calc(1 + var(--scene-progress) * 0.15)); }
 .lost-scene .not-found__content { position: relative; }
 

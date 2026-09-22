@@ -40,11 +40,10 @@ export class ClientLogosComponent {
     { src: '/images/Logotipo bianco.png', name: 'AgriDora Società Agricola', width: 917, height: 230, compact: false, padded: false },
     { src: '/images/Logo bianco.png', name: "Dora Motor’s Experience", width: 1086, height: 366, compact: false, padded: false },
     { src: '/images/Logotipo bianco (1).png', name: 'Villa Dora Country House', width: 996, height: 286, compact: false, padded: false },
-    { src: '/images/Logo bianco (1).png', name: 'Novaera Immobiliare — logo completo', width: 2087, height: 1538, compact: true, padded: false },
+    { src: '/images/Logo bianco (1).png', name: 'Novaera Immobiliare', width: 2087, height: 1538, compact: true, padded: false },
     { src: '/images/Logotipo bianco (3).png', name: 'Bioveil', width: 1052, height: 210, compact: false, padded: false },
     { src: '/images/Logotipo bianco (4).png', name: 'Artema', width: 1000, height: 215, compact: false, padded: false },
     { src: '/images/Pittogramma bianco.png', name: 'Monogramma C4', width: 670, height: 498, compact: true, padded: false },
-    { src: '/images/Logotipo bianco (2).png', name: 'Novaera Immobiliare — logotipo', width: 2087, height: 474, compact: false, padded: false },
     { src: '/images/TEMP RA.png', name: 'Regrowth Alliance', width: 1390, height: 1390, compact: false, padded: true },
   ] as const;
 

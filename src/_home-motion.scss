@@ -93,14 +93,14 @@ app-cinematic-hero { display: block; }
 .cinema__line { display: block; overflow: hidden; padding: 0.06em 0.13em 0.1em 0; margin-bottom: -0.1em; }
 .cinema__line > span { display: block; }
 .cinema__line--small { margin-top: 0.14em; font-size: 0.65em; letter-spacing: -0.04em; }
-.cinema__line--gold { padding-bottom: 0.15em; color: var(--gold); font-size: 1.35em; font-style: italic; }
+.cinema__line--gold { padding-bottom: 0.15em; color: var(--gold); font-size: 1.35em; font-style: normal; }
 .cinema__annotation { position: absolute; right: 0; bottom: 3rem; display: flex; width: 29%; align-items: center; justify-content: space-between; color: var(--gold-pale); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .cinema__cross { font-size: 2rem; font-weight: 400; line-height: 1; }
 .cinema__outro { position: absolute; top: 47%; left: 0; width: 100%; pointer-events: none; opacity: 0; transform: translateY(-35%); text-align: center; }
-.cinema__outro p { margin: 1.2rem 0 0; font-family: var(--serif); font-size: clamp(4.5rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.055em; }
-.cinema__outro em { margin-left: 0.12em; color: var(--gold); font-weight: 500; }
+.cinema__outro p { margin: 1.2rem 0 0; font-family: var(--font-heading); font-size: clamp(4.5rem, 10vw, 9rem); font-weight: 700; line-height: 1; letter-spacing: -0.055em; }
+.cinema__outro em { margin-left: 0.12em; color: var(--gold); font-style: normal; font-weight: inherit; }
 .cinema__lead { max-width: 370px; margin: 0; color: rgba(244, 241, 235, 0.75); font-size: 0.83rem; line-height: 1.7; }
-.cinema__cta { display: inline-flex; gap: 1.5rem; align-items: center; flex-shrink: 0; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.cinema__cta { display: inline-flex; gap: 1.5rem; align-items: center; flex-shrink: 0; font-size: 0.67rem; font-family: var(--font-heading); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 .cinema__cta > span { display: grid; width: 3.7rem; height: 3.7rem; place-items: center; border: 1px solid rgba(209, 172, 103, 0.6); border-radius: 50%; color: var(--gold); font-size: 1.5rem; transition: color 250ms, background-color 250ms, transform 350ms; }
 .cinema__cta:hover > span, .cinema__cta:focus-visible > span { color: var(--green-deep); background: var(--gold); transform: rotate(45deg); }
 .cinema__footnote { margin-top: 1.7rem; padding-top: 1rem; border-top: 1px solid rgba(244, 241, 235, 0.18); }
@@ -122,7 +122,7 @@ app-cinematic-hero { display: block; }
 .memory-statement__asterisk { display: inline-block; margin-top: 1.5rem; color: var(--green); font-size: 5.5rem; line-height: 1; }
 .memory-statement__text { max-width: 900px; margin-bottom: 2.5rem; font-size: clamp(3.8rem, 7.8vw, 7rem); line-height: 1; }
 .memory-statement__text > span { display: inline-block; margin-right: 0.2em; }
-.memory-statement__text > span:last-child { color: var(--green); font-style: italic; }
+.memory-statement__text > span:last-child { color: var(--green); font-style: normal; }
 .memory-statement__footer { display: flex; gap: 2rem; justify-content: space-between; align-items: end; }
 .memory-statement__footer > p { max-width: 350px; margin-bottom: 0; color: var(--green); font-size: 0.87rem; }
 .memory-statement__footer .text-link { flex-shrink: 0; font-size: 0.64rem; }
@@ -212,7 +212,7 @@ app-cinematic-hero { display: block; }
 @media (max-width: 480px) {
   .cinema__stage { min-height: 670px; }
   .cinema__layout { padding-top: 1.6rem; }
-  .cinema__title { font-size: clamp(2.4rem, 11.9vw, 3.4rem); }
+  .cinema__title { font-size: clamp(2rem, 10.5vw, 3.1rem); }
   .cinema__line--small { font-size: 0.76em; }
   .cinema__line--gold { margin-top: 0.05em; font-size: 1.62em; }
   .cinema__outro p { font-size: 4.4rem; }

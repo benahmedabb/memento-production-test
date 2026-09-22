@@ -31,9 +31,9 @@ app-agency-opening, app-agency-process-timeline { display: block; }
 .agency-opening__top > span { color: rgba(247, 241, 232, 0.6); font-size: 0.65rem; letter-spacing: 0.1em; }
 .agency-opening__title { display: grid; flex: 1; align-content: center; gap: 1.5rem; margin: 0; padding-block: 4rem; text-align: center; font-size: clamp(3.4rem, 7.8vw, 7.5rem); line-height: 0.94; letter-spacing: -0.05em; }
 .agency-opening__title > span > span, .agency-opening__title em { display: block; }
-.agency-opening__title em { margin-top: 0.08em; color: var(--gold); font-size: 1.4em; font-weight: 500; }
+.agency-opening__title em { margin-top: 0.08em; color: var(--gold); font-size: 1.4em; font-weight: inherit; }
 .agency-opening__bottom > p { max-width: 440px; margin: 0; color: rgba(247, 241, 232, 0.75); font-size: 0.85rem; }
-.agency-scroll-link { display: inline-flex; gap: 1rem; align-items: center; color: var(--gold); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.agency-scroll-link { display: inline-flex; gap: 1rem; align-items: center; color: var(--gold); font-size: 0.67rem; font-family: var(--font-heading); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 .agency-opening .agency-scroll-link { color: var(--paper); }
 .agency-opening .agency-scroll-link > span { color: var(--gold); }
 .agency-scroll-link > span { font-size: 1.5rem; transition: transform 250ms; }
@@ -83,7 +83,7 @@ section.section--sage.agency-manifesto {
 .agency-method__copy .eyebrow { margin-bottom: 1.1rem; color: var(--agency-brand-deep); }
 .agency-method__card:nth-child(2) .eyebrow { color: var(--gold); }
 .agency-method__card:nth-child(4) .eyebrow { color: var(--agency-night); }
-.agency-method__number { position: absolute; top: -0.1em; right: 0.02em; color: transparent; -webkit-text-stroke: 1px currentColor; font-family: var(--serif); font-size: clamp(14rem, 25vw, 24rem); line-height: 1; opacity: 0.12; pointer-events: none; }
+.agency-method__number { position: absolute; top: -0.1em; right: 0.02em; color: transparent; -webkit-text-stroke: 1px currentColor; font-family: var(--font-heading); font-size: clamp(14rem, 25vw, 24rem); line-height: 1; opacity: 0.12; pointer-events: none; }
 .agency-method__card .agency-method__number { -webkit-text-stroke-color: var(--agency-brand-deep); }
 .agency-method__card:nth-child(2) .agency-method__number { -webkit-text-stroke-color: var(--gold); }
 .agency-method__card:nth-child(4) .agency-method__number { -webkit-text-stroke-color: var(--agency-night); }
