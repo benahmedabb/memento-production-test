@@ -1,0 +1,181 @@
+.nav-services {
+  position: relative;
+  min-width: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-services__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-services__link {
+  flex: 1;
+  padding-block: 0.9rem;
+  font-family: var(--font-heading);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nav-services__toggle {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  color: inherit;
+  background: transparent;
+
+  svg {
+    transition: transform 250ms ease;
+  }
+
+  &:hover {
+    background: rgba(72, 105, 86, 0.08);
+  }
+}
+
+.nav-services svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-services.is-active .nav-services__trigger,
+.nav-services.is-open .nav-services__trigger,
+.nav-services__link:hover {
+  color: var(--green);
+}
+
+.nav-services.is-open .nav-services__toggle svg {
+  transform: rotate(180deg);
+}
+
+.nav-services__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows 280ms ease, opacity 200ms ease, visibility 0s 280ms;
+}
+
+.nav-services.is-open .nav-services__panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.nav-services__list {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.nav-services__item {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr 1rem;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 3.25rem;
+  padding: 0.8rem 0.65rem;
+  border-radius: 0.25rem;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+  transition: color 180ms ease, background-color 180ms ease;
+
+  &:hover,
+  &:focus-visible,
+  &.is-active {
+    color: var(--paper);
+    background: var(--green-deep);
+  }
+
+  &:focus-visible {
+    outline-offset: -3px;
+  }
+}
+
+.nav-services__number {
+  color: var(--green);
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  transition: color 180ms ease;
+}
+
+.nav-services__arrow {
+  color: var(--gold);
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.nav-services__item:hover,
+.nav-services__item:focus-visible,
+.nav-services__item.is-active {
+  .nav-services__number {
+    color: var(--gold);
+  }
+
+  .nav-services__arrow {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (min-width: 860px) {
+  .nav-services {
+    border: 0;
+  }
+
+  .nav-services__link {
+    padding-block: 0.75rem;
+    font-size: 0.64rem;
+  }
+
+  .nav-services__toggle {
+    width: 1.5rem;
+  }
+
+  .nav-services__panel {
+    position: absolute;
+    top: 100%;
+    left: -1.25rem;
+    width: 22rem;
+    grid-template-rows: 1fr;
+    // The transparent padding keeps hover active between the trigger and the panel.
+    padding-top: 1rem;
+    transform: translateY(0.6rem) scale(0.98);
+    transform-origin: top left;
+    transition: opacity 200ms ease, transform 250ms ease, visibility 0s 250ms;
+  }
+
+  .nav-services.is-open .nav-services__panel {
+    transform: none;
+  }
+
+  .nav-services__list {
+    padding: 0.5rem;
+    border: 1px solid var(--line);
+    border-top: 2px solid var(--gold);
+    border-radius: 0.4rem;
+    background: var(--paper);
+    box-shadow: 0 1.25rem 3rem rgba(17, 36, 29, 0.16);
+  }
+
+  .nav-services__item {
+    padding-inline: 0.85rem;
+  }
+}
