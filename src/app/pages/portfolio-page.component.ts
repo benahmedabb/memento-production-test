@@ -22,7 +22,7 @@ import { PortfolioHeroCarouselComponent } from '../shared/portfolio-hero-carouse
     <section class="section portfolio-gallery section--sage-soft">
       <div class="shell portfolio-stack">
         @for (project of config.portfolio; track project.client) {
-          <article class="portfolio-entry" appScrollScene>
+          <article class="portfolio-entry" [id]="project.slug" appScrollScene>
             <div class="portfolio-index" aria-hidden="true"><span>0{{ $index + 1 }}</span> / {{ project.client }}</div>
             <div class="portfolio-entry__visual"><div appPageMotion="mask" class="portfolio-entry__media">
               <img [src]="project.coverUrl" [alt]="'Copertina del progetto ' + project.title + ' per ' + project.client" loading="lazy" decoding="async" width="1200" height="675" />

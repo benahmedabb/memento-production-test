@@ -31,6 +31,7 @@ export interface PageMetadata {
 }
 
 export interface PortfolioProject {
+  readonly slug: string;
   readonly client: string;
   readonly title: string;
   readonly summary: string;
@@ -200,6 +201,7 @@ export const siteConfig = {
   } satisfies Record<ServiceKey, ServiceDefinition>,
   portfolio: [
     {
+      slug: 'speed-trasporti',
       client: 'Speed Trasporti',
       title: 'Retarder — Il freno invisibile',
       summary: 'Un contenuto informativo dedicato a un dettaglio tecnico, presentato con un linguaggio diretto.',
@@ -214,6 +216,7 @@ export const siteConfig = {
       instagramEmbedUrl: 'https://www.instagram.com/p/DTx4MYgkQ2h/embed',
     },
     {
+      slug: 'dora-events',
       client: 'Dora Events',
       title: "Dora Motor's Experience — Evento unico",
       summary: 'Un progetto video promozionale per accompagnare la comunicazione di un evento automotive.',
@@ -227,6 +230,7 @@ export const siteConfig = {
       instagramEmbedUrl: 'https://www.instagram.com/p/DWCBNFJAi9p/embed',
     },
     {
+      slug: 'il-forte',
       client: 'Il Forte 2.0',
       title: 'Da quanti anni fai questo lavoro?',
       summary: 'Un contenuto social con un tono vicino e riconoscibile, pensato per stimolare la conversazione.',

@@ -32,7 +32,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
             }
           </h2>
           <div class="memory-statement__footer" appPageMotion="rise">
-            <p>Uniamo immagini, strategia e identità. Per trasformare l’attenzione di un momento in un’impressione che dura.</p>
+            <p>Ogni progetto parte da una domanda sola: cosa deve restare, a chi, e perché. Da lì nascono video, fotografia, social e identità visiva come un solo linguaggio, non pezzi affidati a fornitori diversi. Lavoriamo così con le aziende di Torino, Moncalieri e provincia che non vogliono solo farsi vedere: vogliono essere riconosciute.</p>
             <a class="text-link" routerLink="/agenzia">Dentro Memento <span aria-hidden="true">↗&#xFE0E;</span></a>
           </div>
         </div>
@@ -45,34 +45,44 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
         <div appPageMotion="rise">
           <p class="eyebrow">Progetti selezionati</p>
           <h2>Quando il messaggio trova la sua forma.</h2>
+          <p class="home-projects__intro">Alcuni progetti recenti per aziende di Torino e provincia: video, fotografia, campagne e siti nati dalla stessa idea di partenza. Guarda il risultato.</p>
         </div>
         <a appPageMotion="rise" [motionDelay]="180" class="text-link" routerLink="/portfolio">Apri il portfolio <span aria-hidden="true">→&#xFE0E;</span></a>
       </div>
-      <div class="shell video-case-rail" aria-label="Video case study">
-        @for (project of config.portfolio; track project.client) {
-          <article appPageMotion="rise" [motionDelay]="$index * 200" class="video-case">
-            <button class="video-case__trigger" type="button" aria-haspopup="dialog" [attr.aria-label]="'Guarda il video ' + project.title + ' per ' + project.client" (click)="openVideo(project, $event)">
-              <span appPageMotion="mask" [motionDelay]="$index * 120" class="video-case__media">
-                <img [src]="project.coverUrl" [alt]="'Copertina del video ' + project.title + ' per ' + project.client" loading="lazy" width="1280" height="720" />
-                <span class="video-case__top"><span class="video-case__play" aria-hidden="true">▶</span></span>
-              </span>
-              <span class="video-case__body">
-                <span class="video-case__client">{{ project.client }}</span>
-                <span class="video-case__title">{{ project.title }}</span>
-                <span class="video-case__cta">Guarda il video <span aria-hidden="true">↗&#xFE0E;</span></span>
-              </span>
-            </button>
-            <div class="video-case__results">
-              <dl class="video-case__stats">
-                @for (stat of project.stats; track stat.label) {
-                  <div class="video-case__metric">
-                    <dd><app-animated-metric [metric]="stat" [delay]="$index * 90" /></dd>
-                    <dt>{{ stat.label }}</dt>
-                  </div>
-                }
-              </dl>
+      <div class="shell project-preview-grid" aria-label="Esplora i progetti selezionati">
+        @for (preview of projectPreviews; track preview.project.slug) {
+          <a class="project-preview" routerLink="/portfolio" [fragment]="preview.project.slug" [attr.aria-labelledby]="'preview-' + preview.project.slug">
+            <div class="project-preview__media">
+              <img [src]="preview.image.src" [srcset]="preview.image.srcset" sizes="(min-width: 860px) 30vw, (min-width: 600px) 45vw, 100vw" alt="" width="640" height="400" loading="lazy" decoding="async" />
+              <span class="project-preview__index" aria-hidden="true">0{{ $index + 1 }}</span>
+              <span class="project-preview__category">{{ preview.category }}</span>
             </div>
-          </article>
+            <div class="project-preview__body">
+              <h3 [id]="'preview-' + preview.project.slug">{{ preview.project.client }}</h3>
+              <p>{{ preview.project.summary }}</p>
+              <span class="project-preview__link">Esplora il progetto <span aria-hidden="true">↗&#xFE0E;</span></span>
+            </div>
+          </a>
+        }
+      </div>
+      <div class="shell home-projects__video-heading">
+        <p class="eyebrow">Dentro i progetti</p>
+        <p>I video. Le reazioni. I risultati.</p>
+      </div>
+      <div class="shell project-preview-grid" aria-label="Video case study">
+        @for (project of config.portfolio; track project.client) {
+          <button class="project-preview project-preview--video" type="button" aria-haspopup="dialog" [attr.aria-label]="'Guarda il video ' + project.title + ' per ' + project.client" (click)="openVideo(project, $event)">
+              <span class="project-preview__media">
+                <img [src]="project.coverUrl" alt="" loading="lazy" decoding="async" width="1280" height="720" />
+                <span class="project-preview__index" aria-hidden="true">0{{ $index + 1 }}</span>
+                <span class="project-preview__category">Video · {{ project.client }}</span>
+              </span>
+              <span class="project-preview__body">
+                <span class="project-preview__title">{{ project.client }}</span>
+                <span class="project-preview__description">{{ project.title }}</span>
+                <span class="project-preview__link">Guarda il video <span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M8 5v14l11-7z" /></svg></span></span>
+              </span>
+          </button>
         }
       </div>
     </section>
@@ -130,6 +140,16 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
             <div><p class="eyebrow">{{ project.client }}</p><h2 id="video-dialog-title">{{ project.title }}</h2></div>
             <button class="icon-button" type="button" aria-label="Chiudi video" (click)="closeVideo()">×</button>
           </div>
+          <div class="video-dialog__results">
+            <dl class="video-case__stats" aria-label="Risultati del progetto">
+              @for (stat of project.stats; track stat.label) {
+                <div class="video-case__metric">
+                  <dd><app-animated-metric [metric]="stat" [delay]="$index * 90" /></dd>
+                  <dt>{{ stat.label }}</dt>
+                </div>
+              }
+            </dl>
+          </div>
 
           @if (consent.preferences().marketing) {
             <iframe class="video-dialog__embed" [src]="videoEmbedUrl()" [title]="'Video Instagram: ' + project.title" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -168,6 +188,11 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
 export class HomePageComponent implements OnInit {
   readonly statementWords = ['Non', 'basta', 'farsi', 'vedere.', 'Bisogna', 'farsi', 'ricordare.'];
   readonly config = siteConfig;
+  readonly projectPreviews = [
+    { project: siteConfig.portfolio[0], image: siteConfig.images.production, category: 'Video · Storytelling' },
+    { project: siteConfig.portfolio[1], image: siteConfig.images.ads, category: 'Eventi · Promozione' },
+    { project: siteConfig.portfolio[2], image: siteConfig.images.social, category: 'Social · Contenuti' },
+  ];
   readonly tracking = inject(TrackingService);
   readonly consent = inject(ConsentService);
   readonly activeProject = signal<VideoProject | null>(null);

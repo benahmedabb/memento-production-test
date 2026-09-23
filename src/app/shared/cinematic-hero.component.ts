@@ -25,13 +25,16 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
           </div>
 
           <div class="cinema__intro">
-            <h1 id="home-title" class="cinema__title">
-              <span class="cinema__line"><span>Le immagini</span></span>{{ ' ' }}
-              <span class="cinema__line"><span>cambiano il modo</span></span>{{ ' ' }}
-              <span class="cinema__line cinema__line--small"><span>in cui un brand viene</span></span>{{ ' ' }}
-              <span class="cinema__line cinema__line--gold"><span>ricordato.</span></span>
-            </h1>
-            <span class="cinema__annotation" aria-hidden="true"><span>01 / Il primo sguardo</span><span class="cinema__cross">+</span></span>
+            <div class="cinema__definition">
+              <p class="cinema__entry"><span>me·mèn·to</span><span>sostantivo maschile</span></p>
+              <h1 id="home-title" class="cinema__title">
+                <span class="cinema__line"><span>Atto o affermazione</span></span>{{ ' ' }}
+                <span class="cinema__line"><span>che ha il fine di</span></span>{{ ' ' }}
+                <span class="cinema__line cinema__line--gold"><span>ricordare</span></span>{{ ' ' }}
+                <span class="cinema__line cinema__line--gold"><span>qualcosa.</span></span>
+              </h1>
+            </div>
+            <span class="cinema__annotation" aria-hidden="true"><span>01 / Il senso del nostro nome</span><span class="cinema__cross">+</span></span>
           </div>
 
           <div class="cinema__outro" aria-hidden="true">
@@ -40,13 +43,12 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
           </div>
 
           <div class="cinema__bottom">
-            <p class="cinema__lead">Agenzia di comunicazione e marketing a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Video, fotografia, social, campagne pubblicitarie, branding e siti web per far crescere il tuo progetto.</p>
+            <p class="cinema__lead">Agenzia di comunicazione e marketing a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Siti web, e-commerce, gestione social, creazione contenuti, ADS, strategia e grafica a 360° per far crescere la tua azienda.</p>
             <a class="cinema__cta" routerLink="/contatti" (click)="tracking.trackQuote('home_hero')">Richiedi un preventivo <span aria-hidden="true">↗&#xFE0E;</span></a>
           </div>
           <div class="cinema__footnote">
             <a class="cinema__scroll" href="#progetti"><span aria-hidden="true">↓&#xFE0E;</span> Scorri per scoprire</a>
             <span class="cinema__progress" aria-hidden="true"><span></span></span>
-            <a class="cinema__credit" [href]="image.sourceUrl" target="_blank" rel="noopener noreferrer">Foto: {{ image.credit }}</a>
           </div>
         </div>
       </div>

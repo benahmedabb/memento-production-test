@@ -107,9 +107,15 @@ app-kinetic-text { display: inline; }
 .chapter-closing.scroll-scene--active::after { transform: translateX(calc(var(--scene-progress) * -60px)) scale(calc(0.8 + var(--scene-progress) * 0.3)); }
 .chapter-closing .cta-band__image { inset: -10% 0; }
 .chapter-closing.scroll-scene--active .cta-band__image { transform: translateY(calc((var(--scene-progress) - 0.5) * 12%)); }
-.contact-opening.page-hero { min-height: 520px; }
-.contact-opening .brand-orbit { color: var(--green); opacity: 0.25; }
+.contact-opening.page-hero { min-height: 520px; isolation: isolate; color: var(--paper); background: var(--green-deep); }
+.contact-opening::before { position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(9, 22, 17, 0.65), rgba(9, 22, 17, 0.15)); content: ''; pointer-events: none; }
+.contact-opening .page-hero__image { display: flex; align-items: flex-end; justify-content: flex-end; }
+.contact-opening.chapter-hero.scroll-scene--active .page-hero__image { transform: none; }
+.contact-opening .page-hero__image img { width: auto; height: 100%; object-fit: contain; object-position: right center; mask-image: linear-gradient(90deg, transparent, #000 35%); }
+.contact-opening .eyebrow, .contact-opening .text-link { color: var(--gold-pale); }
+.contact-opening .text-link:hover { color: var(--gold); }
 .contact-opening .page-hero__content { z-index: 2; }
+.contact-opening .page-hero__content > p:not(.eyebrow) { max-width: 620px; color: var(--paper); }
 .contact-opening .page-hero__content h1 { max-width: 820px; }
 .contact-opening__link { margin-top: 1rem; }
 .contact-section { scroll-margin-top: 6rem; }
@@ -179,6 +185,7 @@ app-kinetic-text { display: inline; }
   .chapter-hero .portfolio-carousel__arrow { bottom: 1.5rem; }
   .chapter-hero .portfolio-carousel__dots { bottom: 2.6rem; left: 1.5rem; transform: none; }
   .contact-opening.page-hero { min-height: 460px; }
+  .contact-opening .page-hero__image img { width: 100%; height: auto; max-height: 100%; object-position: center bottom; mask-image: linear-gradient(180deg, transparent, #000 35%); }
 }
 
 @media (prefers-reduced-motion: reduce) {

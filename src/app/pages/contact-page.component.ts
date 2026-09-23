@@ -7,15 +7,16 @@ import { TrackingService } from '../core/tracking.service';
 import { PageMotionDirective } from '../shared/page-motion.directive';
 import { KineticTextComponent } from '../shared/kinetic-text.component';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
-import { BrandOrbitComponent } from '../shared/brand-orbit.component';
 
 type SubmissionState = 'idle' | 'sending' | 'success' | 'error';
 
 @Component({
-  imports: [BrandOrbitComponent, KineticTextComponent, ScrollSceneDirective, PageMotionDirective, ReactiveFormsModule],
+  imports: [KineticTextComponent, ScrollSceneDirective, PageMotionDirective, ReactiveFormsModule],
   template: `
-    <section class="page-hero page-hero--contact chapter-hero contact-opening section--sage" appScrollScene="hero">
-      <app-brand-orbit />
+    <section class="page-hero page-hero--contact chapter-hero contact-opening" appScrollScene="hero">
+      <div class="page-hero__image" aria-hidden="true">
+        <img src="/images/memento-stretta-di-mano.webp" alt="" width="1254" height="1254" fetchpriority="high" />
+      </div>
       <div class="shell page-hero__content">
         <p appPageMotion="hero" class="eyebrow">Contatti / Il prossimo capitolo</p>
         <h1><app-kinetic-text text="Parliamo di ciò che verrà." [delay]="120" /></h1>
