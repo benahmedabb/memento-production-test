@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, PLATFORM_ID, inject } from '@angular/core';
 import type { CaseStudyMetric } from '../core/site.config';
+import { lightweightMotionQuery } from '../core/motion.config';
 
 @Component({
   selector: 'app-animated-metric',
@@ -29,7 +30,7 @@ export class AnimatedMetricComponent implements AfterViewInit, OnDestroy {
   private readonly animationDuration = 720;
 
   ngAfterViewInit(): void {
-    if (!isPlatformBrowser(this.platformId) || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!isPlatformBrowser(this.platformId) || !('IntersectionObserver' in window) || window.matchMedia(lightweightMotionQuery).matches) {
       return;
     }
 

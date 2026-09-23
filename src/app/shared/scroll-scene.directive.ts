@@ -1,4 +1,5 @@
 import { afterNextRender, DestroyRef, Directive, ElementRef, inject, Input, NgZone } from '@angular/core';
+import { lightweightMotionQuery } from '../core/motion.config';
 
 /** Native scrolling drives a CSS variable; nothing runs while the scene is off screen. */
 @Directive({ selector: '[appScrollScene]' })
@@ -17,9 +18,11 @@ export class ScrollSceneDirective {
     if (!('IntersectionObserver' in window) || !('ResizeObserver' in window)) return;
 
     const host = this.element.nativeElement;
-    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const preference = window.matchMedia(lightweightMotionQuery);
     let visible = true;
     let frame = 0;
+    let observing = false;
+    let lastProgress = '';
 
     const update = () => {
       frame = 0;
@@ -34,7 +37,11 @@ export class ScrollSceneDirective {
           ? (header - bounds.top) / Math.max(1, bounds.height)
           : (viewport * 0.82 - bounds.top) / Math.max(1, bounds.height + viewport * 0.15);
 
-      host.style.setProperty('--scene-progress', Math.min(1, Math.max(0, progress)).toFixed(4));
+      const nextProgress = Math.min(1, Math.max(0, progress)).toFixed(4);
+      if (nextProgress !== lastProgress) {
+        host.style.setProperty('--scene-progress', nextProgress);
+        lastProgress = nextProgress;
+      }
     };
 
     const schedule = () => {
@@ -46,8 +53,22 @@ export class ScrollSceneDirective {
       if (preference.matches) {
         cancelAnimationFrame(frame);
         frame = 0;
+        observer.disconnect();
+        resizeObserver.disconnect();
+        window.removeEventListener('scroll', schedule);
+        window.removeEventListener('resize', schedule);
+        observing = false;
+        lastProgress = '';
         host.style.removeProperty('--scene-progress');
       } else {
+        if (!observing) {
+          visible = true;
+          observer.observe(host);
+          resizeObserver.observe(host);
+          window.addEventListener('scroll', schedule, { passive: true });
+          window.addEventListener('resize', schedule, { passive: true });
+          observing = true;
+        }
         schedule();
       }
     };
@@ -58,10 +79,6 @@ export class ScrollSceneDirective {
     }, { rootMargin: '100px' });
     const resizeObserver = new ResizeObserver(schedule);
 
-    observer.observe(host);
-    resizeObserver.observe(host);
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule, { passive: true });
     preference.addEventListener('change', syncPreference);
     syncPreference();
 

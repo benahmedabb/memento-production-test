@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, signal } from '@angular/core';
 
 interface ClientLogo {
   readonly src: string;
@@ -26,7 +26,7 @@ interface ClientLogo {
         </defs>
       </svg>
       <div class="client-logos__viewport">
-        <div class="client-logos__track" [class.client-logos__track--paused]="paused()" [style.--logo-duration]="scrollDuration">
+        <div class="client-logos__track" [class.client-logos__track--paused]="paused() || !visible() || !pageVisible()" [style.--logo-duration]="scrollDuration">
           @for (copy of [0, 1]; track copy) {
             <ul class="client-logos__group" [class.client-logos__group--copy]="copy === 1" [attr.aria-hidden]="copy === 1 ? 'true' : null" role="list">
               @for (logo of logos; track logo.src) {
@@ -55,6 +55,29 @@ interface ClientLogo {
 })
 export class ClientLogosComponent {
   readonly paused = signal(false);
+  readonly visible = signal(false);
+  readonly pageVisible = signal(true);
+  private readonly element = inject(ElementRef<HTMLElement>);
+  private readonly destroyRef = inject(DestroyRef);
+
+  constructor() {
+    afterNextRender(() => {
+      const syncVisibility = () => this.pageVisible.set(!document.hidden);
+      syncVisibility();
+      document.addEventListener('visibilitychange', syncVisibility);
+      const observer = 'IntersectionObserver' in window
+        ? new IntersectionObserver(([entry]) => this.visible.set(entry.isIntersecting))
+        : undefined;
+      if (observer) observer.observe(this.element.nativeElement);
+      else this.visible.set(true);
+
+      this.destroyRef.onDestroy(() => {
+        observer?.disconnect();
+        document.removeEventListener('visibilitychange', syncVisibility);
+      });
+    });
+  }
+
   readonly logos: readonly ClientLogo[] = [
     { src: '/images/Logotipo bianco.png', name: 'AgriDora Società Agricola', width: 917, height: 230 },
     { src: '/images/Logo bianco.png', name: "Dora Motor’s Experience", width: 1086, height: 366 },

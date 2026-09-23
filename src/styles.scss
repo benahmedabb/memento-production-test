@@ -475,6 +475,57 @@ html body .iubenda-tp-btn { right: auto !important; bottom: 1rem !important; lef
   .video-case:hover .video-case__play, .video-case:focus-within .video-case__play { color: var(--green-deep); background: var(--gold); transform: scale(1.08); }
 }
 
+/* Touch devices keep single, compositor-friendly reveals instead of per-word
+   masks, pinned scenes and simultaneous transitions. Match motion.config.ts. */
+@media (max-width: 859px) and (prefers-reduced-motion: no-preference), (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+  .has-page-motion .page-motion-target,
+  .page-motion--armed,
+  .has-page-motion .kinetic-text.page-motion-target,
+  .has-page-motion .page-motion-target.page-motion--fan,
+  .page-motion--armed.page-motion--fan,
+  .has-page-motion .page-motion-target.page-motion--mask,
+  .page-motion--armed.page-motion--mask {
+    opacity: 0;
+    transform: translateY(12px);
+    clip-path: none;
+    animation: none;
+    transition: opacity 420ms ease-out, transform 420ms ease-out;
+    transition-delay: min(var(--page-motion-delay, 0ms), 100ms);
+    will-change: auto;
+  }
+
+  .has-page-motion .page-motion-target.page-motion--revealed,
+  .page-motion--armed.page-motion--revealed {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    animation: none;
+  }
+
+  .has-page-motion .kinetic-text__word,
+  .page-motion--armed .kinetic-text__word {
+    transform: none;
+    transition: none;
+  }
+
+  .cinema__line > span { animation: none; }
+  .cinema__definition { animation: cinema-fade-in 500ms ease-out both; }
+  .cinema__topline, .cinema__bottom, .cinema__footnote { animation-duration: 500ms; animation-delay: 0ms; }
+  .cinema__grain { display: none; }
+  .site-header { background: var(--paper); backdrop-filter: none; }
+  .has-page-motion .contact-signature.page-motion-target img,
+  .contact-signature.page-motion--armed img {
+    clip-path: none;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+  .brand-orbit__drawing circle, .brand-orbit__drawing ellipse { animation: none; stroke-dashoffset: 0; }
+  .portfolio-carousel__arrow, .portfolio-carousel__dot { backdrop-filter: none; }
+  .chapter-hero.portfolio-carousel .portfolio-carousel__slide { clip-path: none; opacity: 0; transition: opacity 420ms ease-out; }
+  .chapter-hero.portfolio-carousel .portfolio-carousel__slide.is-active { clip-path: none; opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
   .has-page-motion .page-motion-target, .page-motion--armed { opacity: 1; transform: none; }

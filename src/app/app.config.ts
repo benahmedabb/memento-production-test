@@ -3,6 +3,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
+import { lightweightMotionQuery } from './core/motion.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,7 +14,7 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions({
         skipInitialTransition: true,
         onViewTransitionCreated: ({ transition, from, to }) => {
-          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || from === to) {
+          if (window.matchMedia(lightweightMotionQuery).matches || from === to) {
             transition.skipTransition();
           }
         },
