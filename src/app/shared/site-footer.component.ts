@@ -12,13 +12,13 @@ import { TrackingService } from '../core/tracking.service';
       <div class="shell footer-grid">
         <div>
           <a class="footer-logo" routerLink="/" aria-label="Memento Production, home">
-            <img src="/images/logo-memento-footer.png" alt="" width="1350" height="1200" />
+            <img src="/images/logo-memento-footer.png" alt="Memento Production" width="1350" height="1200" />
           </a>
           <p class="footer-intro">Agenzia di comunicazione e marketing con sede a Moncalieri, per imprese di Torino, Pinerolo e Chieri.</p>
         </div>
 
         <div class="footer-column">
-          <h2>Esplora</h2>
+          <h3>Esplora</h3>
           <a routerLink="/agenzia">Agenzia</a>
           <a routerLink="/servizi">Servizi</a>
           <a routerLink="/portfolio">Portfolio</a>
@@ -26,7 +26,7 @@ import { TrackingService } from '../core/tracking.service';
         </div>
 
         <div class="footer-column">
-          <h2>Contatti</h2>
+          <h3>Contatti</h3>
           <a [href]="config.contact.phoneHref" (click)="tracking.trackContact('phone', 'footer')">{{ config.contact.phoneDisplay }}</a>
           <a [href]="'mailto:' + config.contact.email" (click)="tracking.trackContact('email', 'footer')">{{ config.contact.email }}</a>
           <a [href]="config.contact.whatsappUrl" target="_blank" rel="noopener noreferrer" (click)="tracking.trackContact('whatsapp', 'footer')">WhatsApp</a>

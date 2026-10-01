@@ -14,7 +14,7 @@ import { TrackingService } from '../core/tracking.service';
     <header class="site-header">
       <div class="shell header-inner">
         <a class="brand-logo" routerLink="/" aria-label="Memento Production, home">
-          <img src="/images/logo-memento-navbar.png" alt="" width="640" height="560" />
+          <img src="/images/logo-memento-navbar.png" alt="Memento Production" width="640" height="560" />
         </a>
 
         <button
