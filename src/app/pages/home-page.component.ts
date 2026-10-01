@@ -32,7 +32,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
             }
           </h2>
           <div class="memory-statement__footer" appPageMotion="rise">
-            <p>Ogni progetto parte da una domanda sola: cosa deve restare, a chi, e perché. Da lì nascono video, fotografia, social e identità visiva come un solo linguaggio, non pezzi affidati a fornitori diversi. Lavoriamo così con le aziende di Torino, Moncalieri e provincia che non vogliono solo farsi vedere: vogliono essere riconosciute.</p>
+            <p>Ogni progetto parte da una domanda sola: cosa deve restare, a chi, e perché. Da lì nascono video, fotografia, social, identità visiva e sito come un solo linguaggio, non pezzi affidati a fornitori diversi. Lavoriamo così con le aziende di Torino e provincia che non vogliono solo farsi vedere: vogliono essere riconosciute.</p>
             <a class="text-link" routerLink="/agenzia">Dentro Memento <span aria-hidden="true">↗&#xFE0E;</span></a>
           </div>
         </div>

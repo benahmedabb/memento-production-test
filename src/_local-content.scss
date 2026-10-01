@@ -1,4 +1,5 @@
 .local-presence__copy { max-width: 660px; }
+.local-presence h2 { overflow-wrap: normal; word-break: normal; hyphens: none; text-wrap: balance; }
 .local-presence__copy p { color: var(--green); }
 .local-presence__cities { display: flex; flex-wrap: wrap; gap: 0.7rem; padding: 0; margin: 1.5rem 0 2rem; list-style: none; }
 .local-presence__cities li { padding: 0.5rem 0.8rem; border: 1px solid var(--line); border-radius: 0.25rem; font-family: var(--font-heading); font-size: 0.85rem; }
@@ -7,4 +8,8 @@
 
 @media (min-width: 860px) {
   .local-presence .two-column { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 4rem; }
+}
+
+@media (max-width: 480px) {
+  .local-presence h2 { font-size: clamp(2.1rem, 10.6vw, 2.65rem); }
 }

@@ -89,24 +89,24 @@ app-cinematic-hero { display: block; }
 .cinema__dot { width: 5px; height: 5px; flex: 0 0 auto; border-radius: 50%; background: var(--gold); box-shadow: 0 0 15px rgba(209, 172, 103, 0.7); }
 .cinema__edition { color: rgba(244, 241, 235, 0.56); font-size: 0.61rem; letter-spacing: 0.1em; text-transform: uppercase; }
 .cinema__intro { position: relative; display: flex; flex: 1; align-items: center; padding-block: 2.5rem; }
-.cinema__definition { width: 100%; min-width: 0; }
-.cinema__entry { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.7rem 1.2rem; margin-bottom: 1.6rem; color: var(--gold); }
-.cinema__entry > span:first-child { font-family: var(--font-heading); font-size: 1.3rem; letter-spacing: 0.08em; }
-.cinema__entry > span:last-child { color: var(--gold-pale); font-size: 0.65rem; font-style: italic; }
-.cinema__title { max-width: 100%; margin: 0 0 0 -0.045em; font-size: clamp(2.5rem, min(5.5vw, 7.5svh), 5rem); line-height: 1; letter-spacing: -0.05em; }
-.cinema__line { display: block; overflow: hidden; padding: 0.06em 0.13em 0.1em 0; margin-bottom: -0.1em; }
-.cinema__line > span { display: block; }
-.cinema__line--gold { padding-bottom: 0.15em; color: var(--gold); font-size: 1.45em; font-style: normal; }
+.cinema__definition { width: min(100%, 800px); min-width: 0; }
+.cinema__term, .cinema__etymology, .cinema__meaning { overflow: hidden; }
+.cinema__term > span, .cinema__etymology > span, .cinema__meaning > span { display: block; }
+.cinema__term { margin: 0 0 1rem -0.045em; font-size: clamp(2.5rem, min(5.5vw, 7.5svh), 5rem); font-weight: 700; line-height: 0.95; letter-spacing: -0.05em; }
+.cinema__etymology { max-width: 48rem; margin: 0 0 0.8rem; color: rgba(244, 241, 235, 0.76); font-size: clamp(0.78rem, 1vw, 0.95rem); line-height: 1.55; }
+.cinema__etymology em { color: var(--gold-pale); }
+.cinema__meaning { max-width: 46rem; margin: 0; color: var(--paper); font-size: clamp(1.35rem, 2.35vw, 2rem); line-height: 1.35; }
+.cinema__meaning strong { color: var(--gold); font-family: var(--font-heading); font-weight: 700; }
 .cinema__annotation { position: absolute; right: 0; bottom: 3rem; display: flex; width: 29%; align-items: center; justify-content: space-between; color: var(--gold-pale); font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .cinema__cross { font-size: 2rem; font-weight: 400; line-height: 1; }
 .cinema__outro { position: absolute; top: 47%; left: 0; width: 100%; pointer-events: none; opacity: 0; transform: translateY(-35%); text-align: center; }
 .cinema__outro p { margin: 1.2rem 0 0; font-family: var(--font-heading); font-size: clamp(4.5rem, 10vw, 9rem); font-weight: 700; line-height: 1; letter-spacing: -0.055em; }
 .cinema__outro em { margin-left: 0.12em; color: var(--gold); font-style: normal; font-weight: inherit; }
-.cinema__lead { max-width: 530px; margin: 0; color: rgba(244, 241, 235, 0.82); font-size: 0.9rem; line-height: 1.7; }
+.cinema__lead { max-width: 610px; margin: 0; color: rgba(244, 241, 235, 0.92); font-size: clamp(0.95rem, 1.1vw, 1.05rem); line-height: 1.65; }
 .cinema__cta { display: inline-flex; gap: 1.5rem; align-items: center; flex-shrink: 0; font-size: 0.67rem; font-family: var(--font-heading); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 .cinema__cta > span { display: grid; width: 3.7rem; height: 3.7rem; place-items: center; border: 1px solid rgba(209, 172, 103, 0.6); border-radius: 50%; color: var(--gold); font-size: 1.5rem; transition: color 250ms, background-color 250ms, transform 350ms; }
 .cinema__cta:hover > span, .cinema__cta:focus-visible > span { color: var(--green-deep); background: var(--gold); transform: rotate(45deg); }
-.cinema__footnote { margin-top: 1.7rem; padding-top: 1rem; border-top: 1px solid rgba(244, 241, 235, 0.18); }
+.cinema__footnote { margin-top: clamp(2rem, 3vh, 2.6rem); padding-top: 1rem; border-top: 1px solid rgba(244, 241, 235, 0.18); }
 .cinema__scroll { display: inline-flex; gap: 0.6rem; align-items: center; font-size: 0.56rem; letter-spacing: 0.13em; text-transform: uppercase; }
 .cinema__scroll > span { color: var(--gold); font-size: 1rem; }
 .cinema__credit { color: rgba(244, 241, 235, 0.62); font-size: 0.54rem; }
@@ -174,10 +174,9 @@ app-cinematic-hero { display: block; }
 .page-motion--mask.page-motion--revealed { animation: none; opacity: 1; transform: none; clip-path: inset(0); }
 
 @media (prefers-reduced-motion: no-preference) {
-  .cinema__line > span { animation: cinema-line-in 1300ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-  .cinema__line:nth-child(2) > span { animation-delay: 130ms; }
-  .cinema__line:nth-child(3) > span { animation-delay: 260ms; }
-  .cinema__line:nth-child(4) > span { animation-delay: 390ms; }
+  .cinema__term > span, .cinema__etymology > span, .cinema__meaning > span { animation: cinema-line-in 1300ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .cinema__etymology > span { animation-delay: 130ms; }
+  .cinema__meaning > span { animation-delay: 260ms; }
   .cinema__topline, .cinema__bottom, .cinema__footnote { animation: cinema-fade-in 1200ms ease 400ms both; }
 }
 
@@ -201,7 +200,9 @@ app-cinematic-hero { display: block; }
   .cinema { --header-height: 4.85rem; --image-offset: 35%; }
   .cinema.scroll-scene--active { height: 155svh; }
   .cinema__stage { min-height: 790px; }
-  .cinema__title { font-size: clamp(2rem, 6.8vw, 3.8rem); }
+  .cinema__term { font-size: clamp(2.35rem, 10vw, 3.8rem); }
+  .cinema__etymology { max-width: 38rem; font-size: 0.8rem; }
+  .cinema__meaning { max-width: 38rem; font-size: clamp(1.08rem, 4.8vw, 1.45rem); }
   .cinema__edition, .cinema__annotation { display: none; }
   .cinema__frame { clip-path: inset(10% 0 22% 35% round 12rem 0 0 0); opacity: 0.65; }
   .cinema__image { left: 0; width: 100%; object-position: center; }
@@ -209,7 +210,7 @@ app-cinematic-hero { display: block; }
   .cinema.scroll-scene--active .cinema__image { left: 0; width: 100%; will-change: transform; }
   .cinema__shade { background: linear-gradient(90deg, rgba(9, 22, 17, 0.7), rgba(9, 22, 17, 0.1)), linear-gradient(0deg, #0c1b15, transparent 65%); }
   .cinema__bottom { align-items: start; flex-direction: column; gap: 1rem; }
-  .cinema__lead { max-width: 520px; font-size: 0.85rem; }
+  .cinema__lead { max-width: 550px; font-size: 0.92rem; line-height: 1.6; }
   .cinema__cta { gap: 1rem; font-size: 0.6rem; }
   .cinema__cta > span { width: 2.8rem; height: 2.8rem; }
   .cinema__progress { display: none; }
@@ -229,8 +230,12 @@ app-cinematic-hero { display: block; }
 @media (max-width: 480px) {
   .cinema__stage { min-height: 780px; }
   .cinema__layout { padding-top: 1.6rem; }
-  .cinema__title { font-size: clamp(1.6rem, 7.4vw, 2.2rem); }
-  .cinema__line--gold { font-size: 1.65em; }
+  .cinema__intro { padding-block: 1.8rem; }
+  .cinema__term { margin-bottom: 0.8rem; font-size: clamp(2.15rem, 10vw, 3rem); }
+  .cinema__etymology { margin-bottom: 0.65rem; font-size: 0.76rem; line-height: 1.45; }
+  .cinema__meaning { font-size: clamp(1.05rem, 5.2vw, 1.3rem); line-height: 1.3; }
+  .cinema__lead { font-size: 0.88rem; line-height: 1.55; }
+  .cinema__footnote { margin-top: 2rem; }
   .cinema__outro p { font-size: 4.4rem; }
   .cinema__outro .eyebrow { font-size: 0.56rem; }
   .cinema__footnote { gap: 0.8rem; }

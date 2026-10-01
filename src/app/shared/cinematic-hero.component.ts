@@ -26,13 +26,9 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
 
           <div class="cinema__intro">
             <div class="cinema__definition">
-              <p class="cinema__entry"><span>me·mèn·to</span><span>sostantivo maschile</span></p>
-              <h1 id="home-title" class="cinema__title">
-                <span class="cinema__line"><span>Atto o affermazione</span></span>{{ ' ' }}
-                <span class="cinema__line"><span>che ha il fine di</span></span>{{ ' ' }}
-                <span class="cinema__line cinema__line--gold"><span>ricordare</span></span>{{ ' ' }}
-                <span class="cinema__line cinema__line--gold"><span>qualcosa.</span></span>
-              </h1>
+              <h1 id="home-title" class="cinema__term"><span>me·mèn·to</span></h1>
+              <p class="cinema__etymology"><span>/me’mento/ s.m. [imperat. lat. di <em lang="la">meminisse</em> “ricordare”, quindi “ricordati!”], invar., lett.</span></p>
+              <p class="cinema__meaning"><span>[atto o affermazione che ha il fine di <strong>ricordare qualcosa</strong>]</span></p>
             </div>
             <span class="cinema__annotation" aria-hidden="true"><span>01 / Il senso del nostro nome</span><span class="cinema__cross">+</span></span>
           </div>
