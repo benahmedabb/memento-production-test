@@ -168,7 +168,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       </div>
     }
 
-    <section class="section section--accent cta-band cta-band--home-project home-closing">
+    <section class="section section--accent cta-band cta-band--graphic cta-band--home-project home-closing">
       <div class="shell cta-band__inner">
         <div appPageMotion="rise">
           <p class="eyebrow">Il prossimo progetto</p>

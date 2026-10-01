@@ -56,10 +56,7 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
       </div>
     </section>
 
-    <section class="section section--accent reviews-cta chapter-closing" appScrollScene>
-      <div class="cta-band__image" aria-hidden="true">
-        <img src="/images/banner-prossimo-progetto-verde-oro.webp" alt="" loading="lazy" decoding="async" width="2048" height="768" />
-      </div>
+    <section class="section section--accent cta-band cta-band--graphic reviews-cta">
       <div class="shell reviews-cta__inner">
         <div appPageMotion="rise">
           <p class="eyebrow">Il prossimo racconto</p>

@@ -46,10 +46,7 @@ import { PortfolioHeroCarouselComponent } from '../shared/portfolio-hero-carouse
       </div>
     </section>
 
-    <section class="section section--accent cta-band cta-band--portfolio-case chapter-closing" appScrollScene>
-      <div class="cta-band__image" aria-hidden="true">
-        <img src="/images/banner-il-tuo-caso-verde-oro.webp" alt="" loading="lazy" decoding="async" width="1907" height="825" />
-      </div>
+    <section class="section section--accent cta-band cta-band--graphic cta-band--portfolio-case">
       <div class="shell cta-band__inner">
         <div><p class="eyebrow">Il tuo caso</p><h2><app-kinetic-text text="Hai una storia che merita la sua forma?" /></h2></div>
         <a appPageMotion="rise" [motionDelay]="180" class="button button--ink" routerLink="/contatti">Contattaci <span aria-hidden="true">↗&#xFE0E;</span></a>
