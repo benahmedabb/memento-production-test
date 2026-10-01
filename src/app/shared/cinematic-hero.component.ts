@@ -3,10 +3,11 @@ import { RouterLink } from '@angular/router';
 import { siteConfig } from '../core/site.config';
 import { TrackingService } from '../core/tracking.service';
 import { ScrollSceneDirective } from './scroll-scene.directive';
+import { HeroCameraComponent } from './hero-camera.component';
 
 @Component({
   selector: 'app-cinematic-hero',
-  imports: [RouterLink, ScrollSceneDirective],
+  imports: [RouterLink, ScrollSceneDirective, HeroCameraComponent],
   template: `
     <section class="cinema" appScrollScene="cover" [scrollSceneOnMobile]="true" aria-labelledby="home-title">
       <div class="cinema__stage">
@@ -14,6 +15,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
         <div class="cinema__frame">
           <img class="cinema__image" [src]="image.src" [srcset]="image.srcset" [sizes]="image.sizes"
             [alt]="image.alt" width="1920" height="1080" fetchpriority="high" />
+          <app-hero-camera />
           <div class="cinema__shade" aria-hidden="true"></div>
         </div>
         <div class="cinema__grain" aria-hidden="true"></div>

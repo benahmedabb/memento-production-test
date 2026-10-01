@@ -58,6 +58,17 @@ app-cinematic-hero { display: block; }
   .scroll-scene--active & { transform: scale(calc(1.12 - var(--scene-progress) * 0.12)); }
 }
 
+// The fallback photo does not need layout/paint work behind a ready 3D scene.
+.cinema__frame:has(app-hero-camera.is-ready) .cinema__image { display: none; }
+
+// Reserve the 3D background from the first paint, before Angular loads the scene.
+@media (min-width: 860px) and (pointer: fine) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .cinema__frame:has(app-hero-camera:not(.is-fallback)) {
+    background: radial-gradient(ellipse at 75% 40%, #34533e, #142b21 50%, #0c1b15 90%);
+    .cinema__image { display: none; }
+  }
+}
+
 .cinema__shade {
   position: absolute;
   inset: 0;
