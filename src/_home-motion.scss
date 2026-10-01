@@ -166,8 +166,6 @@ app-cinematic-hero { display: block; }
 .home-services .service-card__number { display: block; margin-bottom: 1.5rem; color: var(--gold); font-size: 0.65rem; letter-spacing: 0.12em; }
 .home-services .service-card { transition: background-color 350ms; }
 .home-services .service-card:hover { background-color: #1b3428; }
-.home-closing .cta-band__image { inset: -12% 0; }
-.home-closing.scroll-scene--active .cta-band__image { transform: translateY(calc((var(--scene-progress) - 0.5) * 12%)); }
 
 /* A masked image reveal does not compete with the containing card's movement. */
 .has-page-motion .page-motion-target.page-motion--mask,
@@ -259,6 +257,5 @@ app-cinematic-hero { display: block; }
   .memory-statement.scroll-scene--active .memory-statement__text > span { opacity: 1; }
   .memory-statement.scroll-scene--active .memory-statement__asterisk,
   .memory-statement.scroll-scene--active .memory-statement__rule,
-  .home-closing.scroll-scene--active .cta-band__image { transform: none; }
   .has-page-motion .page-motion-target.page-motion--mask { clip-path: none; }
 }

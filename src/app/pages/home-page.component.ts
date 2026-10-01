@@ -168,10 +168,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       </div>
     }
 
-    <section class="section section--accent cta-band cta-band--home-project home-closing" appScrollScene>
-      <div class="cta-band__image" aria-hidden="true">
-        <img src="/images/banner-prossimo-progetto-verde-oro.webp" alt="" loading="lazy" decoding="async" width="2048" height="768" />
-      </div>
+    <section class="section section--accent cta-band cta-band--home-project home-closing">
       <div class="shell cta-band__inner">
         <div appPageMotion="rise">
           <p class="eyebrow">Il prossimo progetto</p>
