@@ -40,7 +40,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
 
           <div class="cinema__bottom">
             <p class="cinema__lead">Agenzia di comunicazione e marketing a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Siti web, e-commerce, gestione social, creazione contenuti, ADS, strategia e grafica a 360° per far crescere la tua azienda.</p>
-            <a class="cinema__cta" routerLink="/contatti" (click)="tracking.trackQuote('home_hero')">Richiedi un preventivo <span aria-hidden="true">↗&#xFE0E;</span></a>
+            <a class="button button--gold" routerLink="/contatti" (click)="tracking.trackQuote('home_hero')">Richiedi un preventivo <span aria-hidden="true">↗&#xFE0E;</span></a>
           </div>
           <div class="cinema__footnote">
             <a class="cinema__scroll" href="#progetti"><span aria-hidden="true">↓&#xFE0E;</span> Scorri per scoprire</a>

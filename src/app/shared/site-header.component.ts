@@ -62,7 +62,7 @@ import { TrackingService } from '../core/tracking.service';
               </a>
             }
           }
-          <a class="button button--small nav-cta" routerLink="/contatti" (click)="closeMenu(); tracking.trackQuote('header')">Preventivo</a>
+          <a class="button button--small nav-cta" routerLink="/contatti" (click)="closeMenu(); tracking.trackQuote('header')">Contattaci</a>
         </nav>
       </div>
     </header>
@@ -82,7 +82,6 @@ export class SiteHeaderComponent {
     { label: 'Servizi', path: '/servizi' },
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Recensioni', path: '/recensioni' },
-    { label: 'Contatti', path: '/contatti' },
   ];
 
   toggleMenu(): void {
