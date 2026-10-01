@@ -3,6 +3,7 @@ import { Component, DOCUMENT, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ConsentBannerComponent } from './shared/consent-banner.component';
 import { FloatingWhatsappComponent } from './shared/floating-whatsapp.component';
+import { PointerHaloComponent } from './shared/pointer-halo.component';
 import { SiteFooterComponent } from './shared/site-footer.component';
 import { SiteHeaderComponent } from './shared/site-header.component';
 
@@ -13,6 +14,7 @@ import { SiteHeaderComponent } from './shared/site-header.component';
     SiteFooterComponent,
     ConsentBannerComponent,
     FloatingWhatsappComponent,
+    PointerHaloComponent,
   ],
   selector: 'app-root',
   styleUrl: './app.scss',

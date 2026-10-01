@@ -1,0 +1,45 @@
+:host {
+  display: contents;
+}
+
+.pointer-halo {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: 1px solid rgba(209, 172, 103, 0.9);
+  border-radius: 50%;
+  background: rgba(209, 172, 103, 0.04);
+  box-shadow: 0 0 0 1px rgba(17, 36, 29, 0.12), 0 0 1.25rem rgba(209, 172, 103, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transition: width 220ms cubic-bezier(0.22, 1, 0.36, 1), height 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 140ms ease, background-color 220ms ease, border-color 220ms ease;
+  will-change: transform, width, height, opacity;
+}
+
+.pointer-halo--visible {
+  opacity: 1;
+}
+
+.pointer-halo--interactive {
+  width: 3rem;
+  height: 3rem;
+  border-color: var(--gold);
+  background: rgba(209, 172, 103, 0.12);
+  box-shadow: 0 0 0 1px rgba(17, 36, 29, 0.1), 0 0 1.8rem rgba(209, 172, 103, 0.26);
+}
+
+.pointer-halo--pressed {
+  width: 2.25rem;
+  height: 2.25rem;
+  background: rgba(209, 172, 103, 0.2);
+}
+
+@media (pointer: fine) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .pointer-halo {
+    display: block;
+  }
+}
