@@ -8,7 +8,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
   selector: 'app-cinematic-hero',
   imports: [RouterLink, ScrollSceneDirective],
   template: `
-    <section class="cinema" appScrollScene="cover" aria-labelledby="home-title">
+    <section class="cinema" appScrollScene="cover" [scrollSceneOnMobile]="true" aria-labelledby="home-title">
       <div class="cinema__stage">
         <div class="cinema__ambient" aria-hidden="true"></div>
         <div class="cinema__frame">

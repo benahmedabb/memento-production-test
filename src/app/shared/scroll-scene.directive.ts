@@ -1,10 +1,11 @@
 import { afterNextRender, DestroyRef, Directive, ElementRef, inject, Input, NgZone } from '@angular/core';
-import { lightweightMotionQuery } from '../core/motion.config';
+import { lightweightMotionQuery, reducedMotionQuery } from '../core/motion.config';
 
 /** Native scrolling drives a CSS variable; nothing runs while the scene is off screen. */
 @Directive({ selector: '[appScrollScene]' })
 export class ScrollSceneDirective {
   @Input('appScrollScene') mode: 'cover' | 'passage' | 'hero' | '' = 'passage';
+  @Input() scrollSceneOnMobile = false;
 
   private readonly element = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
@@ -19,14 +20,17 @@ export class ScrollSceneDirective {
 
     const host = this.element.nativeElement;
     const preference = window.matchMedia(lightweightMotionQuery);
+    const reducedPreference = window.matchMedia(reducedMotionQuery);
     let visible = true;
     let frame = 0;
     let observing = false;
     let lastProgress = '';
 
+    const motionDisabled = () => reducedPreference.matches || (preference.matches && !this.scrollSceneOnMobile);
+
     const update = () => {
       frame = 0;
-      if (preference.matches) return;
+      if (motionDisabled()) return;
 
       const bounds = host.getBoundingClientRect();
       const viewport = window.innerHeight;
@@ -45,12 +49,13 @@ export class ScrollSceneDirective {
     };
 
     const schedule = () => {
-      if (visible && !frame && !preference.matches) frame = requestAnimationFrame(update);
+      if (visible && !frame && !motionDisabled()) frame = requestAnimationFrame(update);
     };
 
     const syncPreference = () => {
-      host.classList.toggle('scroll-scene--active', !preference.matches);
-      if (preference.matches) {
+      const disabled = motionDisabled();
+      host.classList.toggle('scroll-scene--active', !disabled);
+      if (disabled) {
         cancelAnimationFrame(frame);
         frame = 0;
         observer.disconnect();
@@ -80,6 +85,7 @@ export class ScrollSceneDirective {
     const resizeObserver = new ResizeObserver(schedule);
 
     preference.addEventListener('change', syncPreference);
+    reducedPreference.addEventListener('change', syncPreference);
     syncPreference();
 
     this.destroyRef.onDestroy(() => {
@@ -89,6 +95,7 @@ export class ScrollSceneDirective {
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
       preference.removeEventListener('change', syncPreference);
+      reducedPreference.removeEventListener('change', syncPreference);
     });
   }
 }

@@ -3,21 +3,26 @@ import { TestBed } from '@angular/core/testing';
 import { vi } from 'vitest';
 import { ScrollSceneDirective } from './scroll-scene.directive';
 
-@Component({ imports: [ScrollSceneDirective], template: '<section appScrollScene="cover"></section>' })
-class SceneHost {}
+@Component({ imports: [ScrollSceneDirective], template: '<section appScrollScene="cover" [scrollSceneOnMobile]="mobile"></section>' })
+class SceneHost { mobile = false; }
 
 describe('ScrollSceneDirective motion policy', () => {
   let lightweight: boolean;
   let preference: EventTarget;
+  let reducedPreference: EventTarget;
+  let reduced: boolean;
   let pendingFrames: Map<number, FrameRequestCallback>;
   let observe: ReturnType<typeof vi.fn>;
   let disconnect: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     lightweight = true;
+    reduced = false;
     preference = new EventTarget();
+    reducedPreference = new EventTarget();
     Object.defineProperty(preference, 'matches', { get: () => lightweight });
-    vi.stubGlobal('matchMedia', vi.fn(() => preference));
+    Object.defineProperty(reducedPreference, 'matches', { get: () => reduced });
+    vi.stubGlobal('matchMedia', vi.fn((query: string) => query === '(prefers-reduced-motion: reduce)' ? reducedPreference : preference));
     observe = vi.fn();
     disconnect = vi.fn();
     class Observer {
@@ -41,8 +46,9 @@ describe('ScrollSceneDirective motion policy', () => {
     vi.unstubAllGlobals();
   });
 
-  async function render() {
+  async function render(mobile = false) {
     const fixture = TestBed.createComponent(SceneHost);
+    fixture.componentInstance.mobile = mobile;
     fixture.detectChanges();
     await fixture.whenStable();
     const section = fixture.nativeElement.querySelector('section') as HTMLElement;
@@ -61,6 +67,18 @@ describe('ScrollSceneDirective motion policy', () => {
     expect(section.classList.contains('scroll-scene--active')).toBe(false);
     expect(observe).not.toHaveBeenCalled();
     expect(pendingFrames.size).toBe(0);
+  });
+
+  it('allows an opted-in mobile scene while respecting reduced motion', async () => {
+    const { section } = await render(true);
+    flushFrame();
+    expect(section.classList.contains('scroll-scene--active')).toBe(true);
+    expect(section.style.getPropertyValue('--scene-progress')).not.toBe('');
+
+    reduced = true;
+    reducedPreference.dispatchEvent(new Event('change'));
+    expect(section.classList.contains('scroll-scene--active')).toBe(false);
+    expect(section.style.getPropertyValue('--scene-progress')).toBe('');
   });
 
   it('releases scroll work when switching to lightweight mode and restores desktop scenes', async () => {
