@@ -133,6 +133,40 @@ app-cinematic-hero { display: block; }
   .memory-statement__rule { transform: scaleX(var(--scene-progress)); }
 }
 
+app-home-reviews-marquee { display: block; min-width: 0; }
+.home-reviews-marquee { position: relative; overflow: hidden; padding-block: clamp(4rem, 7vw, 6.5rem) 1.5rem; isolation: isolate; color: var(--paper); background: radial-gradient(circle at 82% 24%, rgba(72, 105, 86, 0.52), transparent 30rem), var(--green-deep); }
+.home-reviews-marquee::before { position: absolute; z-index: -1; top: -18rem; right: -12rem; width: 34rem; height: 34rem; border: 1px solid rgba(209, 172, 103, 0.25); border-radius: 50%; box-shadow: 0 0 0 5rem rgba(209, 172, 103, 0.035), 0 0 0 10rem rgba(209, 172, 103, 0.025); content: ''; }
+.home-reviews-marquee__quote { position: absolute; z-index: -1; top: -0.22em; right: 4vw; color: rgba(209, 172, 103, 0.1); font-family: Georgia, serif; font-size: clamp(16rem, 34vw, 33rem); line-height: 1; pointer-events: none; }
+.home-reviews-marquee__heading { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: end; }
+.home-reviews-marquee__heading h2 { max-width: 820px; margin-bottom: 1rem; font-size: clamp(2.7rem, 6.5vw, 5.8rem); }
+.home-reviews-marquee__heading p:not(.eyebrow) { max-width: 590px; margin: 0; color: rgba(244, 241, 235, 0.72); }
+.home-reviews-marquee__heading .text-link { margin-bottom: 0.35rem; }
+.home-reviews-marquee__signal { position: relative; z-index: 2; width: 102%; margin: clamp(2.5rem, 5vw, 4.5rem) -1% 0; overflow: hidden; color: var(--green-deep); background: var(--gold); transform: rotate(-0.8deg); }
+.home-reviews-marquee__signal-track { display: flex; width: max-content; min-width: 200%; animation: home-review-signal 52s linear infinite; }
+.home-reviews-marquee__signal-track > div { display: flex; min-width: 50%; flex: 1 0 auto; align-items: center; justify-content: space-around; gap: clamp(1.5rem, 4vw, 4rem); padding: 0.8rem clamp(1rem, 2.5vw, 2.5rem); }
+.home-reviews-marquee__signal span { font-family: var(--font-heading); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; }
+.home-reviews-marquee__signal b { font-size: 0.75rem; }
+.home-reviews-marquee__viewport { overflow: hidden; padding-block: 2.7rem 1.3rem; mask-image: linear-gradient(to right, transparent, #000 3.5rem, #000 calc(100% - 3.5rem), transparent); }
+.home-reviews-marquee__track { display: flex; width: max-content; animation: home-reviews-scroll 68s linear infinite; }
+.home-reviews-marquee__group { display: flex; flex: 1 0 auto; gap: 1.1rem; padding-right: 1.1rem; }
+.home-review-card { display: flex; width: clamp(19rem, 33vw, 30rem); min-height: 13rem; flex: 0 0 auto; flex-direction: column; justify-content: space-between; padding: 1.4rem; margin: 0; border: 1px solid rgba(209, 172, 103, 0.34); border-top: 3px solid var(--gold); color: var(--ink); background: rgba(244, 241, 235, 0.97); box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, 0.22); transform: rotate(-0.5deg); transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1), border-color 250ms; }
+.home-review-card:nth-child(even) { transform: rotate(0.65deg) translateY(0.55rem); }
+.home-review-card:hover { border-color: var(--gold); transform: translateY(-0.45rem) rotate(0); }
+.home-review-card__top, .home-review-card footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.home-review-card__top > span:last-child { color: var(--green); font-family: var(--font-heading); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.home-review-card__stars { color: var(--gold); font-family: Arial, sans-serif; font-size: 0.78rem; font-variant-emoji: text; letter-spacing: 0.12em; }
+.home-review-card > p { display: -webkit-box; overflow: hidden; margin: 1.3rem 0; font-size: clamp(1rem, 1.45vw, 1.2rem); line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.home-review-card footer { padding-top: 0.9rem; border-top: 1px solid var(--line); }
+.home-review-card cite { color: var(--green-deep); font-family: var(--font-heading); font-size: 0.7rem; font-style: normal; font-weight: 700; letter-spacing: 0.04em; }
+.home-reviews-marquee__controls { display: flex; justify-content: flex-end; }
+.home-reviews-marquee__controls button { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.55rem; padding: 0.55rem 0.8rem; border: 1px solid rgba(244, 241, 235, 0.2); color: var(--paper); background: transparent; font-family: var(--font-heading); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.home-reviews-marquee__controls button:hover, .home-reviews-marquee__controls button:focus-visible { color: var(--green-deep); background: var(--gold); border-color: var(--gold); }
+.home-reviews-marquee__controls svg { fill: currentColor; }
+.home-reviews-marquee--paused .home-reviews-marquee__track, .home-reviews-marquee--paused .home-reviews-marquee__signal-track { animation-play-state: paused; }
+
+@keyframes home-reviews-scroll { to { transform: translate3d(-50%, 0, 0); } }
+@keyframes home-review-signal { from { transform: translate3d(-50%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+
 .home-projects { scroll-margin-top: 6rem; }
 .home-projects .home-projects__intro { max-width: 650px; margin: 1.5rem 0 0; color: var(--green); font-size: 1rem; line-height: 1.8; }
 .project-preview-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; }
@@ -215,6 +249,10 @@ app-cinematic-hero { display: block; }
   .memory-statement__asterisk { margin: 0; font-size: 2.5rem; }
   .memory-statement__text { font-size: clamp(3.8rem, 9vw, 5.5rem); }
   .memory-statement__footer { align-items: start; flex-direction: column; }
+  .home-reviews-marquee__heading { grid-template-columns: 1fr; align-items: start; }
+  .home-reviews-marquee__heading h2 { font-size: clamp(2.7rem, 10vw, 4.8rem); }
+  .home-reviews-marquee__viewport { mask-image: linear-gradient(to right, transparent, #000 1.25rem, #000 calc(100% - 1.25rem), transparent); }
+  .home-review-card { width: clamp(18rem, 78vw, 25rem); }
   .project-preview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -237,6 +275,12 @@ app-cinematic-hero { display: block; }
   .cinema__scroll { font-size: 0.5rem; letter-spacing: 0.07em; }
   .cinema__credit { max-width: 105px; font-size: 0.5rem; text-align: right; }
   .memory-statement__text { font-size: 3.8rem; }
+  .home-reviews-marquee { padding-top: 4rem; }
+  .home-reviews-marquee::before { top: -12rem; right: -16rem; }
+  .home-reviews-marquee__quote { right: -0.05em; font-size: 17rem; }
+  .home-reviews-marquee__signal-track > div { gap: 1.5rem; padding-inline: 0.8rem; }
+  .home-reviews-marquee__viewport { padding-top: 2.2rem; }
+  .home-review-card { width: min(82vw, 21rem); min-height: 13.5rem; }
 }
 
 /* Short desktop windows and reduced motion get a normal document flow.
@@ -253,6 +297,12 @@ app-cinematic-hero { display: block; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-reviews-marquee__signal-track, .home-reviews-marquee__track { animation: none !important; transform: none !important; }
+  .home-reviews-marquee__signal-track > div:last-child, .home-reviews-marquee__group--copy { display: none; }
+  .home-reviews-marquee__signal-track { min-width: 100%; }
+  .home-reviews-marquee__signal-track > div { min-width: 100%; }
+  .home-reviews-marquee__viewport { overflow-x: auto; mask-image: none; }
+  .home-reviews-marquee__controls { display: none; }
   .memory-statement.scroll-scene--active .memory-statement__text > span { opacity: 1; }
   .memory-statement.scroll-scene--active .memory-statement__asterisk,
   .memory-statement.scroll-scene--active .memory-statement__rule,

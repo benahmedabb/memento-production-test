@@ -9,12 +9,13 @@ import { AnimatedMetricComponent } from '../shared/animated-metric.component';
 import { PageMotionDirective } from '../shared/page-motion.directive';
 import { CinematicHeroComponent } from '../shared/cinematic-hero.component';
 import { ClientLogosComponent } from '../shared/client-logos.component';
+import { HomeReviewsMarqueeComponent } from '../shared/home-reviews-marquee.component';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 
 type VideoProject = (typeof siteConfig.portfolio)[number];
 
 @Component({
-  imports: [AnimatedMetricComponent, PageMotionDirective, RouterLink, CinematicHeroComponent, ClientLogosComponent, ScrollSceneDirective],
+  imports: [AnimatedMetricComponent, PageMotionDirective, RouterLink, CinematicHeroComponent, ClientLogosComponent, HomeReviewsMarqueeComponent, ScrollSceneDirective],
   template: `
     <app-cinematic-hero />
     <app-client-logos />
@@ -39,6 +40,8 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       </div>
       <div class="memory-statement__rule" aria-hidden="true"></div>
     </section>
+
+    <app-home-reviews-marquee />
 
     <section id="progetti" class="section home-projects section--sage-soft">
       <div class="shell section-heading section-heading--stack-mobile">
