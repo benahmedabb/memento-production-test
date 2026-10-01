@@ -10,7 +10,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
       <span class="kinetic-ink" appScrollScene>
         <span>
           @for (word of words(); track $index) {
-            <span class="kinetic-ink__word" [style.--word-start]="$index / words().length">{{ word }} </span>
+            <span class="kinetic-ink__word" [style.--word-start]="$index / words().length">{{ word }}</span>{{ ' ' }}
           }
         </span>
       </span>

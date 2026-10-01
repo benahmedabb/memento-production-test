@@ -28,7 +28,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
         <div>
           <h2 id="memory-title" class="memory-statement__text" aria-label="Non basta farsi vedere. Bisogna farsi ricordare.">
             @for (word of statementWords; track $index) {
-              <span aria-hidden="true" [style.--word-index]="$index">{{ word }} </span>
+              <span aria-hidden="true" [style.--word-index]="$index">{{ word }}</span>{{ ' ' }}
             }
           </h2>
           <div class="memory-statement__footer" appPageMotion="rise">
