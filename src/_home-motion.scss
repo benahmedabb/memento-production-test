@@ -239,8 +239,9 @@ app-cinematic-hero { display: block; }
   .memory-statement__text { font-size: 3.8rem; }
 }
 
-/* Short screens and reduced motion get a normal, readable document flow. */
-@media (max-height: 740px), (prefers-reduced-motion: reduce) {
+/* Short desktop windows and reduced motion get a normal document flow.
+   Mobile keeps the expanding hero even when Safari reduces the viewport. */
+@media (min-width: 860px) and (max-height: 740px), (prefers-reduced-motion: reduce) {
   .cinema.scroll-scene--active { height: auto; }
   .cinema .cinema__stage { height: auto; }
   .cinema.scroll-scene--active .cinema__stage { position: relative; top: auto; height: auto; }
@@ -249,10 +250,6 @@ app-cinematic-hero { display: block; }
   .cinema.scroll-scene--active .cinema__frame { clip-path: inset(12% 5% 17% 55% round 14rem 14rem 0 0); }
   .cinema.scroll-scene--active .cinema__image { left: var(--image-offset); width: calc(100% - var(--image-offset)); transform: scale(1.12); }
   .cinema__layout { min-height: 690px; }
-}
-
-@media (max-width: 859px) and (max-height: 740px) {
-  .cinema.scroll-scene--active .cinema__frame { clip-path: inset(10% 0 22% 35% round 12rem 0 0 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
