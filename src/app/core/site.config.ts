@@ -28,6 +28,13 @@ export interface PageMetadata {
   readonly path: string;
   readonly type?: 'website' | 'article';
   readonly noIndex?: boolean;
+  readonly socialImage?: {
+    readonly src: string;
+    readonly alt: string;
+    readonly width: number;
+    readonly height: number;
+    readonly type: string;
+  };
 }
 
 export interface PortfolioProject {
@@ -59,6 +66,11 @@ export interface Review {
 export const siteConfig = {
   origin: 'https://mementoproduction.it',
   socialPreviewImage: '/images/sala_riunioni_moderna_con_logo_memento.png',
+  agencyPortrait: {
+    src: '/images/stefan-elena-memento-1280.webp',
+    srcset: '/images/stefan-elena-memento-640.webp 640w, /images/stefan-elena-memento-960.webp 960w, /images/stefan-elena-memento-1280.webp 1280w',
+    alt: 'Elena e Stefan, alla guida del team di Memento Production a Moncalieri',
+  },
   analytics: {
     gtmId: 'GTM-WNM2C5VK',
   },
@@ -296,9 +308,16 @@ export const pageMetadata = {
     path: '/',
   },
   agency: {
-    title: 'Agenzia di marketing a Moncalieri | Memento Production',
-    description: 'Conosci Memento Production: agenzia di comunicazione a Moncalieri per aziende di Torino, Pinerolo e Chieri. Contenuti, strategia e progetti digitali.',
+    title: 'Agenzia di marketing a Torino: chi siamo | Memento Production',
+    description: 'Stefan, Elena e un team di circa 8 professionisti: scopri Memento Production, agenzia a Moncalieri per comunicazione e marketing chiavi in mano a Torino.',
     path: '/agenzia',
+    socialImage: {
+      src: '/images/stefan-elena-memento-social.webp',
+      alt: siteConfig.agencyPortrait.alt,
+      width: 1200,
+      height: 630,
+      type: 'image/webp',
+    },
   },
   services: {
     title: 'Servizi di comunicazione a Torino | Memento Production',

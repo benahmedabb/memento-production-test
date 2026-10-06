@@ -14,7 +14,14 @@ export class SeoService {
 
   setPage(metadata: PageMetadata, schema: JsonLd): void {
     const canonicalUrl = `${siteConfig.origin}${metadata.path}`;
-    const socialPreviewImage = `${siteConfig.origin}${siteConfig.socialPreviewImage}`;
+    const socialImage = metadata.socialImage ?? {
+      src: siteConfig.socialPreviewImage,
+      alt: 'Memento Production, agenzia di comunicazione e marketing a Moncalieri',
+      type: 'image/png',
+      width: 1672,
+      height: 941,
+    };
+    const socialPreviewImage = `${siteConfig.origin}${socialImage.src}`;
 
     this.title.setTitle(metadata.title);
     this.updateName('description', metadata.description);
@@ -29,10 +36,12 @@ export class SeoService {
     this.updateProperty('og:url', canonicalUrl);
     this.updateProperty('og:image', socialPreviewImage);
     this.updateProperty('og:image:secure_url', socialPreviewImage);
-    this.updateProperty('og:image:type', 'image/png');
-    this.updateProperty('og:image:width', '1672');
-    this.updateProperty('og:image:height', '941');
+    this.updateProperty('og:image:type', socialImage.type);
+    this.updateProperty('og:image:width', String(socialImage.width));
+    this.updateProperty('og:image:height', String(socialImage.height));
+    this.updateProperty('og:image:alt', socialImage.alt);
     this.updateName('twitter:image', socialPreviewImage);
+    this.updateName('twitter:image:alt', socialImage.alt);
     this.updateName('robots', metadata.noIndex ? 'noindex, nofollow' : 'index, follow');
     this.updateCanonical(canonicalUrl);
     const pageSchema = Array.isArray(schema) ? schema : [schema];

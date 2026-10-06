@@ -20,6 +20,7 @@ import { TrackingService } from '../core/tracking.service';
         <div class="footer-column">
           <h3>Esplora</h3>
           <a routerLink="/agenzia">Agenzia</a>
+          <a routerLink="/agenzia" fragment="chi-siamo">Chi siamo</a>
           <a routerLink="/servizi">Servizi</a>
           <a routerLink="/portfolio">Portfolio</a>
           <a routerLink="/contatti">Contatti</a>

@@ -1,7 +1,21 @@
-import { Component, ElementRef, ViewChild, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { IsActiveMatchOptions, RouterLink, RouterLinkActive } from '@angular/router';
 import { serviceEntries } from '../core/site.config';
 import { TrackingService } from '../core/tracking.service';
+
+interface NavigationLink {
+  readonly label: string;
+  readonly path: string;
+  readonly fragment?: string;
+}
+
+interface NavigationItem extends NavigationLink {
+  readonly dropdown?: {
+    readonly id: string;
+    readonly label: string;
+    readonly links: readonly NavigationLink[];
+  };
+}
 
 @Component({
   selector: 'app-site-header',
@@ -30,26 +44,28 @@ import { TrackingService } from '../core/tracking.service';
 
         <nav id="primary-navigation" class="primary-nav" [class.is-open]="menuOpen()" aria-label="Navigazione principale">
           @for (item of items; track item.path) {
-            @if (item.path === '/servizi') {
-              <div #servicesMenu class="nav-services" [class.is-open]="servicesOpen()" routerLinkActive="is-active"
-                (pointerenter)="onServicesPointerEnter($event)" (pointerleave)="onServicesPointerLeave($event)"
-                (focusout)="onServicesFocusOut($event)" (keydown.escape)="onServicesEscape($event)"
-                (keydown.arrowdown)="onServicesArrowDown($event)">
-                <div class="nav-services__trigger">
-                  <a class="nav-services__link" routerLink="/servizi" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">Servizi</a>
-                  <button #servicesToggle class="nav-services__toggle" type="button" [attr.aria-expanded]="servicesOpen()"
-                    aria-controls="services-navigation" aria-label="Mostra o nascondi i servizi" (click)="toggleServices()">
+            @if (item.dropdown; as dropdown) {
+              <div class="nav-dropdown" [attr.data-menu-path]="item.path" [class.is-open]="openDropdown() === item.path" routerLinkActive="is-active"
+                (pointerenter)="onDropdownPointerEnter($event, item.path)" (pointerleave)="onDropdownPointerLeave($event, item.path)"
+                (focusout)="onDropdownFocusOut($event, item.path)" (keydown.escape)="onDropdownEscape($event, item.path)"
+                (keydown.arrowdown)="onDropdownArrowDown($event, item.path)">
+                <div class="nav-dropdown__trigger">
+                  <a class="nav-dropdown__link" [routerLink]="item.path" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">{{ item.label }}</a>
+                  <button class="nav-dropdown__toggle" type="button" [attr.aria-expanded]="openDropdown() === item.path"
+                    [attr.aria-controls]="dropdown.id" [attr.aria-label]="'Mostra o nascondi ' + item.label" (click)="toggleDropdown(item.path)">
                     <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" /></svg>
                   </button>
                 </div>
-                <div id="services-navigation" class="nav-services__panel" [inert]="!servicesOpen()">
-                  <ul class="nav-services__list" aria-label="I nostri servizi">
-                    @for (entry of services; track entry.key) {
+                <div [id]="dropdown.id" class="nav-dropdown__panel" [inert]="openDropdown() !== item.path">
+                  <ul class="nav-dropdown__list" [attr.aria-label]="dropdown.label">
+                    @for (entry of dropdown.links; track entry.path + (entry.fragment ?? '')) {
                       <li>
-                        <a class="nav-services__item" [routerLink]="entry.path" routerLinkActive="is-active" ariaCurrentWhenActive="page" (click)="closeMenu()">
-                          <span class="nav-services__number" aria-hidden="true">0{{ $index + 1 }}</span>
-                          <span>{{ entry.service.shortTitle }}</span>
-                          <svg class="nav-services__arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M3 13 13 3M3 3h10v10" /></svg>
+                        <a class="nav-dropdown__item" [routerLink]="entry.path" [fragment]="entry.fragment" routerLinkActive="is-active"
+                          [routerLinkActiveOptions]="entry.fragment ? sectionMatchOptions : pageMatchOptions"
+                          [ariaCurrentWhenActive]="entry.fragment ? 'location' : 'page'" (click)="closeMenu()">
+                          <span class="nav-dropdown__number" aria-hidden="true">0{{ $index + 1 }}</span>
+                          <span>{{ entry.label }}</span>
+                          <svg class="nav-dropdown__arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M3 13 13 3M3 3h10v10" /></svg>
                         </a>
                       </li>
                     }
@@ -71,76 +87,100 @@ import { TrackingService } from '../core/tracking.service';
 export class SiteHeaderComponent {
   readonly tracking = inject(TrackingService);
   readonly menuOpen = signal(false);
-  readonly servicesOpen = signal(false);
-  readonly services = serviceEntries;
-
-  @ViewChild('servicesMenu') private servicesMenu?: ElementRef<HTMLElement>;
-  @ViewChild('servicesToggle') private servicesToggle?: ElementRef<HTMLButtonElement>;
-  readonly items = [
+  readonly openDropdown = signal<string | null>(null);
+  readonly pageMatchOptions: IsActiveMatchOptions = {
+    paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored',
+  };
+  readonly sectionMatchOptions: IsActiveMatchOptions = {
+    ...this.pageMatchOptions, fragment: 'exact',
+  };
+  readonly items: readonly NavigationItem[] = [
     { label: 'Home', path: '/' },
-    { label: 'Agenzia', path: '/agenzia' },
-    { label: 'Servizi', path: '/servizi' },
+    {
+      label: 'Agenzia', path: '/agenzia',
+      dropdown: {
+        id: 'agency-navigation', label: 'Esplora la nostra agenzia',
+        links: [
+          { label: 'Il nostro metodo', path: '/agenzia', fragment: 'metodo' },
+          { label: 'Chi siamo', path: '/agenzia', fragment: 'chi-siamo' },
+          { label: 'Chiavi in mano', path: '/agenzia', fragment: 'chiavi-in-mano' },
+        ],
+      },
+    },
+    {
+      label: 'Servizi', path: '/servizi',
+      dropdown: {
+        id: 'services-navigation', label: 'I nostri servizi',
+        links: serviceEntries.map((entry) => ({ label: entry.service.shortTitle, path: entry.path })),
+      },
+    },
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Recensioni', path: '/recensioni' },
   ];
 
   toggleMenu(): void {
     this.menuOpen.update((open) => !open);
-    this.servicesOpen.set(false);
+    this.openDropdown.set(null);
   }
 
   closeMenu(): void {
     this.menuOpen.set(false);
-    this.servicesOpen.set(false);
+    this.openDropdown.set(null);
   }
 
-  toggleServices(): void {
-    this.servicesOpen.update((open) => !open);
+  toggleDropdown(path: string): void {
+    this.openDropdown.update((open) => open === path ? null : path);
   }
 
-  onServicesPointerEnter(event: PointerEvent): void {
+  onDropdownPointerEnter(event: PointerEvent, path: string): void {
     if (event.pointerType === 'mouse' && window.matchMedia('(min-width: 860px) and (hover: hover)').matches) {
-      this.servicesOpen.set(true);
+      this.openDropdown.set(path);
     }
   }
 
-  onServicesPointerLeave(event: PointerEvent): void {
-    const menu = this.servicesMenu?.nativeElement;
-    if (event.pointerType === 'mouse' && !menu?.contains(menu.ownerDocument.activeElement)) {
-      this.servicesOpen.set(false);
+  onDropdownPointerLeave(event: PointerEvent, path: string): void {
+    const menu = event.currentTarget as HTMLElement;
+    if (event.pointerType === 'mouse' && !menu.contains(menu.ownerDocument.activeElement)) {
+      this.closeDropdown(path);
     }
   }
 
-  onServicesFocusOut(event: FocusEvent): void {
-    if (!this.servicesMenu?.nativeElement.contains(event.relatedTarget as Node | null)) {
-      this.servicesOpen.set(false);
+  onDropdownFocusOut(event: FocusEvent, path: string): void {
+    if (!(event.currentTarget as HTMLElement).contains(event.relatedTarget as Node | null)) {
+      this.closeDropdown(path);
     }
   }
 
-  onServicesEscape(event: Event): void {
-    if (this.servicesOpen()) {
+  onDropdownEscape(event: Event, path: string): void {
+    if (this.openDropdown() === path) {
       event.stopPropagation();
-      this.servicesOpen.set(false);
-      this.servicesToggle?.nativeElement.focus();
+      this.closeDropdown(path);
+      (event.currentTarget as HTMLElement).querySelector<HTMLButtonElement>('.nav-dropdown__toggle')?.focus();
     }
   }
 
-  onServicesArrowDown(event: Event): void {
-    if ((event.target as HTMLElement).closest('.nav-services__trigger')) {
+  onDropdownArrowDown(event: Event, path: string): void {
+    if ((event.target as HTMLElement).closest('.nav-dropdown__trigger')) {
       event.preventDefault();
-      this.servicesOpen.set(true);
-      // Wait for Angular to remove inert before moving keyboard focus into the list.
+      const menu = event.currentTarget as HTMLElement;
+      this.openDropdown.set(path);
+      // Wait for Angular to remove inert before moving focus into the list.
       setTimeout(() => {
-        if (this.servicesOpen()) {
-          this.servicesMenu?.nativeElement.querySelector<HTMLAnchorElement>('.nav-services__item')?.focus();
+        if (this.openDropdown() === path && menu.isConnected) {
+          menu.querySelector<HTMLAnchorElement>('.nav-dropdown__item')?.focus();
         }
       });
     }
   }
 
   onDocumentClick(event: MouseEvent): void {
-    if (this.servicesOpen() && !this.servicesMenu?.nativeElement.contains(event.target as Node)) {
-      this.servicesOpen.set(false);
+    const menu = event.target instanceof Element ? event.target.closest('.nav-dropdown') : null;
+    if (menu?.getAttribute('data-menu-path') !== this.openDropdown()) {
+      this.openDropdown.set(null);
     }
+  }
+
+  private closeDropdown(path: string): void {
+    if (this.openDropdown() === path) this.openDropdown.set(null);
   }
 }

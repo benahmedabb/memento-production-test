@@ -8,6 +8,8 @@ export const organizationSchema = {
   '@id': `${siteConfig.origin}/#organization`,
   name: 'Memento Production',
   legalName: siteConfig.contact.legalName,
+  foundingDate: '2022',
+  founder: { '@type': 'Person', '@id': `${siteConfig.origin}/agenzia#stefan`, name: 'Stefan Vidinaru' },
   description: 'Agenzia di comunicazione e marketing con sede a Moncalieri, per aziende di Torino, Pinerolo e Chieri: video e fotografia, social media, Google e Meta Ads, grafica, siti web ed e-commerce.',
   url: siteConfig.origin,
   logo: `${siteConfig.origin}/images/logo-memento-navbar.png`,
