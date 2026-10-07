@@ -1,15 +1,14 @@
+import { catalogLinks } from './core/service-navigation';
+import { serviceRedirects } from './core/service-redirects';
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
   { path: '', renderMode: RenderMode.Prerender },
   { path: 'agenzia', renderMode: RenderMode.Prerender },
   { path: 'servizi', renderMode: RenderMode.Prerender },
-  { path: 'produzione-video-fotografia', renderMode: RenderMode.Prerender },
-  { path: 'social-media', renderMode: RenderMode.Prerender },
+  ...catalogLinks.map(page => ({ path: page.path.slice(1), renderMode: RenderMode.Prerender as const })),
+  ...serviceRedirects.map(({ from }) => ({ path: from.slice(1), renderMode: RenderMode.Prerender as const })),
   { path: 'google-meta-ads', renderMode: RenderMode.Prerender },
-  { path: 'grafica-branding', renderMode: RenderMode.Prerender },
-  { path: 'siti-web-ecommerce', renderMode: RenderMode.Prerender },
-  { path: 'branding-siti-web', renderMode: RenderMode.Prerender },
   { path: 'portfolio', renderMode: RenderMode.Prerender },
   { path: 'recensioni', renderMode: RenderMode.Prerender },
   { path: 'contatti', renderMode: RenderMode.Prerender },

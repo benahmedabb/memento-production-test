@@ -150,7 +150,6 @@ app-kinetic-text { display: inline; }
 }
 
 @media (min-width: 980px) and (min-height: 740px) and (prefers-reduced-motion: no-preference) {
-  .service-chapter.scroll-scene--active { position: sticky; top: calc(6.5rem + var(--chapter-index) * 1rem); }
   .portfolio-gallery .portfolio-entry__visual { position: sticky; top: 7rem; align-self: start; }
 }
 @media (max-width: 979px) {
@@ -195,4 +194,9 @@ app-kinetic-text { display: inline; }
   .brand-orbit__drawing circle, .brand-orbit__drawing ellipse { stroke-dashoffset: 0; }
   .chapter-hero.portfolio-carousel .portfolio-carousel__slide { transition: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+// The new specialization links need room below each card.
+@media (min-width: 980px) and (min-height: 960px) and (prefers-reduced-motion: no-preference) {
+  .service-chapter.scroll-scene--active { position: sticky; top: calc(6.5rem + var(--chapter-index) * 1rem); }
 }

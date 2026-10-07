@@ -1,3 +1,5 @@
+import { ActivatedRoute } from '@angular/router';
+import { catalogChildren, catalogHubs, catalogLinks } from '../core/service-navigation';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -51,7 +53,7 @@ type SubmissionState = 'idle' | 'sending' | 'success' | 'error';
             <div class="field"><label for="email">Email <b aria-hidden="true">*</b></label><input id="email" type="email" formControlName="email" autocomplete="email" />@if (showError('email')) { <small>Inserisci un indirizzo email valido.</small> }</div>
             <div class="field"><label for="phone">Telefono</label><input id="phone" type="tel" formControlName="phone" autocomplete="tel" /></div>
             <div class="field"><label for="company">Azienda</label><input id="company" type="text" formControlName="company" autocomplete="organization" /></div>
-            <div class="field field--full"><label for="service">Di cosa hai bisogno?</label><select id="service" formControlName="service"><option value="">Seleziona un ambito</option>@for (entry of serviceEntries; track entry.key) { <option [value]="entry.service.eyebrow">{{ entry.service.eyebrow }}</option> }<option value="Altro">Altro</option></select></div>
+            <div class="field field--full"><label for="service">Di cosa hai bisogno?</label><select id="service" formControlName="service"><option value="">Seleziona un ambito</option>@for (entry of serviceEntries; track entry.key) { <option [value]="entry.service.eyebrow">{{ entry.service.eyebrow }}</option> }@for (group of catalogGroups; track group.path) { <optgroup [label]="group.label">@for (item of group.children; track item.path) { <option [value]="item.label">{{ item.label }}</option> }</optgroup> }<option value="Altro">Altro</option></select></div>
             <div class="field field--full"><label for="message">Raccontaci il progetto <b aria-hidden="true">*</b></label><textarea id="message" rows="6" formControlName="message"></textarea>@if (showError('message')) { <small>Scrivi qualche dettaglio del progetto.</small> }</div>
           </div>
           <label class="privacy-check"><input type="checkbox" formControlName="privacyAccepted" /><span>Ho letto la <a [href]="config.iubenda.privacyPolicyUrl" target="_blank" rel="noopener noreferrer">Privacy Policy</a> e autorizzo il trattamento della richiesta. <b aria-hidden="true">*</b></span></label>
@@ -67,6 +69,7 @@ type SubmissionState = 'idle' | 'sending' | 'success' | 'error';
 export class ContactPageComponent {
   readonly config = siteConfig;
   readonly serviceEntries = serviceEntries;
+  readonly catalogGroups = catalogHubs.map(hub => ({ ...hub, children: catalogChildren(hub.path) }));
   readonly state = signal<SubmissionState>('idle');
   readonly form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -83,6 +86,12 @@ export class ContactPageComponent {
   private readonly seo = inject(SeoService);
 
   constructor() {
+    const requestedPath = inject(ActivatedRoute).snapshot.queryParamMap.get('servizio');
+    const requested = catalogLinks.find(page => page.path === requestedPath);
+    if (requested) {
+      const category = serviceEntries.find(entry => entry.path === requested.path);
+      this.form.controls.service.setValue(category?.service.eyebrow ?? requested.label);
+    }
     this.seo.setPage(pageMetadata.contact, {
       '@context': 'https://schema.org',
       '@type': 'ContactPage',

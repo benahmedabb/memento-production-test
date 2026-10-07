@@ -1,3 +1,4 @@
+import { catalogChildren } from '../core/service-navigation';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SeoService } from '../core/seo.service';
@@ -39,6 +40,7 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
               </div>
               <div class="service-chapter__media"><img [src]="image.src" [srcset]="image.srcset" sizes="(min-width: 980px) 45vw, 100vw" [alt]="image.alt" loading="lazy" decoding="async" width="1200" height="800" /></div>
             </a>
+            @if (item.children.length) { <nav class="service-chapter__specialties" [attr.aria-label]="'Specializzazioni ' + item.service.shortTitle">@for (child of item.children; track child.path) { <a [routerLink]="child.path">{{ child.label }} <span aria-hidden="true">↗</span></a> }</nav> }
           </article>
         }
       </div>
@@ -56,7 +58,7 @@ export class ServicesPageComponent implements OnInit {
   readonly tracking = inject(TrackingService);
   readonly config = siteConfig;
   private readonly seo = inject(SeoService);
-  readonly services = serviceEntries;
+  readonly services = serviceEntries.map(item => ({ ...item, children: catalogChildren(item.path) }));
 
   ngOnInit(): void {
     this.seo.setPage(pageMetadata.services, {

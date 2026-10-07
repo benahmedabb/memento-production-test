@@ -37,9 +37,9 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
 export class AgencyTeamComponent {
   readonly dots = Array.from({ length: 8 });
   readonly roles = [
-    { title: 'Content creator', description: 'Fotografia & videomaking', path: '/produzione-video-fotografia' },
-    { title: 'Strategist', description: 'Strategia & gestione social', path: '/social-media' },
-    { title: 'Graphic designer', description: 'Identità visiva & branding', path: '/grafica-branding' },
-    { title: 'Web developer', description: 'Siti web & e-commerce', path: '/siti-web-ecommerce' },
+    { title: 'Content creator', description: 'Fotografia & videomaking', path: '/video' },
+    { title: 'Strategist', description: 'Strategia & gestione social', path: '/social' },
+    { title: 'Graphic designer', description: 'Identità visiva & branding', path: '/grafica' },
+    { title: 'Web developer', description: 'Siti web & e-commerce', path: '/web' },
   ];
 }

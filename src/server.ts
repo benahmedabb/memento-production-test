@@ -1,3 +1,4 @@
+import { serviceRedirects } from './app/core/service-redirects';
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
@@ -11,6 +12,17 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+
+// Preserve old shared/indexed URLs before static files or Angular handle the request.
+app.use((req, res, next) => {
+  const redirect = serviceRedirects.find(item => item.from === req.path.replace(/\/$/, ''));
+  if (redirect && (req.method === 'GET' || req.method === 'HEAD')) {
+    const query = req.originalUrl.includes('?') ? req.originalUrl.slice(req.originalUrl.indexOf('?')) : '';
+    res.redirect(301, `${redirect.to}${query}`);
+    return;
+  }
+  next();
+});
 
 /**
  * Example Express Rest API endpoints can be defined here.

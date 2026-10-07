@@ -1,3 +1,5 @@
+import { catalogLinks } from './core/service-navigation';
+import { serviceRedirects } from './core/service-redirects';
 import { Routes } from '@angular/router';
 import { AgencyPageComponent } from './pages/agency-page.component';
 import { ContactPageComponent } from './pages/contact-page.component';
@@ -13,12 +15,9 @@ export const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
   { path: 'agenzia', component: AgencyPageComponent },
   { path: 'servizi', component: ServicesPageComponent },
-  { path: 'produzione-video-fotografia', component: ServiceDetailPageComponent, data: { serviceKey: 'production' } },
-  { path: 'social-media', component: ServiceDetailPageComponent, data: { serviceKey: 'social' } },
+  ...catalogLinks.map(catalogPage => ({ path: catalogPage.path.slice(1), loadComponent: () => import('./pages/catalog-page.component').then(m => m.CatalogPageComponent), data: { catalogPath: catalogPage.path } })),
+  ...serviceRedirects.map(({ from, to }) => ({ path: from.slice(1), redirectTo: to, pathMatch: 'full' as const })),
   { path: 'google-meta-ads', component: ServiceDetailPageComponent, data: { serviceKey: 'ads' } },
-  { path: 'grafica-branding', component: ServiceDetailPageComponent, data: { serviceKey: 'branding' } },
-  { path: 'siti-web-ecommerce', component: ServiceDetailPageComponent, data: { serviceKey: 'web' } },
-  { path: 'branding-siti-web', redirectTo: 'grafica-branding', pathMatch: 'full' },
   { path: 'portfolio', component: PortfolioPageComponent },
   { path: 'recensioni', component: ReviewsPageComponent },
   { path: 'contatti', component: ContactPageComponent },

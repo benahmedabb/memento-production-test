@@ -1,0 +1,175 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+.studio-object {
+  position: relative;
+  color: #d1ac67;
+  background: #486956;
+  isolation: isolate;
+  overflow: hidden;
+}
+.studio-object::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 60% 20%, #63806a, transparent 65%), linear-gradient(160deg, transparent, #173f2c);
+}
+svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+.object-grid {
+  stroke: #f4f1eb;
+  opacity: 0.07;
+}
+.object-corners {
+  opacity: 0.55;
+}
+.object-cross {
+  stroke: #f4f1eb;
+}
+.object-dashes {
+  stroke-dasharray: 1 7;
+  stroke-width: 5;
+}
+.object-motion {
+  transform-origin: 50% 50%;
+  transform: translateY(calc(var(--scene-progress, 0) * -24px))
+    rotate(calc(var(--variation, 0) * 1deg + var(--scene-progress, 0) * 8deg));
+  transition: transform 0.35s ease-out;
+}
+.lens-shell {
+  fill: #274d39;
+}
+.lens-blades {
+  fill: #486956;
+  stroke: #d1ac67;
+  transform: rotate(calc(-16deg + var(--variation, 0) * 5deg + var(--scene-progress, 0) * 65deg));
+}
+.lens-core {
+  fill: #153b29;
+}
+.film-frames rect {
+  fill: #395a45;
+}
+.film-frames rect:nth-child(2) {
+  fill: #54755c;
+}
+.film-frames rect:nth-child(3) {
+  fill: #183d2a;
+}
+.object-play {
+  fill: #d1ac67;
+  stroke: none;
+}
+.film-track {
+  opacity: 0.65;
+}
+.film-head {
+  fill: #d1ac67;
+  transform: translateX(calc(var(--scene-progress, 0) * -120px));
+}
+.type-sheet {
+  fill: #f4f1eb;
+  stroke: #b3bba9;
+  transform: rotate(calc(-8deg + var(--scene-progress, 0) * 16deg));
+}
+.type-sheet text {
+  fill: #486956;
+  stroke: none;
+  font-family: Georgia, serif;
+  font-size: 192px;
+  letter-spacing: -20px;
+}
+.swatches rect:first-child {
+  fill: #486956;
+}
+.swatches rect:nth-child(2) {
+  fill: #d1ac67;
+}
+.swatches rect:last-child {
+  fill: #f4f1eb;
+}
+.social-card rect {
+  fill: #244b35;
+}
+.social-card--back {
+  transform: rotate(-12deg);
+  transform-origin: center;
+}
+.social-card--front > rect:first-child {
+  fill: #f4f1eb;
+}
+.social-card--front {
+  stroke: #486956;
+}
+.social-card .social-image {
+  fill: #486956;
+}
+.social-bubble rect {
+  fill: #d1ac67;
+}
+.social-bubble circle {
+  fill: #244b35;
+  stroke: none;
+}
+.browser-sheet {
+  fill: #f4f1eb;
+  stroke: #486956;
+  transform: rotate(calc(-5deg + var(--scene-progress, 0) * 8deg));
+}
+.browser-sheet circle {
+  fill: #486956;
+}
+.browser-sheet .browser-image {
+  fill: #dce4d8;
+}
+.browser-sheet .browser-button,
+.browser-phone .browser-button {
+  fill: #d1ac67;
+  stroke: none;
+}
+.browser-phone {
+  fill: #244b35;
+}
+.browser-phone > rect:not(:first-child) {
+  fill: #486956;
+}
+.object-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 1.5rem 1.4rem;
+  font-size: 0.57rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #f4f1eb;
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 860px) {
+  .studio-object {
+    animation: object-arrive 1.1s cubic-bezier(0.2, 0.6, 0.3, 1) both;
+  }
+  @keyframes object-arrive {
+    from {
+      clip-path: inset(0 0 100% 0);
+      transform: translateY(18px);
+    }
+    to {
+      clip-path: inset(0);
+      transform: none;
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .object-motion,
+  .film-head {
+    transform: none;
+    transition: none;
+  }
+}

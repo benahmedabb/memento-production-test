@@ -1,3 +1,4 @@
+@use 'service-catalog';
 @use './fonts';
 @use './local-content';
 @use './home-motion';
@@ -532,3 +533,9 @@ html body .iubenda-tp-btn { right: auto !important; bottom: 1rem !important; lef
   .has-page-motion .page-motion-target, .page-motion--armed { opacity: 1; transform: none; }
   .portfolio-carousel__slide { transition: none; }
 }
+
+.service-chapter__specialties { position: relative; display: flex; flex-wrap: wrap; gap: .6rem; padding: 1.2rem clamp(1.2rem, 3vw, 3rem); color: #f4f1eb; background: #486956; }
+.service-chapter__specialties a { display: flex; align-items: center; gap: .9rem; min-height: 2.75rem; padding: .55rem .8rem; border: 1px solid #91a18d; font-size: .7rem; }
+.service-chapter__specialties a:hover { color: #173b29; background: #d1ac67; }
+.footer-services { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; padding-block: 1.5rem; border-top: 1px solid var(--light-line); font-size: .76rem; }
+.footer-services a:hover { color: var(--gold); }

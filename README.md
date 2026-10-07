@@ -40,7 +40,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 La build è completamente statica: non richiede un processo Node.js sul server. Dopo la build, carica il contenuto di `dist/memento-production/browser` nella cartella `public_html` del dominio.
 
-Il file `public/.htaccess` viene incluso nella build e mantiene il dominio senza `www`, il redirect da `/branding-siti-web` a `/grafica-branding` e la pagina 404.
+Il file `public/.htaccess` viene incluso nella build e mantiene il dominio senza `www`, i redirect permanenti dei vecchi servizi verso le nuove categorie (mappa in `src/app/core/service-redirects.ts`) e la pagina 404.
 
 ## Running unit tests
 
@@ -63,3 +63,5 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+La nuova struttura dei servizi, le scelte editoriali e la migrazione degli URL sono documentate in [docs/service-catalog.md](docs/service-catalog.md).

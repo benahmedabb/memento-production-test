@@ -234,8 +234,6 @@ app-home-reviews-marquee { display: block; min-width: 0; }
 @media (min-width: 860px) {
   .home-services .service-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .home-services .service-card { grid-column: span 2; }
-  .home-services .service-card:nth-last-child(-n + 2) { grid-column: span 3; }
-  .home-services .service-card:nth-last-child(-n + 2) .service-card__media { aspect-ratio: 16 / 9; }
 }
 
 @media (max-width: 859px) {

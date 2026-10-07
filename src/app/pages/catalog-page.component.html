@@ -1,0 +1,256 @@
+<section class="catalog-opening" [class.catalog-opening--detail]="page.kind === 'detail'" appScrollScene="hero">
+  <div class="shell">
+    <nav class="catalog-breadcrumbs" aria-label="Percorso di navigazione">
+      <ol>
+        @for (crumb of breadcrumbs; track crumb.path) {
+          <li>
+            @if ($last) {
+              <span aria-current="page">{{ crumb.label }}</span>
+            } @else {
+              <a [routerLink]="crumb.path">{{ crumb.label }}</a
+              ><span aria-hidden="true"> / </span>
+            }
+          </li>
+        }
+      </ol>
+    </nav>
+    <div class="catalog-opening__grid">
+      <div class="catalog-opening__copy">
+        <p class="eyebrow">Memento / {{ hub.label }} <span>Torino · Moncalieri</span></p>
+        <h1>{{ page.heading }}<span class="catalog-period">.</span></h1>
+        <p class="catalog-claim">{{ page.claim }}</p>
+        <p class="catalog-intro">{{ page.intro }}</p>
+        <div class="catalog-actions">
+          <a
+            class="button"
+            routerLink="/contatti"
+            [queryParams]="{ servizio: page.path }"
+            fragment="raccontaci"
+            (click)="tracking.trackQuote('catalog_hero', page.path)"
+            >Parliamo del progetto <span aria-hidden="true">↗</span></a
+          >
+          <a
+            class="catalog-jump"
+            [routerLink]="page.path"
+            [fragment]="page.kind === 'hub' ? 'specializzazioni' : 'attivita'"
+            >{{ page.kind === 'hub' ? 'Esplora i servizi' : 'Cosa realizziamo' }} <span aria-hidden="true">↓</span></a
+          >
+        </div>
+      </div>
+      <div class="catalog-opening__art">
+        <span class="catalog-edition">0{{ disciplineNumber }} / 05</span
+        ><app-service-visual [category]="page.category" [variant]="variant" />
+      </div>
+    </div>
+    <div class="catalog-opening__foot">
+      <span>Strategia. Produzione. Consegna.</span
+      ><a routerLink="/agenzia" fragment="chiavi-in-mano"
+        >Un team, dall’inizio alla fine <span aria-hidden="true">↗</span></a
+      >
+    </div>
+  </div>
+</section>
+
+@if (page.kind === 'hub') {
+  <section id="specializzazioni" class="catalog-section catalog-specialties">
+    <div class="shell">
+      <div class="catalog-section-head">
+        <div>
+          <p class="eyebrow">Le specializzazioni</p>
+          <h2>Da dove iniziamo?</h2>
+        </div>
+        <p>Un ambito preciso.<br />Un progetto costruito intorno a voi.</p>
+      </div>
+      <div class="catalog-specialties__grid">
+        @for (item of children; track item.path) {
+          <a class="specialty-card" [routerLink]="item.path">
+            <span class="specialty-card__top"
+              ><span>0{{ $index + 1 }}</span
+              ><span aria-hidden="true">↗</span></span
+            >
+            <h3>{{ item.label }}</h3>
+            <p>{{ item.summary }}</p>
+            <span class="specialty-card__tags">
+              @for (activity of item.deliverables.slice(0, 3); track activity.title) {
+                <span>{{ activity.title }}</span>
+              }
+            </span>
+            <span class="specialty-card__bottom">Scopri il servizio <span aria-hidden="true">→</span></span>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+} @else {
+  <section id="attivita" class="catalog-section catalog-deliverables">
+    <div class="shell catalog-split">
+      <div>
+        <p class="eyebrow">Cosa realizziamo</p>
+        <h2>Il progetto,<br />nel concreto.</h2>
+        <p>
+          Selezioniamo le attività in base agli obiettivi. Ambito, materiali e tempi vengono concordati prima di
+          iniziare.
+        </p>
+      </div>
+      <ul>
+        @for (item of page.deliverables; track item.title) {
+          <li>
+            <span class="catalog-index" aria-hidden="true">0{{ $index + 1 }}</span>
+            <div>
+              <h3>{{ item.title }}</h3>
+              @if (item.text) {
+                <p>{{ item.text }}</p>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  </section>
+}
+
+<section class="catalog-section catalog-editorial" appScrollScene>
+  <div class="shell catalog-split">
+    <div class="catalog-editorial__aside">
+      <p class="eyebrow">Il nostro punto di vista</p>
+      <p class="catalog-editorial__statement">La differenza<br />è nel <em>come.</em></p>
+      <span class="catalog-editorial__symbol" aria-hidden="true">✳</span>
+    </div>
+    <div class="catalog-editorial__articles">
+      @for (section of page.sections; track section.title) {
+        <article>
+          <h2>{{ section.title }}</h2>
+          @for (paragraph of section.paragraphs; track paragraph) {
+            <p>{{ paragraph }}</p>
+          }
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+@if (page.process.length) {
+  <section class="catalog-section catalog-workflow">
+    <div class="shell">
+      <p class="eyebrow">Come lavoriamo</p>
+      <h2>Dalla prima idea alla consegna.</h2>
+      <ol>
+        @for (step of page.process; track step.title) {
+          <li>
+            <span aria-hidden="true">0{{ $index + 1 }}</span>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.text }}</p>
+          </li>
+        }
+      </ol>
+    </div>
+  </section>
+}
+
+@if (projects.length) {
+  <section class="catalog-section catalog-projects">
+    <div class="shell">
+      <div class="catalog-section-head">
+        <div>
+          <p class="eyebrow">Dal nostro portfolio</p>
+          <h2>Il lavoro prende forma.</h2>
+        </div>
+        <a class="text-link" routerLink="/portfolio">Tutti i progetti <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="catalog-projects__grid">
+        @for (project of projects; track project.slug) {
+          <a [routerLink]="'/portfolio'" [fragment]="project.slug"
+            ><div class="catalog-projects__image">
+              <img
+                [src]="project.coverUrl"
+                [alt]="'Progetto ' + project.client + ': ' + project.title"
+                width="800"
+                height="600"
+                loading="lazy"
+                decoding="async"
+              /><span aria-hidden="true">↗</span>
+            </div>
+            <span class="eyebrow">{{ project.client }}</span>
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.summary }}</p></a
+          >
+        }
+      </div>
+    </div>
+  </section>
+}
+
+<section class="catalog-section catalog-faq">
+  <div class="shell catalog-split">
+    <div>
+      <p class="eyebrow">Prima di iniziare</p>
+      <h2>Le domande<br />giuste.</h2>
+      <p>Qualche risposta per capire come impostare il vostro progetto.</p>
+    </div>
+    <div>
+      @for (faq of page.faqs; track faq.question) {
+        <details>
+          <summary>{{ faq.question }}<span aria-hidden="true">+</span></summary>
+          <p>{{ faq.answer }}</p>
+        </details>
+      }
+    </div>
+  </div>
+</section>
+
+@if (page.kind === 'detail') {
+  <nav class="catalog-section catalog-siblings" [attr.aria-label]="'Altri servizi di ' + hub.label">
+    <div class="shell">
+      <p class="eyebrow">Esplora {{ hub.label }}</p>
+      <div class="catalog-siblings__links">
+        @for (item of siblings; track item.path) {
+          <a [routerLink]="item.path">{{ item.label }} <span aria-hidden="true">↗</span></a>
+        }
+        <a class="catalog-siblings__all" [routerLink]="hub.path"
+          >Tutti i servizi {{ hub.label.toLowerCase() }} <span aria-hidden="true">→</span></a
+        >
+      </div>
+    </div>
+  </nav>
+}
+
+<section class="catalog-section catalog-connections">
+  <div class="shell">
+    <div class="catalog-section-head">
+      <div>
+        <p class="eyebrow">Un progetto coordinato</p>
+        <h2>Il passo successivo<br />è già nella squadra.</h2>
+      </div>
+      <p>Foto, video, identità, social e web:<br />le competenze si parlano.</p>
+    </div>
+    <div class="catalog-connections__grid">
+      @for (item of related; track item.path) {
+        <a [routerLink]="item.path"
+          ><h3>{{ item.label }} <span aria-hidden="true">↗</span></h3>
+          <p>{{ item.summary }}</p></a
+        >
+      }
+    </div>
+  </div>
+</section>
+
+<section class="catalog-section catalog-closing">
+  <div class="shell">
+    <p class="eyebrow">Voi portate l’obiettivo. Noi il team.</p>
+    <h2>Le chiavi in mano.<br /><em>La direzione, insieme.</em></h2>
+    <p>
+      Un referente coordina le competenze necessarie, dalla strategia alla consegna. Partiamo da ciò che serve davvero
+      al vostro progetto.
+    </p>
+    <a
+      class="button"
+      routerLink="/contatti"
+      [queryParams]="{ servizio: page.path }"
+      fragment="raccontaci"
+      (click)="tracking.trackQuote('catalog_closing', page.path)"
+      >Raccontateci la vostra idea <span aria-hidden="true">↗</span></a
+    ><a class="catalog-closing__about" routerLink="/agenzia" fragment="chi-siamo"
+      >Conoscete il team <span aria-hidden="true">→</span></a
+    >
+  </div>
+</section>

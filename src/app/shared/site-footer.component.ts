@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ConsentService } from '../core/consent.service';
-import { siteConfig } from '../core/site.config';
+import { serviceEntries, siteConfig } from '../core/site.config';
 import { TrackingService } from '../core/tracking.service';
 
 @Component({
@@ -35,6 +35,8 @@ import { TrackingService } from '../core/tracking.service';
         </div>
       </div>
 
+      <nav class="shell footer-services" aria-label="Servizi Memento">@for (entry of services; track entry.path) { <a [routerLink]="entry.path">{{ entry.service.shortTitle }}</a> }</nav>
+
       <div class="shell footer-bottom">
         <span>© {{ currentYear }} Memento Production · P. IVA {{ config.contact.vatNumber }}</span>
         <div class="footer-legal">
@@ -49,6 +51,7 @@ import { TrackingService } from '../core/tracking.service';
 })
 export class SiteFooterComponent {
   readonly config = siteConfig;
+  readonly services = serviceEntries;
   readonly currentYear = new Date().getFullYear();
   readonly consent = inject(ConsentService);
   readonly tracking = inject(TrackingService);

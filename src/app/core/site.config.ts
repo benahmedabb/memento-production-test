@@ -1,4 +1,4 @@
-export type ServiceKey = 'production' | 'social' | 'ads' | 'branding' | 'web';
+export type ServiceKey = 'photography' | 'production' | 'social' | 'ads' | 'branding' | 'web';
 
 export interface ServiceDefinition {
   readonly key: ServiceKey;
@@ -160,14 +160,24 @@ export const siteConfig = {
     },
   },
   services: {
+    photography: {
+      key: 'photography',
+      eyebrow: 'Fotografia',
+      title: 'Servizi fotografici per aziende a Torino.',
+      shortTitle: 'Fotografia',
+      description: 'Fotografia corporate, food, immobiliare e di prodotto. Immagini pensate per siti, cataloghi, social e campagne, in studio a Moncalieri o nella vostra sede.',
+      image: 'architecture',
+      deliverables: ['Ritratti corporate e team', 'Food & Drinks', 'Fotografia immobiliare', 'Product photography e still life'],
+      approach: ['Definiamo utilizzi e formati.', 'Prepariamo il set e realizziamo gli scatti.', 'Consegniamo immagini selezionate e pronte per i canali concordati.'],
+    },
     production: {
       key: 'production',
-      eyebrow: 'Produzione video e fotografia',
-      title: 'Video e fotografia aziendale a Torino.',
-      shortTitle: 'Video e fotografia',
-      description: 'Video aziendali, fotografia di prodotto e contenuti per eventi, social e campagne: dalla preparazione delle riprese alla consegna dei formati utili.',
+      eyebrow: 'Produzione video',
+      title: 'Produzione video aziendali a Torino.',
+      shortTitle: 'Video',
+      description: 'Video aziendali, reel per i social, animazioni, corsi e testimonial: dal concept alle riprese, fino al montaggio e alle versioni pronte da pubblicare.',
       image: 'production',
-      deliverables: ['Video corporate e commerciali', 'Fotografia editoriale e prodotto', 'Contenuti verticali per campagne e social', 'Riprese aeree quando pertinenti al progetto'],
+      deliverables: ['Video corporate e commerciali', 'Video animati e motion graphics', 'Contenuti verticali per campagne e social', 'Riprese aeree quando pertinenti al progetto'],
       approach: ['Allineiamo linguaggio visivo e obiettivo.', 'Progettiamo riprese, set e formato.', 'Montiamo versioni coerenti con i canali di distribuzione.'],
     },
     social: {
@@ -179,16 +189,6 @@ export const siteConfig = {
       image: 'social',
       deliverables: ['Strategia e tono di voce', 'Piani editoriali e format', 'Creazione di contenuti foto e video', 'Lettura delle performance e ottimizzazioni'],
       approach: ['Definiamo il ruolo dei canali.', 'Costruiamo una grammatica editoriale.', 'Osserviamo i segnali utili per affinare il lavoro.'],
-    },
-    ads: {
-      key: 'ads',
-      eyebrow: 'Google e Meta Ads',
-      title: 'Campagne Google Ads e Meta Ads a Torino.',
-      shortTitle: 'Google e Meta Ads',
-      description: 'Campagne Google e Meta Ads con creatività, testi e pagine di destinazione coerenti: definiamo gli obiettivi e monitoriamo i segnali utili a migliorarle.',
-      image: 'ads',
-      deliverables: ['Architettura delle campagne', 'Creatività statiche e video', 'Copy e pagine di destinazione', 'Monitoraggio e sintesi periodiche'],
-      approach: ['Partiamo dall’offerta e dal contesto.', 'Separiamo messaggi, pubblici e momenti.', 'Rileggiamo dati e creatività insieme, senza scorciatoie.'],
     },
     branding: {
       key: 'branding',
@@ -209,6 +209,16 @@ export const siteConfig = {
       image: 'web',
       deliverables: ['Siti web aziendali e landing page', 'E-commerce con catalogo prodotti, carrello e pagamenti', 'Design responsive e percorsi di navigazione accessibili', 'Ottimizzazione tecnica, prestazioni e gestione dei contenuti'],
       approach: ['Definiamo obiettivi, contenuti e percorsi delle persone.', 'Progettiamo interfacce coerenti con il brand e sviluppiamo il sito.', 'Verifichiamo navigazione, moduli e acquisti prima della pubblicazione.'],
+    },
+    ads: {
+      key: 'ads',
+      eyebrow: 'Google e Meta Ads',
+      title: 'Campagne Google Ads e Meta Ads a Torino.',
+      shortTitle: 'Google e Meta Ads',
+      description: 'Campagne Google e Meta Ads con creatività, testi e pagine di destinazione coerenti: definiamo gli obiettivi e monitoriamo i segnali utili a migliorarle.',
+      image: 'ads',
+      deliverables: ['Architettura delle campagne', 'Creatività statiche e video', 'Copy e pagine di destinazione', 'Monitoraggio e sintesi periodiche'],
+      approach: ['Partiamo dall’offerta e dal contesto.', 'Separiamo messaggi, pubblici e momenti.', 'Rileggiamo dati e creatività insieme, senza scorciatoie.'],
     },
   } satisfies Record<ServiceKey, ServiceDefinition>,
   portfolio: [
@@ -321,18 +331,23 @@ export const pageMetadata = {
   },
   services: {
     title: 'Servizi di comunicazione a Torino | Memento Production',
-    description: 'Video e fotografia, social media, Google e Meta Ads, branding e siti web. Cinque servizi per le aziende di Torino, Moncalieri, Pinerolo e Chieri.',
+    description: 'Video e fotografia, social media, Google e Meta Ads, branding e siti web. Servizi coordinati per le aziende di Torino, Moncalieri, Pinerolo e Chieri.',
     path: '/servizi',
   },
+  photography: {
+    title: 'Servizi fotografici per aziende a Torino | Memento',
+    description: 'Fotografia corporate, food, immobiliare e di prodotto per aziende di Torino e provincia. Studio a Moncalieri e servizi in sede.',
+    path: '/foto',
+  },
   production: {
-    title: 'Video aziendali e fotografia a Torino | Memento Production',
-    description: 'Video aziendali, foto di prodotto e contenuti per social ed eventi. Da Moncalieri per aziende di Torino, Pinerolo e Chieri. Richiedi un preventivo.',
-    path: '/produzione-video-fotografia',
+    title: 'Produzione video a Torino | Memento Production',
+    description: 'Video aziendali, reel, animazioni, corsi e testimonial per aziende di Torino e provincia. Da Moncalieri, dal concept alla consegna.',
+    path: '/video',
   },
   social: {
     title: 'Gestione social media a Torino | Memento Production',
     description: 'Strategia social, piani editoriali e contenuti foto e video per aziende di Torino e provincia. Agenzia a Moncalieri, attiva anche per Pinerolo e Chieri.',
-    path: '/social-media',
+    path: '/social',
   },
   ads: {
     title: 'Google Ads e Meta Ads a Torino | Memento Production',
@@ -342,12 +357,12 @@ export const pageMetadata = {
   branding: {
     title: 'Grafica e brand identity a Torino | Memento Production',
     description: 'Logo, identità visiva e materiali grafici per aziende di Torino e provincia. Da Moncalieri, per progetti anche a Pinerolo e Chieri. Chiedi un preventivo.',
-    path: '/grafica-branding',
+    path: '/grafica',
   },
   web: {
     title: 'Siti web ed e-commerce a Torino | Memento Production',
     description: 'Siti aziendali, landing page ed e-commerce per le imprese di Torino, Moncalieri, Pinerolo e Chieri. Design, sviluppo e percorsi di contatto chiari.',
-    path: '/siti-web-ecommerce',
+    path: '/web',
   },
   portfolio: {
     title: 'Portfolio | Memento Production',
@@ -378,7 +393,8 @@ export const pageMetadata = {
 } as const satisfies Record<string, PageMetadata>;
 
 // Keep the home, service directory and contact choices in the same order.
-export const serviceEntries = Object.values(siteConfig.services).map((service) => ({
+const serviceOrder: readonly ServiceKey[] = ['photography', 'production', 'branding', 'social', 'web', 'ads'];
+export const serviceEntries = serviceOrder.map(key => siteConfig.services[key]).map((service) => ({
   key: service.key,
   path: pageMetadata[service.key].path,
   service,

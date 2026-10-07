@@ -9,6 +9,7 @@ import { KineticTextComponent } from '../shared/kinetic-text.component';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 
 const SERVICE_METADATA: Record<ServiceKey, PageMetadata> = {
+  photography: pageMetadata.photography,
   production: pageMetadata.production,
   social: pageMetadata.social,
   ads: pageMetadata.ads,
@@ -54,6 +55,8 @@ const SERVICE_METADATA: Record<ServiceKey, PageMetadata> = {
         </ol>
       </div>
     </section>
+
+    <section class="section section--sage-soft"><div class="shell"><p class="eyebrow">Un progetto coordinato</p><h2>La campagna comincia anche fuori dall’annuncio.</h2><div class="button-row"><a class="text-link" routerLink="/social">Gestione social →</a><a class="text-link" routerLink="/web/landing-page-torino">Landing page →</a><a class="text-link" routerLink="/video">Produzione video →</a></div></div></section>
 
     <section class="section section--dark chapter-closing" appScrollScene>
       <div class="shell cta-centered">

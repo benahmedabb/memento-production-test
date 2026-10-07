@@ -179,3 +179,29 @@
     padding-inline: 0.85rem;
   }
 }
+
+.nav-service-group__head { display: flex; align-items: center; }
+.nav-service-group__head > a { flex: 1; }
+.nav-service-group__toggle { flex: 0 0 auto; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid var(--line); background: transparent; color: var(--green); font-size: 1.3rem; }
+.nav-service-group__children { display: none; padding: 0 0 .8rem 2.55rem; margin: 0; list-style: none; }
+.nav-service-group.is-expanded .nav-service-group__children { display: block; }
+.nav-service-group__children a { display: flex; justify-content: space-between; gap: .75rem; min-height: 2.75rem; align-items: center; padding: .5rem .6rem; font-size: .76rem; line-height: 1.3; border-radius: .15rem; }
+.nav-service-group__children a > span { color: var(--green); opacity: .7; }
+.nav-service-group__children a:hover,.nav-service-group__children a:focus-visible,.nav-service-group__children a.is-active { color: var(--green-deep); background: #dfe7da; }
+.nav-service-group__note { margin: .1rem 1rem 1rem 2.55rem; color: var(--green); font-size: .7rem; }
+@media (min-width: 860px) {
+  .nav-dropdown--services { position: static; }
+  // Keep the transparent hover bridge still; animate only the visible menu.
+  .nav-dropdown--services .nav-dropdown__panel { left: 50%; top: calc(100% - 1.5rem); width: min(1120px, calc(100vw - 3rem)); transform: translateX(-50%); padding-top: 1.5rem; }
+  .nav-dropdown--services.is-open .nav-dropdown__panel { transform: translateX(-50%); }
+  .nav-dropdown--services .nav-dropdown__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.3rem 1.8rem; padding: 1.6rem; max-height: calc(100dvh - 7rem); overflow-y: auto; transform: translateY(.6rem); transition: transform 250ms ease; }
+  .nav-dropdown--services.is-open .nav-dropdown__list { transform: none; }
+  .nav-service-group { min-width: 0; }
+  .nav-service-group__head { border-bottom: 1px solid var(--line); margin-bottom: .45rem; }
+  .nav-service-group__head .nav-dropdown__item { padding: .7rem .5rem; font-size: .95rem; }
+  .nav-service-group__toggle { display: none; }
+  .nav-service-group .nav-service-group__children { display: block; padding: 0 0 0 1.8rem; }
+  .nav-service-group__children a { font-size: .74rem; min-height: 2.15rem; }
+  .nav-service-group__note { margin: .75rem .5rem 0 2.3rem; }
+}
+@media (prefers-reduced-motion: reduce) { .nav-dropdown__panel,.nav-dropdown--services .nav-dropdown__list,.nav-dropdown__toggle svg,.nav-dropdown__item,.nav-dropdown__arrow { transition: none; } }

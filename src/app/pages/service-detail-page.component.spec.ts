@@ -5,7 +5,7 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { routes } from '../app.routes';
 import { ContactPageComponent } from './contact-page.component';
 import { HomePageComponent } from './home-page.component';
-import { ServiceDetailPageComponent } from './service-detail-page.component';
+import { CatalogPageComponent } from './catalog-page.component';
 import { ServicesPageComponent } from './services-page.component';
 
 describe('Separate branding and web services', () => {
@@ -15,39 +15,39 @@ describe('Separate branding and web services', () => {
 
   it('updates content and canonical metadata when navigating between the two services', async () => {
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/grafica-branding', ServiceDetailPageComponent);
-    expect(harness.routeNativeElement?.textContent).toContain('Grafica e branding');
-    expect(harness.routeNativeElement?.textContent).toContain('Posizionamento, logo e identità visiva');
-    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://mementoproduction.it/grafica-branding');
+    await harness.navigateByUrl('/grafica', CatalogPageComponent);
+    expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toContain('Grafica');
+    expect(harness.routeNativeElement?.textContent).toContain('Creazione loghi');
+    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://mementoproduction.it/grafica');
 
-    await harness.navigateByUrl('/siti-web-ecommerce', ServiceDetailPageComponent);
-    expect(harness.routeNativeElement?.textContent).toContain('Siti web ed e-commerce');
-    expect(harness.routeNativeElement?.textContent).toContain('E-commerce con catalogo prodotti, carrello e pagamenti');
-    expect(document.title).toBe('Siti web ed e-commerce a Torino | Memento Production');
-    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://mementoproduction.it/siti-web-ecommerce');
+    await harness.navigateByUrl('/web', CatalogPageComponent);
+    expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toContain('Siti web');
+    expect(harness.routeNativeElement?.textContent).toContain('E-commerce');
+    expect(document.title).toBe('Siti web ed e-commerce a Torino | Memento');
+    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe('https://mementoproduction.it/web');
     const schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
-    expect(schema[0].name).toBe('Siti web ed e-commerce');
-    expect(schema[1].itemListElement.at(-1).item).toBe('https://mementoproduction.it/siti-web-ecommerce');
+    expect(schema[0]['@type']).toBe('CollectionPage');
+    expect(schema[1].itemListElement.at(-1).item).toBe('https://mementoproduction.it/web');
   });
 
   it('keeps the previous combined service address working', async () => {
     const harness = await RouterTestingHarness.create();
-    await harness.navigateByUrl('/branding-siti-web', ServiceDetailPageComponent);
-    expect(TestBed.inject(Router).url).toBe('/grafica-branding');
-    expect(harness.routeNativeElement?.textContent).toContain('Grafica e branding');
+    await harness.navigateByUrl('/branding-siti-web', CatalogPageComponent);
+    expect(TestBed.inject(Router).url).toBe('/grafica');
+    expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toContain('Grafica');
   });
 
   it('offers both services from the home, service directory and contact form', async () => {
     const harness = await RouterTestingHarness.create();
     await harness.navigateByUrl('/', HomePageComponent);
-    expect(harness.routeNativeElement?.querySelectorAll('.service-card')).toHaveLength(5);
-    expect(harness.routeNativeElement?.querySelector('a[href="/grafica-branding"]')?.textContent).toContain('Grafica e branding');
-    expect(harness.routeNativeElement?.querySelector('a[href="/siti-web-ecommerce"]')?.textContent).toContain('Siti web ed e-commerce');
+    expect(harness.routeNativeElement?.querySelectorAll('.service-card')).toHaveLength(6);
+    expect(harness.routeNativeElement?.querySelector('a[href="/grafica"]')?.textContent).toContain('Grafica e branding');
+    expect(harness.routeNativeElement?.querySelector('a[href="/web"]')?.textContent).toContain('Siti web ed e-commerce');
 
     await harness.navigateByUrl('/servizi', ServicesPageComponent);
-    expect(harness.routeNativeElement?.querySelectorAll('.service-chapter')).toHaveLength(5);
-    expect(harness.routeNativeElement?.querySelector('a[href="/grafica-branding"]')).toBeTruthy();
-    expect(harness.routeNativeElement?.querySelector('a[href="/siti-web-ecommerce"]')).toBeTruthy();
+    expect(harness.routeNativeElement?.querySelectorAll('.service-chapter')).toHaveLength(6);
+    expect(harness.routeNativeElement?.querySelector('a[href="/grafica"]')).toBeTruthy();
+    expect(harness.routeNativeElement?.querySelector('a[href="/web"]')).toBeTruthy();
 
     const contact = await harness.navigateByUrl('/contatti', ContactPageComponent);
     const select = harness.routeNativeElement!.querySelector<HTMLSelectElement>('#service')!;

@@ -1,4 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
+import { catalogChildren, catalogHubs } from '../core/service-navigation';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { IsActiveMatchOptions, RouterLink, RouterLinkActive } from '@angular/router';
 import { serviceEntries } from '../core/site.config';
 import { TrackingService } from '../core/tracking.service';
@@ -7,6 +8,7 @@ interface NavigationLink {
   readonly label: string;
   readonly path: string;
   readonly fragment?: string;
+  readonly children?: readonly NavigationLink[];
 }
 
 interface NavigationItem extends NavigationLink {
@@ -45,7 +47,7 @@ interface NavigationItem extends NavigationLink {
         <nav id="primary-navigation" class="primary-nav" [class.is-open]="menuOpen()" aria-label="Navigazione principale">
           @for (item of items; track item.path) {
             @if (item.dropdown; as dropdown) {
-              <div class="nav-dropdown" [attr.data-menu-path]="item.path" [class.is-open]="openDropdown() === item.path" routerLinkActive="is-active"
+              <div class="nav-dropdown" [class.nav-dropdown--services]="item.path === '/servizi'" [attr.data-menu-path]="item.path" [class.is-open]="openDropdown() === item.path" routerLinkActive="is-active"
                 (pointerenter)="onDropdownPointerEnter($event, item.path)" (pointerleave)="onDropdownPointerLeave($event, item.path)"
                 (focusout)="onDropdownFocusOut($event, item.path)" (keydown.escape)="onDropdownEscape($event, item.path)"
                 (keydown.arrowdown)="onDropdownArrowDown($event, item.path)">
@@ -56,10 +58,11 @@ interface NavigationItem extends NavigationLink {
                     <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" /></svg>
                   </button>
                 </div>
-                <div [id]="dropdown.id" class="nav-dropdown__panel" [inert]="openDropdown() !== item.path">
+                <div [id]="dropdown.id" class="nav-dropdown__panel" [attr.inert]="openDropdown() !== item.path ? '' : null">
                   <ul class="nav-dropdown__list" [attr.aria-label]="dropdown.label">
                     @for (entry of dropdown.links; track entry.path + (entry.fragment ?? '')) {
-                      <li>
+                      <li [class.nav-service-group]="item.path === '/servizi'" [class.is-expanded]="openServiceGroup() === entry.path">
+                        <div class="nav-service-group__head">
                         <a class="nav-dropdown__item" [routerLink]="entry.path" [fragment]="entry.fragment" routerLinkActive="is-active"
                           [routerLinkActiveOptions]="entry.fragment ? sectionMatchOptions : pageMatchOptions"
                           [ariaCurrentWhenActive]="entry.fragment ? 'location' : 'page'" (click)="closeMenu()">
@@ -67,6 +70,15 @@ interface NavigationItem extends NavigationLink {
                           <span>{{ entry.label }}</span>
                           <svg class="nav-dropdown__arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M3 13 13 3M3 3h10v10" /></svg>
                         </a>
+                        @if (entry.children?.length) {
+                          <button class="nav-service-group__toggle" type="button" [attr.aria-expanded]="openServiceGroup() === entry.path" [attr.aria-controls]="'service-group-' + $index" [attr.aria-label]="'Mostra o nascondi servizi ' + entry.label" (click)="toggleServiceGroup(entry.path)"><span aria-hidden="true">{{ openServiceGroup() === entry.path ? '−' : '+' }}</span></button>
+                        }
+                        </div>
+                        @if (entry.children?.length) {
+                          <ul class="nav-service-group__children" [id]="'service-group-' + $index" [attr.aria-label]="'Servizi ' + entry.label">
+                            @for (child of entry.children; track child.path) { <li><a [routerLink]="child.path" routerLinkActive="is-active" [routerLinkActiveOptions]="pageMatchOptions" ariaCurrentWhenActive="page" (click)="closeMenu()">{{ child.label }}<span aria-hidden="true">↗</span></a></li> }
+                          </ul>
+                        } @else if (item.path === '/servizi') { <p class="nav-service-group__note">Creatività, campagne e misurazione.</p> }
                       </li>
                     }
                   </ul>
@@ -85,9 +97,11 @@ interface NavigationItem extends NavigationLink {
   `,
 })
 export class SiteHeaderComponent {
+  private dropdownCloseTimer: ReturnType<typeof setTimeout> | undefined;
   readonly tracking = inject(TrackingService);
   readonly menuOpen = signal(false);
   readonly openDropdown = signal<string | null>(null);
+  readonly openServiceGroup = signal<string | null>(null);
   readonly pageMatchOptions: IsActiveMatchOptions = {
     paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored',
   };
@@ -111,29 +125,46 @@ export class SiteHeaderComponent {
       label: 'Servizi', path: '/servizi',
       dropdown: {
         id: 'services-navigation', label: 'I nostri servizi',
-        links: serviceEntries.map((entry) => ({ label: entry.service.shortTitle, path: entry.path })),
+        links: [
+          ...catalogHubs.map(hub => ({ label: hub.label, path: hub.path, children: catalogChildren(hub.path).map(page => ({ label: page.label, path: page.path })) })),
+          ...serviceEntries.filter(entry => entry.key === 'ads').map(entry => ({ label: entry.service.shortTitle, path: entry.path })),
+        ],
       },
     },
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Recensioni', path: '/recensioni' },
   ];
 
+  constructor() {
+    inject(DestroyRef).onDestroy(() => this.cancelDropdownClose());
+  }
+
   toggleMenu(): void {
+    this.cancelDropdownClose();
     this.menuOpen.update((open) => !open);
+    this.openServiceGroup.set(null);
     this.openDropdown.set(null);
   }
 
   closeMenu(): void {
+    this.cancelDropdownClose();
     this.menuOpen.set(false);
+    this.openServiceGroup.set(null);
     this.openDropdown.set(null);
   }
 
+  toggleServiceGroup(path: string): void {
+    this.openServiceGroup.update(open => open === path ? null : path);
+  }
+
   toggleDropdown(path: string): void {
+    this.cancelDropdownClose();
     this.openDropdown.update((open) => open === path ? null : path);
   }
 
   onDropdownPointerEnter(event: PointerEvent, path: string): void {
     if (event.pointerType === 'mouse' && window.matchMedia('(min-width: 860px) and (hover: hover)').matches) {
+      this.cancelDropdownClose();
       this.openDropdown.set(path);
     }
   }
@@ -141,7 +172,17 @@ export class SiteHeaderComponent {
   onDropdownPointerLeave(event: PointerEvent, path: string): void {
     const menu = event.currentTarget as HTMLElement;
     if (event.pointerType === 'mouse' && !menu.contains(menu.ownerDocument.activeElement)) {
-      this.closeDropdown(path);
+      if (path === '/servizi') {
+        // Allow the pointer to cross the short gap towards any mega-menu column.
+        // Re-entering the dropdown cancels this pending close.
+        this.cancelDropdownClose();
+        this.dropdownCloseTimer = setTimeout(() => {
+          this.dropdownCloseTimer = undefined;
+          this.closeDropdown(path);
+        }, 200);
+      } else {
+        this.closeDropdown(path);
+      }
     }
   }
 
@@ -163,6 +204,7 @@ export class SiteHeaderComponent {
     if ((event.target as HTMLElement).closest('.nav-dropdown__trigger')) {
       event.preventDefault();
       const menu = event.currentTarget as HTMLElement;
+      this.cancelDropdownClose();
       this.openDropdown.set(path);
       // Wait for Angular to remove inert before moving focus into the list.
       setTimeout(() => {
@@ -176,11 +218,20 @@ export class SiteHeaderComponent {
   onDocumentClick(event: MouseEvent): void {
     const menu = event.target instanceof Element ? event.target.closest('.nav-dropdown') : null;
     if (menu?.getAttribute('data-menu-path') !== this.openDropdown()) {
+      this.cancelDropdownClose();
       this.openDropdown.set(null);
     }
   }
 
   private closeDropdown(path: string): void {
-    if (this.openDropdown() === path) this.openDropdown.set(null);
+    if (this.openDropdown() === path) {
+      this.cancelDropdownClose();
+      this.openDropdown.set(null);
+    }
+  }
+
+  private cancelDropdownClose(): void {
+    clearTimeout(this.dropdownCloseTimer);
+    this.dropdownCloseTimer = undefined;
   }
 }
