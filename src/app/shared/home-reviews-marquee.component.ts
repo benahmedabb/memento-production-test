@@ -1,5 +1,6 @@
 import { afterNextRender, ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { clientTestimonial } from '../core/client-testimonial';
 import { siteConfig } from '../core/site.config';
 
 @Component({
@@ -17,6 +18,24 @@ import { siteConfig } from '../core/site.config';
           <p>Esperienze reali, condivise dai clienti che hanno lavorato con Memento Production.</p>
         </div>
         <a class="text-link text-link--light" routerLink="/recensioni">Tutte le recensioni <span aria-hidden="true">→&#xFE0E;</span></a>
+      </div>
+
+      <div class="shell home-testimonial">
+        <a class="home-testimonial__link" routerLink="/recensioni" fragment="video-recensione">
+          <span class="home-testimonial__image">
+            <img [src]="testimonial.thumbnail" alt="" [width]="testimonial.thumbnailWidth" [height]="testimonial.thumbnailHeight" loading="lazy" decoding="async" />
+            <span class="home-testimonial__duration" aria-label="Durata: 1 minuto e 8 secondi">{{ testimonial.durationLabel }}</span>
+          </span>
+          <span class="home-testimonial__copy">
+            <span class="home-testimonial__eyebrow">La parola al cliente</span>
+            <strong>{{ testimonial.client }}</strong>
+            <span>La sua esperienza con Memento Production.</span>
+          </span>
+          <span class="home-testimonial__action">
+            <span class="home-testimonial__play" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" focusable="false"><path d="m8 4 12 8-12 8Z" /></svg></span>
+            Guarda la testimonianza
+          </span>
+        </a>
       </div>
 
       <div class="home-reviews-marquee__signal" aria-hidden="true">
@@ -60,6 +79,7 @@ import { siteConfig } from '../core/site.config';
   `,
 })
 export class HomeReviewsMarqueeComponent {
+  readonly testimonial = clientTestimonial;
   readonly reviews = siteConfig.reviews;
   readonly paused = signal(false);
   readonly visible = signal(false);

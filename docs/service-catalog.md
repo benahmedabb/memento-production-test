@@ -28,6 +28,8 @@ I PDF non contengono le gallerie definitive, i file video o i dati dei casi stud
 
 Per arricchire le singole specializzazioni servono selezioni approvate di fotografie, video o lavori grafici con cliente, descrizione, autorizzazioni d’uso ed eventuali risultati contestualizzati. A quel punto si possono aggiungere gallerie specifiche e, per video effettivamente incorporati con metadati completi, dati strutturati pertinenti.
 
+È stata successivamente fornita la [testimonianza del Dr. Alessio Vainella](https://www.youtube.com/watch?v=AK2Dz4vgTr8): compare in `/recensioni#video-recensione`, con un richiamo nella Home. La copertina originale è servita localmente; il player YouTube viene caricato su richiesta e con il consenso ai contenuti esterni. Titolo, data di pubblicazione e durata verificati sono raccolti in `src/app/core/client-testimonial.ts` e alimentano i dati strutturati `VideoObject`. Questa testimonianza affianca le recensioni Google esistenti; le gallerie delle singole specializzazioni restano da fornire.
+
 ## SEO e migrazione
 
 `src/app/core/service-catalog.ts` contiene i testi e i metadati delle nuove pagine. Ogni pagina ha titolo, descrizione, canonical, Open Graph, un H1 e breadcrumb visibili. I dati strutturati descrivono una `CollectionPage` con catalogo per le categorie e un `Service` per le specializzazioni, insieme a `BreadcrumbList` e all’organizzazione esistente.

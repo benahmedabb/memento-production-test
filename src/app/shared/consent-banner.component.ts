@@ -41,7 +41,7 @@ import { siteConfig } from '../core/site.config';
           </label>
           <label class="consent-option">
             <input #marketing type="checkbox" [checked]="consent.preferences().marketing" />
-            <span><strong>Marketing</strong><small>Abilitano le funzionalità pubblicitarie di Google.</small></span>
+            <span><strong>Marketing e contenuti esterni</strong><small>Abilitano le funzionalità pubblicitarie di Google e i contenuti incorporati da YouTube e Instagram.</small></span>
           </label>
 
           <div class="dialog-actions">

@@ -1,14 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { clientTestimonial } from '../core/client-testimonial';
 import { SeoService } from '../core/seo.service';
 import { pageMetadata, siteConfig } from '../core/site.config';
 import { TrackingService } from '../core/tracking.service';
 import { PageMotionDirective } from '../shared/page-motion.directive';
 import { KineticTextComponent } from '../shared/kinetic-text.component';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
+import { ClientTestimonialComponent } from '../shared/client-testimonial.component';
 
 @Component({
-  imports: [KineticTextComponent, ScrollSceneDirective, PageMotionDirective, RouterLink],
+  imports: [ClientTestimonialComponent, KineticTextComponent, ScrollSceneDirective, PageMotionDirective, RouterLink],
   template: `
     <section class="page-hero page-hero--reviews chapter-hero" appScrollScene="hero">
       <span class="chapter-hero__frame" aria-hidden="true"></span>
@@ -19,9 +21,11 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
       <div class="shell page-hero__content">
         <p appPageMotion="hero" [motionDelay]="140" class="eyebrow">Testimonianze</p>
         <h1><app-kinetic-text text="Esperienze reali, raccontate da chi ha lavorato con noi." [delay]="160" /></h1>
-        <p appPageMotion="hero" [motionDelay]="560">Dalle produzioni fotografiche alla gestione social, ogni progetto nasce da un rapporto diretto. Qui trovi alcune recensioni condivise dai clienti su Google.</p>
+        <p appPageMotion="hero" [motionDelay]="560">Dalle produzioni fotografiche alla gestione social, ogni progetto nasce da un rapporto diretto. Qui trovi una testimonianza video e le recensioni condivise dai clienti su Google.</p>
       </div>
     </section>
+
+    <app-client-testimonial />
 
     <section class="section reviews-intro section--sage">
       <div class="shell reviews-intro__grid">
@@ -77,12 +81,15 @@ export class ReviewsPageComponent implements OnInit {
   private readonly seo = inject(SeoService);
 
   ngOnInit(): void {
-    this.seo.setPage(pageMetadata.reviews, {
+    const pageUrl = `${siteConfig.origin}${pageMetadata.reviews.path}`;
+    const videoId = `${pageUrl}#video-recensione`;
+    this.seo.setPage(pageMetadata.reviews, [{
       '@context': 'https://schema.org',
       '@type': 'WebPage',
       name: pageMetadata.reviews.title,
-      url: `${siteConfig.origin}${pageMetadata.reviews.path}`,
+      url: pageUrl,
       isPartOf: { '@id': `${siteConfig.origin}/#organization` },
+      mainEntity: { '@id': videoId },
       breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -90,6 +97,20 @@ export class ReviewsPageComponent implements OnInit {
           { '@type': 'ListItem', position: 2, name: 'Recensioni', item: `${siteConfig.origin}${pageMetadata.reviews.path}` },
         ],
       },
-    });
+    }, {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      '@id': videoId,
+      name: clientTestimonial.title,
+      description: clientTestimonial.description,
+      thumbnailUrl: `${siteConfig.origin}${clientTestimonial.thumbnail}`,
+      uploadDate: clientTestimonial.uploadDate,
+      duration: clientTestimonial.duration,
+      embedUrl: clientTestimonial.embedUrl,
+      url: videoId,
+      sameAs: clientTestimonial.watchUrl,
+      inLanguage: 'it',
+      publisher: { '@id': `${siteConfig.origin}/#organization` },
+    }]);
   }
 }

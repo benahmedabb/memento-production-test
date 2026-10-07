@@ -370,8 +370,8 @@ export const pageMetadata = {
     path: '/portfolio',
   },
   reviews: {
-    title: 'Recensioni | Memento Production',
-    description: 'Esperienze e recensioni Google di persone che hanno lavorato con Memento Production su contenuti, social media, fotografia ed eventi.',
+    title: 'Recensioni e testimonianze | Memento Production',
+    description: 'La video testimonianza del Dr. Alessio Vainella e le recensioni Google dei clienti Memento Production: esperienze di comunicazione, contenuti e social media.',
     path: '/recensioni',
   },
   contact: {
