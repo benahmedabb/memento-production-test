@@ -1,3 +1,7 @@
+html:has(.photo-lightbox[open]) {
+  overflow: hidden;
+}
+
 .catalog-page {
   display: block;
 
@@ -103,6 +107,40 @@
     font-size: 0.59rem;
     letter-spacing: 0.12em;
     color: #486956;
+  }
+  .catalog-real-work {
+    display: block;
+    background: #1c3929;
+    color: #f4f1eb;
+    box-shadow: 1rem 1rem 0 #d1ac6740;
+  }
+  .catalog-real-work img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .catalog-real-work > span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    font-size: 0.7rem;
+  }
+  .catalog-real-work > span > span:last-child {
+    color: #d1ac67;
+    font:
+      1.5rem Arial,
+      sans-serif;
+  }
+  .catalog-real-work--portrait {
+    max-width: 20rem;
+    margin-inline: auto;
+    transform: rotate(2deg);
+  }
+  .catalog-real-work:focus-visible {
+    outline: 3px solid #486956;
+    outline-offset: 6px;
   }
   .catalog-opening__foot {
     border-top: 1px solid var(--line);

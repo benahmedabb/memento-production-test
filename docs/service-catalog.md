@@ -22,13 +22,13 @@ Cinque categorie e diciannove specializzazioni. Social ha tre pagine, come nel r
 - La gestione della stampa indicata come `[CONFERMA]` nel brief non diventa un impegno automatico: il servizio espone progettazione ed esecutivi.
 - La formula chiavi in mano è esplicita: referente unico e coordinamento delle competenze, con link alla sezione dedicata di Agenzia.
 
-## Materiali ancora da fornire
+## Materiali e gallerie
 
-I PDF non contengono le gallerie definitive, i file video o i dati dei casi studio richiesti nelle note redazionali. Le nuove pagine usano illustrazioni SVG decorative originali e rimandi ai progetti già documentati nel Portfolio. Nessuna galleria fittizia, numero inventato o segnaposto compare al pubblico.
+I PDF iniziali non contenevano le gallerie definitive, i file video o i dati dei casi studio richiesti nelle note redazionali. Le pagine sono nate con illustrazioni SVG decorative originali e rimandi ai progetti già documentati nel Portfolio. Nessuna galleria fittizia, numero inventato o segnaposto compare al pubblico.
 
-Per arricchire le singole specializzazioni servono selezioni approvate di fotografie, video o lavori grafici con cliente, descrizione, autorizzazioni d’uso ed eventuali risultati contestualizzati. A quel punto si possono aggiungere gallerie specifiche e, per video effettivamente incorporati con metadati completi, dati strutturati pertinenti.
+Il materiale successivamente fornito dall’agenzia è stato integrato nelle pagine pertinenti: fotografia immobiliare, produzioni video, Reel, animazione e Social. La mappa completa, le fonti e le scelte tecniche sono in [service-media.md](./service-media.md). Le specializzazioni senza materiale pertinente conservano i contenuti e le illustrazioni esistenti. La cartella riservata con nuovi materiali e casi studio è stata esclusa su indicazione dell’utente.
 
-È stata successivamente fornita la [testimonianza del Dr. Alessio Vainella](https://www.youtube.com/watch?v=AK2Dz4vgTr8): compare in `/recensioni#video-recensione`, con un richiamo nella Home. La copertina originale è servita localmente; il player YouTube viene caricato su richiesta e con il consenso ai contenuti esterni. Titolo, data di pubblicazione e durata verificati sono raccolti in `src/app/core/client-testimonial.ts` e alimentano i dati strutturati `VideoObject`. Questa testimonianza affianca le recensioni Google esistenti; le gallerie delle singole specializzazioni restano da fornire.
+La [testimonianza del Dr. Alessio Vainella](https://www.youtube.com/watch?v=AK2Dz4vgTr8) compare in `/recensioni#video-recensione`, con un richiamo nella Home, ed è ripresa nella specializzazione Corsi & testimonial. La copertina originale è servita localmente; il player YouTube viene caricato su richiesta e con il consenso ai contenuti esterni. Titolo, data di pubblicazione e durata verificati sono raccolti in `src/app/core/client-testimonial.ts` e alimentano i dati strutturati `VideoObject`. Le recensioni Google esistenti rimangono presenti.
 
 ## SEO e migrazione
 

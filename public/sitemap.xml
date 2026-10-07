@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url><loc>https://mementoproduction.it/</loc></url>
   <url><loc>https://mementoproduction.it/agenzia</loc></url>
   <url><loc>https://mementoproduction.it/servizi</loc></url>
   <url><loc>https://mementoproduction.it/foto</loc></url>
   <url><loc>https://mementoproduction.it/foto/fotografia-corporate-torino</loc></url>
   <url><loc>https://mementoproduction.it/foto/food-photography-torino</loc></url>
-  <url><loc>https://mementoproduction.it/foto/fotografia-immobiliare-torino</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/foto/fotografia-immobiliare-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/soggiorno-villa-cantalupa-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/cucina-appartamento-pinerolo-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/camera-villa-cantalupa-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/esterno-villa-cumiana-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/drone-villa-piscina-1920.webp</image:loc></image:image>
+  </url>
   <url><loc>https://mementoproduction.it/foto/product-photography-torino</loc></url>
   <url><loc>https://mementoproduction.it/video</loc></url>
   <url><loc>https://mementoproduction.it/video/video-aziendali-torino</loc></url>

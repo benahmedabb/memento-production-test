@@ -1,0 +1,138 @@
+@for (selection of selections(); track selection.id) {
+  <section
+    class="film-gallery"
+    [id]="selection.id"
+    [attr.aria-labelledby]="selection.id + '-title'"
+    [class.film-gallery--portrait]="selection.format === 'portrait'"
+    [class.film-gallery--single]="selection.films.length === 1"
+    [class.film-gallery--four]="selection.films.length === 4"
+  >
+    <div class="shell">
+      <div class="film-gallery__heading">
+        <div>
+          <p class="eyebrow">{{ selection.eyebrow }}</p>
+          <h2 [id]="selection.id + '-title'">{{ selection.title }}</h2>
+        </div>
+        <p>{{ selection.description }}</p>
+      </div>
+      <div class="film-gallery__grid">
+        @for (film of selection.films; track film.id) {
+          <article
+            class="film-card"
+            [id]="'film-' + film.id"
+            [attr.aria-labelledby]="'film-title-' + film.id"
+          >
+            <div class="film-card__screen">
+              @if (failedId() === film.id) {
+                <div class="film-card__error">
+                  <p>Il video non è disponibile in questo momento.</p>
+                  <a [href]="film.watchUrl" target="_blank" rel="noopener noreferrer"
+                    >Guarda su Instagram ↗</a
+                  >
+                </div>
+              } @else if (active()?.id === film.id) {
+                @if (film.provider === 'local') {
+                  <video
+                    #player
+                    [src]="film.source"
+                    [poster]="film.poster"
+                    controls
+                    playsinline
+                    preload="none"
+                    tabindex="0"
+                    [attr.aria-label]="film.title"
+                    (error)="failedId.set(film.id)"
+                  ></video>
+                } @else {
+                  <iframe
+                    #player
+                    [src]="embedUrl()"
+                    [title]="film.title"
+                    width="1280"
+                    height="720"
+                    allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                  ></iframe>
+                }
+              } @else if (film.provider === 'instagram-link') {
+                <a
+                  class="film-card__poster"
+                  [href]="film.watchUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  [attr.aria-label]="'Guarda su Instagram: ' + film.title + ' (nuova scheda)'"
+                >
+                  <img
+                    [src]="film.poster"
+                    [alt]="'Copertina del Reel di ' + film.client"
+                    [width]="film.width"
+                    [height]="film.height"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="film-card__play" aria-hidden="true">↗</span
+                  ><span class="film-card__badge">Su Instagram</span>
+                </a>
+              } @else {
+                <button
+                  type="button"
+                  class="film-card__poster"
+                  (click)="play(film)"
+                  [attr.aria-label]="'Riproduci: ' + film.title + ', durata ' + film.durationLabel"
+                  [attr.aria-describedby]="
+                    film.provider === 'youtube' ? selection.id + '-consent' : null
+                  "
+                >
+                  <img
+                    [src]="film.poster"
+                    [attr.srcset]="film.posterSrcset ?? null"
+                    sizes="(max-width: 600px) 92vw, (max-width: 900px) 46vw, 40vw"
+                    [alt]="'Copertina: ' + film.title"
+                    [width]="film.width"
+                    [height]="film.height"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="film-card__play" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24" width="24" height="24">
+                      <path d="m8 4 12 8-12 8Z" /></svg
+                  ></span>
+                  <span class="film-card__badge">{{ film.durationLabel }}</span>
+                </button>
+              }
+            </div>
+            <div class="film-card__copy">
+              <p class="film-card__client">{{ film.client }}</p>
+              <h3 [id]="'film-title-' + film.id">{{ film.title }}</h3>
+              <p class="film-card__description">{{ film.description }}</p>
+              <div class="film-card__links">
+                <a [href]="film.watchUrl" target="_blank" rel="noopener noreferrer"
+                  >{{
+                    film.provider === 'youtube' ? 'Guarda su YouTube' : 'Apri il post Instagram'
+                  }}
+                  <span aria-hidden="true">↗</span></a
+                >
+                @if (active()?.id === film.id) {
+                  <button type="button" (click)="stop()">
+                    Chiudi video <span aria-hidden="true">×</span>
+                  </button>
+                }
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+      <div class="film-gallery__footer">
+        @if (selection.format === 'landscape') {
+          <p [id]="selection.id + '-consent'">
+            I video YouTube si aprono dopo il consenso ai contenuti esterni nelle preferenze cookie.
+          </p>
+        }
+        @if (selection.more; as more) {
+          <a [routerLink]="more.path">{{ more.label }} <span aria-hidden="true">↗</span></a>
+        }
+      </div>
+    </div>
+  </section>
+}

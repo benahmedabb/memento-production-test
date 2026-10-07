@@ -24,13 +24,17 @@ describe('Service catalog navigation and SEO', () => {
       expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toContain(page.heading);
       expect(harness.routeNativeElement?.textContent).toContain(page.intro);
       expect(document.title).toBe(page.title);
-      expect(document.querySelector('meta[name="description"]')?.getAttribute('content')).toBe(page.description);
+      expect(document.querySelector('meta[name="description"]')?.getAttribute('content')).toBe(
+        page.description,
+      );
       expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
         `https://mementoproduction.it${page.path}`,
       );
       const schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
       expect(schema[0]['@type']).toBe(page.kind === 'hub' ? 'CollectionPage' : 'Service');
-      expect(schema[1].itemListElement.at(-1).item).toBe(`https://mementoproduction.it${page.path}`);
+      expect(schema[1].itemListElement.at(-1).item).toBe(
+        `https://mementoproduction.it${page.path}`,
+      );
       expect(schema[1].itemListElement).toHaveLength(page.kind === 'hub' ? 3 : 4);
       titles.add(document.title);
     }
@@ -52,17 +56,27 @@ describe('Service catalog navigation and SEO', () => {
     const harness = await RouterTestingHarness.create();
     for (const hub of catalogHubs) {
       await harness.navigateByUrl(hub.path, CatalogPageComponent);
-      const children = catalogPages.filter((page) => page.kind === 'detail' && page.category === hub.category);
-      expect(harness.routeNativeElement?.querySelectorAll('.specialty-card')).toHaveLength(children.length);
+      const children = catalogPages.filter(
+        (page) => page.kind === 'detail' && page.category === hub.category,
+      );
+      expect(harness.routeNativeElement?.querySelectorAll('.specialty-card')).toHaveLength(
+        children.length,
+      );
       for (const page of children) {
-        expect(harness.routeNativeElement?.querySelector(`a.specialty-card[href="${page.path}"]`)).toBeTruthy();
+        expect(
+          harness.routeNativeElement?.querySelector(`a.specialty-card[href="${page.path}"]`),
+        ).toBeTruthy();
       }
     }
     await harness.navigateByUrl('/foto/food-photography-torino', CatalogPageComponent);
-    const cta = harness.routeNativeElement!.querySelector<HTMLAnchorElement>('.catalog-actions a.button')!;
+    const cta = harness.routeNativeElement!.querySelector<HTMLAnchorElement>(
+      '.catalog-actions a.button',
+    )!;
     const contact = await harness.navigateByUrl(cta.getAttribute('href')!, ContactPageComponent);
     expect(contact.form.controls.service.value).toBe('Food & Drinks');
-    expect(harness.routeNativeElement?.querySelector<HTMLSelectElement>('#service')?.value).toBe('Food & Drinks');
+    expect(harness.routeNativeElement?.querySelector<HTMLSelectElement>('#service')?.value).toBe(
+      'Food & Drinks',
+    );
     expect(contact.form.controls.message.value).toBe('');
     expect(contact.form.controls.privacyAccepted.value).toBe(false);
   });
@@ -71,6 +85,52 @@ describe('Service catalog navigation and SEO', () => {
     const harness = await RouterTestingHarness.create();
     await harness.navigateByUrl('/foto/inesistente', NotFoundPageComponent);
     expect(TestBed.inject(Router).url).toBe('/404');
-    expect(document.querySelector('meta[name="robots"]')?.getAttribute('content')).toContain('noindex');
+    expect(document.querySelector('meta[name="robots"]')?.getAttribute('content')).toContain(
+      'noindex',
+    );
+  });
+
+  it('keeps real media, structured data and social previews aligned with the current service', async () => {
+    const harness = await RouterTestingHarness.create();
+    await harness.navigateByUrl('/foto/fotografia-immobiliare-torino', CatalogPageComponent);
+    expect(harness.routeNativeElement?.querySelectorAll('.photo-gallery figure')).toHaveLength(5);
+    expect(harness.routeNativeElement?.querySelectorAll('.film-card')).toHaveLength(4);
+    expect(harness.routeNativeElement?.querySelector('iframe, video')).toBeNull();
+    let schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
+    expect(
+      schema.filter((entry: Record<string, unknown>) => entry['@type'] === 'ImageObject'),
+    ).toHaveLength(5);
+    expect(
+      schema.filter((entry: Record<string, unknown>) => entry['@type'] === 'VideoObject'),
+    ).toHaveLength(4);
+    expect(document.querySelector('meta[property="og:image"]')?.getAttribute('content')).toContain(
+      'soggiorno-villa-cantalupa',
+    );
+
+    await harness.navigateByUrl('/video/reel-social-torino', CatalogPageComponent);
+    expect(harness.routeNativeElement?.querySelectorAll('.film-card')).toHaveLength(4);
+    schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
+    const videos = schema.filter(
+      (entry: Record<string, unknown>) => entry['@type'] === 'VideoObject',
+    );
+    expect(videos).toHaveLength(3); // The link-only Reel is not advertised as an embedded video.
+    expect(
+      videos.every((entry: Record<string, string>) =>
+        entry['contentUrl'].startsWith('https://mementoproduction.it/videos/servizi/'),
+      ),
+    ).toBe(true);
+    expect(schema.some((entry: Record<string, unknown>) => entry['@type'] === 'ImageObject')).toBe(
+      false,
+    );
+
+    await harness.navigateByUrl('/grafica', CatalogPageComponent);
+    expect(harness.routeNativeElement?.querySelector('.film-card, .photo-gallery')).toBeNull();
+    schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
+    expect(schema.some((entry: Record<string, unknown>) => entry['@type'] === 'VideoObject')).toBe(
+      false,
+    );
+    expect(
+      document.querySelector('meta[property="og:image"]')?.getAttribute('content'),
+    ).not.toContain('/servizi/');
   });
 });

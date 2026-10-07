@@ -1,4 +1,8 @@
-<section class="catalog-opening" [class.catalog-opening--detail]="page.kind === 'detail'" appScrollScene="hero">
+<section
+  class="catalog-opening"
+  [class.catalog-opening--detail]="page.kind === 'detail'"
+  appScrollScene="hero"
+>
   <div class="shell">
     <nav class="catalog-breadcrumbs" aria-label="Percorso di navigazione">
       <ol>
@@ -32,14 +36,65 @@
           <a
             class="catalog-jump"
             [routerLink]="page.path"
-            [fragment]="page.kind === 'hub' ? 'specializzazioni' : 'attivita'"
-            >{{ page.kind === 'hub' ? 'Esplora i servizi' : 'Cosa realizziamo' }} <span aria-hidden="true">↓</span></a
+            [fragment]="mediaAnchor ?? (page.kind === 'hub' ? 'specializzazioni' : 'attivita')"
+            >{{
+              mediaAnchor
+                ? 'Guarda i lavori'
+                : page.kind === 'hub'
+                  ? 'Esplora i servizi'
+                  : 'Cosa realizziamo'
+            }}
+            <span aria-hidden="true">↓</span></a
           >
         </div>
       </div>
       <div class="catalog-opening__art">
-        <span class="catalog-edition">0{{ disciplineNumber }} / 05</span
-        ><app-service-visual [category]="page.category" [variant]="variant" />
+        <span class="catalog-edition">0{{ disciplineNumber }} / 05</span>
+        @if (heroPhoto; as photo) {
+          <a
+            class="catalog-real-work"
+            [routerLink]="page.path"
+            fragment="scatti-realizzati"
+            aria-label="Guarda la galleria fotografica"
+          >
+            <img
+              [src]="photoSource(photo)"
+              [srcset]="photoSrcset(photo)"
+              sizes="(max-width: 859px) 90vw, 45vw"
+              [alt]="photo.alt"
+              [width]="photo.width"
+              [height]="photo.height"
+              loading="eager"
+              fetchpriority="high"
+            />
+            <span><span>Fotografia / Professionecasa</span><span aria-hidden="true">↗</span></span>
+          </a>
+        } @else if (heroFilm; as film) {
+          <a
+            class="catalog-real-work"
+            [class.catalog-real-work--portrait]="film.provider !== 'youtube'"
+            [routerLink]="page.path"
+            [fragment]="mediaAnchor"
+            [attr.aria-label]="'Guarda i lavori: ' + film.client"
+          >
+            <img
+              [src]="film.poster"
+              [attr.srcset]="film.posterSrcset ?? null"
+              sizes="(max-width: 859px) 90vw, 45vw"
+              [alt]="'Copertina: ' + film.title"
+              [width]="film.width"
+              [height]="film.height"
+              loading="eager"
+              fetchpriority="high"
+            />
+            <span
+              ><span>{{ film.client }}</span
+              ><span aria-hidden="true">↗</span></span
+            >
+          </a>
+        } @else {
+          <app-service-visual [category]="page.category" [variant]="variant" />
+        }
       </div>
     </div>
     <div class="catalog-opening__foot">
@@ -75,7 +130,9 @@
                 <span>{{ activity.title }}</span>
               }
             </span>
-            <span class="specialty-card__bottom">Scopri il servizio <span aria-hidden="true">→</span></span>
+            <span class="specialty-card__bottom"
+              >Scopri il servizio <span aria-hidden="true">→</span></span
+            >
           </a>
         }
       </div>
@@ -88,8 +145,8 @@
         <p class="eyebrow">Cosa realizziamo</p>
         <h2>Il progetto,<br />nel concreto.</h2>
         <p>
-          Selezioniamo le attività in base agli obiettivi. Ambito, materiali e tempi vengono concordati prima di
-          iniziare.
+          Selezioniamo le attività in base agli obiettivi. Ambito, materiali e tempi vengono
+          concordati prima di iniziare.
         </p>
       </div>
       <ul>
@@ -107,6 +164,13 @@
       </ul>
     </div>
   </section>
+}
+
+@if (media.photography; as photography) {
+  <app-service-photo-gallery [selection]="photography" />
+}
+@if (media.films.length) {
+  <app-service-film-gallery [selections]="media.films" [location]="page.path" />
 }
 
 <section class="catalog-section catalog-editorial" appScrollScene>
@@ -155,7 +219,9 @@
           <p class="eyebrow">Dal nostro portfolio</p>
           <h2>Il lavoro prende forma.</h2>
         </div>
-        <a class="text-link" routerLink="/portfolio">Tutti i progetti <span aria-hidden="true">↗</span></a>
+        <a class="text-link" routerLink="/portfolio"
+          >Tutti i progetti <span aria-hidden="true">↗</span></a
+        >
       </div>
       <div class="catalog-projects__grid">
         @for (project of projects; track project.slug) {
@@ -239,8 +305,8 @@
     <p class="eyebrow">Voi portate l’obiettivo. Noi il team.</p>
     <h2>Le chiavi in mano.<br /><em>La direzione, insieme.</em></h2>
     <p>
-      Un referente coordina le competenze necessarie, dalla strategia alla consegna. Partiamo da ciò che serve davvero
-      al vostro progetto.
+      Un referente coordina le competenze necessarie, dalla strategia alla consegna. Partiamo da ciò
+      che serve davvero al vostro progetto.
     </p>
     <a
       class="button"
