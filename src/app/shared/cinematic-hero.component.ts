@@ -26,13 +26,19 @@ import { HeroCameraComponent } from './hero-camera.component';
             <span class="cinema__edition">Strategia. Visione. Identità.</span>
           </div>
 
-          <div class="cinema__intro">
-            <div class="cinema__definition">
-              <h1 id="home-title" class="cinema__term"><span>me·mèn·to</span></h1>
-              <p class="cinema__etymology"><span>/me’mento/ s.m. [imperat. lat. di <em lang="la">meminisse</em> “ricordare”, quindi “ricordati!”], invar., lett.</span></p>
-              <p class="cinema__meaning"><span>[atto o affermazione che ha il fine di <strong>ricordare qualcosa</strong>]</span></p>
+          <div class="cinema__body">
+            <div class="cinema__intro">
+              <div class="cinema__definition">
+                <h1 id="home-title" class="cinema__term"><span>me·mèn·to</span></h1>
+                <p class="cinema__etymology"><span>/me’mento/ s.m. [imperat. lat. di <em lang="la">meminisse</em> “ricordare”, quindi “ricordati!”], invar., lett.</span></p>
+                <p class="cinema__meaning"><span>[atto o affermazione che ha il fine di <strong>ricordare qualcosa</strong>]</span></p>
+                <p class="cinema__lead">Agenzia di comunicazione e marketing a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Siti web, e-commerce, gestione social, creazione contenuti, ADS, strategia e grafica a 360° per far crescere la tua azienda.</p>
+              </div>
+              <span class="cinema__annotation" aria-hidden="true"><span>01 / Il senso del nostro nome</span><span class="cinema__cross">+</span></span>
             </div>
-            <span class="cinema__annotation" aria-hidden="true"><span>01 / Il senso del nostro nome</span><span class="cinema__cross">+</span></span>
+            <div class="cinema__bottom">
+              <a class="button button--gold" routerLink="/contatti" (click)="tracking.trackQuote('home_hero')">Richiedi un preventivo <span aria-hidden="true">↗&#xFE0E;</span></a>
+            </div>
           </div>
 
           <div class="cinema__outro" aria-hidden="true">
@@ -40,10 +46,6 @@ import { HeroCameraComponent } from './hero-camera.component';
             <p>Diamo forma<br />a ciò che <em>resta.</em></p>
           </div>
 
-          <div class="cinema__bottom">
-            <p class="cinema__lead">Agenzia di comunicazione e marketing a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Siti web, e-commerce, gestione social, creazione contenuti, ADS, strategia e grafica a 360° per far crescere la tua azienda.</p>
-            <a class="button button--gold" routerLink="/contatti" (click)="tracking.trackQuote('home_hero')">Richiedi un preventivo <span aria-hidden="true">↗&#xFE0E;</span></a>
-          </div>
           <div class="cinema__footnote">
             <a class="cinema__scroll" href="#progetti"><span aria-hidden="true">↓&#xFE0E;</span> Scorri per scoprire</a>
             <span class="cinema__progress" aria-hidden="true"><span></span></span>

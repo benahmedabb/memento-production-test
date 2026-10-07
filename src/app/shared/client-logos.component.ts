@@ -8,6 +8,7 @@ interface ClientLogo {
   readonly compact?: boolean;
   readonly padded?: boolean;
   readonly darkBackground?: boolean;
+  readonly lightBackground?: boolean;
   readonly solidWhite?: boolean;
 }
 
@@ -30,7 +31,7 @@ interface ClientLogo {
           @for (copy of [0, 1]; track copy) {
             <ul class="client-logos__group" [class.client-logos__group--copy]="copy === 1" [attr.aria-hidden]="copy === 1 ? 'true' : null" role="list">
               @for (logo of logos; track logo.src) {
-                <li class="client-logos__item" [class.client-logos__item--compact]="logo.compact" [class.client-logos__item--padded]="logo.padded" [class.client-logos__item--dark-background]="logo.darkBackground" [class.client-logos__item--solid-white]="logo.solidWhite">
+                <li class="client-logos__item" [class.client-logos__item--compact]="logo.compact" [class.client-logos__item--padded]="logo.padded" [class.client-logos__item--dark-background]="logo.darkBackground" [class.client-logos__item--light-background]="logo.lightBackground" [class.client-logos__item--solid-white]="logo.solidWhite">
                   <img [src]="logo.src" [alt]="copy === 0 ? logo.name : ''" [width]="logo.width" [height]="logo.height" decoding="async" />
                 </li>
               }
@@ -94,6 +95,7 @@ export class ClientLogosComponent {
     { src: '/images/MEEET Logo chiaro.png', name: 'Meeet Beauty Medical Lab', width: 931, height: 670, padded: true },
     { src: '/images/WhatsApp Image 2026-01-07 at 13.22.47.jpeg', name: 'Life Benessere e Solarium', width: 1280, height: 506, darkBackground: true },
     { src: '/images/logo bianco (3).png', name: 'GR L’Immobiliare', width: 1459, height: 325 },
+    { src: '/images/logo-trainmeup.png', name: 'TrainMeUp', width: 1600, height: 1131, padded: true, lightBackground: true },
   ];
   readonly scrollDuration = `${this.logos.length * 7.5}s`;
 

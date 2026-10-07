@@ -101,7 +101,7 @@ section.section--sage.agency-manifesto {
 .agency-connections.scroll-scene--active .editorial-scene__frame { transform: rotate(calc((0.5 - var(--scene-progress)) * 7deg)); }
 
 /* Only add a pinned timeline when there is room to keep every control visible. */
-@media (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+@media (min-height: 480px) and (prefers-reduced-motion: no-preference) {
   .agency-opening.scroll-scene--active {
     --open: clamp(0, var(--scene-progress) * 1.65, 1);
     --focus: clamp(0, (var(--scene-progress) - 0.32) * 2.8, 1);
@@ -129,7 +129,9 @@ section.section--sage.agency-manifesto {
     .agency-opening__viewfinder span:nth-child(3) { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
     .agency-opening__viewfinder span:nth-child(4) { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
   }
+}
 
+@media (min-height: 700px) and (prefers-reduced-motion: no-preference) {
   .agency-method.scroll-scene--active {
     height: 370svh;
     --deck-position: calc(var(--scene-progress) * 3.4);
@@ -159,6 +161,10 @@ section.section--sage.agency-manifesto {
   }
 }
 
+@media (min-width: 860px) {
+  .agency-opening__bottom { padding-right: 4.75rem; }
+}
+
 @media (max-width: 859px) {
   .agency-scroll { --agency-header: calc(4.85rem + 1px); }
   .agency-opening__top > span { display: none; }
@@ -179,11 +185,14 @@ section.section--sage.agency-manifesto {
   .agency-method__navigation button { flex-direction: column; align-items: start; gap: 0.3rem; font-size: 0.7rem; }
 }
 
-@media (max-width: 859px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+@media (max-width: 859px) and (min-height: 480px) and (prefers-reduced-motion: no-preference) {
   .agency-opening.scroll-scene--active { height: 205svh; }
   .agency-opening.scroll-scene--active .agency-opening__title { font-size: clamp(2.5rem, 8.2vw, 5.5rem); }
   .agency-opening.scroll-scene--active .agency-opening__photograph { clip-path: inset(calc(20% * (1 - var(--open))) calc(8% * (1 - var(--open)))); }
   .agency-opening.scroll-scene--active .agency-opening__contact-sheet { width: 34vw; height: 18vh; }
+}
+
+@media (max-width: 859px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
   .agency-method.scroll-scene--active { height: 340svh; }
   .agency-method.scroll-scene--active .agency-method__heading { gap: 0.8rem; margin-bottom: 1.2rem; }
   .agency-method.scroll-scene--active .agency-method__heading h2 { font-size: clamp(1.8rem, 5.8vw, 2.8rem); }
@@ -201,6 +210,7 @@ section.section--sage.agency-manifesto {
 
 @media (max-width: 380px) {
   .agency-opening__content { padding-top: 1.5rem; }
+  .agency-opening.scroll-scene--active .agency-opening__title { font-size: clamp(2rem, 9vw, 2.15rem); }
   .agency-scroll-link { font-size: 0.58rem; }
   .agency-method__navigation button { font-size: 0.6rem; }
   .agency-method.scroll-scene--active .agency-method__copy { padding-inline: 1rem; }

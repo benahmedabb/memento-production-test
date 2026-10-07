@@ -6,7 +6,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
   selector: 'app-agency-opening',
   imports: [ScrollSceneDirective],
   template: `
-    <section class="agency-opening agency-scroll" appScrollScene="cover" aria-labelledby="agency-title">
+    <section class="agency-opening agency-scroll" appScrollScene="cover" [scrollSceneOnMobile]="true" aria-labelledby="agency-title">
       <div class="agency-opening__stage">
         <div class="agency-opening__photograph" aria-hidden="true">
           <img src="/images/memento-ufficio-hero.webp" alt="" width="1537" height="1023" fetchpriority="high" />

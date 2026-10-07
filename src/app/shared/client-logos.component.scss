@@ -71,6 +71,19 @@
   }
 }
 
+.client-logos__item--light-background {
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--green-deep);
+
+  img {
+    // Render black artwork in white and blend the original white background away.
+    width: 11rem;
+    filter: grayscale(1) invert(1);
+    mix-blend-mode: screen;
+  }
+}
+
 // Remove translucent shadows and strengthen partially transparent lettering.
 .client-logos__item--solid-white img {
   filter: url('#client-logos-solid-white');
