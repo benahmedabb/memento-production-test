@@ -66,6 +66,20 @@ export class ServicesPageComponent implements OnInit {
       '@type': 'CollectionPage',
       name: pageMetadata.services.title,
       url: `${siteConfig.origin}${pageMetadata.services.path}`,
+      isPartOf: { '@id': `${siteConfig.origin}/#website` },
+      about: { '@id': `${siteConfig.origin}/#organization` },
+      mainEntity: {
+        '@type': 'OfferCatalog',
+        name: 'Servizi di comunicazione e marketing',
+        itemListElement: this.services.map(({ path, service }) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: service.shortTitle,
+            url: `${siteConfig.origin}${path}`,
+          },
+        })),
+      },
     });
   }
 }

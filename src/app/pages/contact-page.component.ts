@@ -97,6 +97,7 @@ export class ContactPageComponent {
       '@type': 'ContactPage',
       name: pageMetadata.contact.title,
       url: `${siteConfig.origin}${pageMetadata.contact.path}`,
+      isPartOf: { '@id': `${siteConfig.origin}/#website` },
       mainEntity: { '@id': `${siteConfig.origin}/#organization` },
     });
   }

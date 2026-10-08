@@ -517,7 +517,7 @@ html body .iubenda-tp-btn { right: auto !important; bottom: 1rem !important; lef
     transition: none;
   }
 
-  .cinema__term > span, .cinema__etymology > span, .cinema__meaning > span { animation: none; }
+  .cinema__term-word, .cinema__etymology > span, .cinema__meaning > span { animation: none; }
   .cinema__definition { animation: cinema-fade-in 500ms ease-out both; }
   .cinema__topline, .cinema__bottom, .cinema__footnote { animation-duration: 500ms; animation-delay: 0ms; }
   .cinema__grain { display: none; }

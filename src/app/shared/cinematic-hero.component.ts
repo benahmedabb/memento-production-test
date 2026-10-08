@@ -29,7 +29,10 @@ import { HeroCameraComponent } from './hero-camera.component';
           <div class="cinema__body">
             <div class="cinema__intro">
               <div class="cinema__definition">
-                <h1 id="home-title" class="cinema__term"><span>me·mèn·to</span></h1>
+                <h1 id="home-title" class="cinema__term">
+                  <span class="sr-only">Memento Production, agenzia di comunicazione e marketing a Torino e Moncalieri.</span>
+                  <span class="cinema__term-word" aria-hidden="true">me·mèn·to</span>
+                </h1>
                 <p class="cinema__etymology"><span>/me’mento/ s.m. [imperat. lat. di <em lang="la">meminisse</em> “ricordare”, quindi “ricordati!”], invar., lett.</span></p>
                 <p class="cinema__meaning"><span>[atto o affermazione che ha il fine di <strong>ricordare qualcosa</strong>]</span></p>
                 <p class="cinema__lead">Agenzia di comunicazione e marketing a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Siti web, e-commerce, gestione social, creazione contenuti, ADS, strategia e grafica a 360° per far crescere la tua azienda.</p>

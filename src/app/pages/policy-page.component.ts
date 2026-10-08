@@ -56,6 +56,7 @@ export class PolicyPageComponent implements OnInit {
       '@type': 'WebPage',
       name: pageMetadata.policy.title,
       url: `${siteConfig.origin}${pageMetadata.policy.path}`,
+      isPartOf: { '@id': `${siteConfig.origin}/#website` },
     });
   }
 }

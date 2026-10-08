@@ -65,7 +65,8 @@ export class PortfolioPageComponent implements OnInit {
       '@type': 'CollectionPage',
       name: pageMetadata.portfolio.title,
       url: `${siteConfig.origin}${pageMetadata.portfolio.path}`,
-      isPartOf: { '@id': `${siteConfig.origin}/#organization` },
+      isPartOf: { '@id': `${siteConfig.origin}/#website` },
+      about: { '@id': `${siteConfig.origin}/#organization` },
     });
   }
 }

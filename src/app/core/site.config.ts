@@ -317,7 +317,7 @@ export const siteConfig = {
 
 export const pageMetadata = {
   home: {
-    title: 'Agenzia di comunicazione a Torino | Memento Production',
+    title: 'Agenzia di comunicazione e marketing a Torino | Memento',
     description: 'Agenzia di comunicazione e marketing con sede a Moncalieri, per aziende di Torino, Pinerolo e Chieri. Video, social, Ads, branding e siti web.',
     path: '/',
   },
@@ -334,7 +334,7 @@ export const pageMetadata = {
     },
   },
   services: {
-    title: 'Servizi di comunicazione a Torino | Memento Production',
+    title: 'Servizi di comunicazione e marketing a Torino | Memento',
     description: 'Video e fotografia, social media, Google e Meta Ads, branding e siti web. Servizi coordinati per le aziende di Torino, Moncalieri, Pinerolo e Chieri.',
     path: '/servizi',
   },
@@ -369,8 +369,8 @@ export const pageMetadata = {
     path: '/web',
   },
   portfolio: {
-    title: 'Portfolio | Memento Production',
-    description: 'Una selezione di progetti pubblicamente documentati da Memento Production.',
+    title: 'Portfolio agenzia di comunicazione a Torino | Memento',
+    description: 'Progetti di comunicazione, fotografia, video e social realizzati da Memento Production per aziende di Torino e provincia. Scopri il portfolio.',
     path: '/portfolio',
   },
   reviews: {

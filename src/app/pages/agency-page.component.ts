@@ -94,6 +94,7 @@ export class AgencyPageComponent implements OnInit {
         description: pageMetadata.agency.description,
         url,
         inLanguage: 'it-IT',
+        isPartOf: { '@id': `${origin}/#website` },
         about: { '@id': `${origin}/#organization` },
         mainEntity: { '@id': `${origin}/#organization` },
         breadcrumb: { '@id': `${url}#breadcrumb` },

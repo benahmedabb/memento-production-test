@@ -7,6 +7,7 @@ export const organizationSchema = {
   '@type': 'ProfessionalService',
   '@id': `${siteConfig.origin}/#organization`,
   name: 'Memento Production',
+  alternateName: 'Memento',
   legalName: siteConfig.contact.legalName,
   foundingDate: '2022',
   founder: { '@type': 'Person', '@id': `${siteConfig.origin}/agenzia#stefan`, name: 'Stefan Vidinaru' },
@@ -16,6 +17,13 @@ export const organizationSchema = {
   image: `${siteConfig.origin}${siteConfig.socialPreviewImage}`,
   email: siteConfig.contact.email,
   telephone: siteConfig.contact.phoneHref.replace('tel:', ''),
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: siteConfig.contact.phoneHref.replace('tel:', ''),
+    email: siteConfig.contact.email,
+    contactType: 'customer service',
+    availableLanguage: ['it'],
+  },
   vatID: `IT${siteConfig.contact.vatNumber}`,
   address: {
     '@type': 'PostalAddress',

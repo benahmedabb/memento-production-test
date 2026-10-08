@@ -88,7 +88,8 @@ export class ReviewsPageComponent implements OnInit {
       '@type': 'WebPage',
       name: pageMetadata.reviews.title,
       url: pageUrl,
-      isPartOf: { '@id': `${siteConfig.origin}/#organization` },
+      isPartOf: { '@id': `${siteConfig.origin}/#website` },
+      about: { '@id': `${siteConfig.origin}/#organization` },
       mainEntity: { '@id': videoId },
       breadcrumb: {
         '@type': 'BreadcrumbList',

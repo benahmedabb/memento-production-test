@@ -232,7 +232,9 @@ export class HomePageComponent implements OnInit {
         '@type': 'WebSite',
         '@id': `${siteConfig.origin}/#website`,
         name: 'Memento Production',
+        alternateName: 'Memento',
         url: siteConfig.origin,
+        inLanguage: 'it-IT',
         publisher: { '@id': `${siteConfig.origin}/#organization` },
       },
     ]);
