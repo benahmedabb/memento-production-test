@@ -15,6 +15,33 @@ import { TrackingService } from '../core/tracking.service';
             <img src="/images/logo-memento-footer.png" alt="Memento Production" width="1350" height="1200" />
           </a>
           <p class="footer-intro">Agenzia di comunicazione e marketing con sede a Moncalieri, per imprese di Torino, Pinerolo e Chieri.</p>
+          <nav class="footer-socials" aria-label="Memento Production sui social media">
+            <span class="footer-socials__label">Seguici</span>
+            <div class="footer-socials__list">
+              @for (profile of config.socialProfiles; track profile.key) {
+                <a
+                  [href]="profile.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  [attr.aria-label]="'Memento Production su ' + profile.label + ' (nuova scheda)'"
+                  (click)="tracking.trackSocial(profile.key, 'footer')"
+                >
+                  @switch (profile.key) {
+                    @case ('facebook') {
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="footer-socials__fill" d="M14.5 8H18V4h-3.5C10.9 4 9 6.2 9 9.5V12H6v4h3v6h4v-6h4l.6-4H13V9.7c0-1.1.4-1.7 1.5-1.7Z" /></svg>
+                    }
+                    @case ('instagram') {
+                      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4.2" /><circle cx="17.4" cy="6.8" r="1" class="footer-socials__dot" /></svg>
+                    }
+                    @case ('youtube') {
+                      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" /><path d="m10 9 5 3-5 3V9Z" class="footer-socials__play" /></svg>
+                    }
+                  }
+                  <span>{{ profile.label }}</span>
+                </a>
+              }
+            </div>
+          </nav>
         </div>
 
         <div class="footer-column">

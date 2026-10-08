@@ -27,6 +27,10 @@ export class TrackingService {
     this.track(`contact_${method}_click`, { contact_method: method, link_location: location });
   }
 
+  trackSocial(network: 'facebook' | 'instagram' | 'youtube', location: string): void {
+    this.track('social_profile_click', { social_network: network, link_location: location });
+  }
+
   trackQuote(location: string, service?: string): void {
     this.track('quote_request_click', { link_location: location, ...(service ? { service } : {}) });
   }

@@ -28,7 +28,7 @@ export const organizationSchema = {
   geo: { '@type': 'GeoCoordinates', latitude: 44.9745356, longitude: 7.7307929 },
   hasMap: siteConfig.contact.mapUrl,
   areaServed: serviceAreas,
-  sameAs: [siteConfig.contact.instagramUrl],
+  sameAs: siteConfig.socialProfiles.map(({ url }) => url),
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Servizi di comunicazione e marketing',

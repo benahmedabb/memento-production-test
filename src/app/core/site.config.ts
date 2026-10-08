@@ -87,6 +87,11 @@ export const siteConfig = {
     publicKey: 'djDM2ON0vYwP0Y8IL',
   },
   serviceCities: ['Torino', 'Moncalieri', 'Pinerolo', 'Chieri'],
+  socialProfiles: [
+    { key: 'facebook', label: 'Facebook', url: 'https://www.facebook.com/MementoProduction/' },
+    { key: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/memento.production/' },
+    { key: 'youtube', label: 'YouTube', url: 'https://www.youtube.com/@mementoproduction' },
+  ] as const,
   contact: {
     legalName: 'Memento Production di Vidinaru Stefan',
     vatNumber: '12716680017',
@@ -99,7 +104,6 @@ export const siteConfig = {
     city: 'Moncalieri',
     postalCode: '10024',
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Via%20Fortunato%20Postiglione%2046%2C%2010024%20Moncalieri',
-    instagramUrl: 'https://www.instagram.com/memento.production/',
   },
   images: {
     hero: {

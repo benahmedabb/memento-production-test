@@ -373,6 +373,13 @@ section.reviews-section { background: #486956; }
 .footer-logo { display: inline-flex; width: clamp(7rem, 13vw, 9rem); align-items: center; }
 .footer-logo img { width: 100%; height: auto; }
 .footer-intro { max-width: 340px; margin-top: 1.5rem; margin-bottom: 0; color: rgba(255, 255, 255, 0.65); font-size: 0.86rem; }
+.footer-socials { margin-top: 1.8rem; }
+.footer-socials__label { display: block; margin-bottom: 0.7rem; color: var(--gold); font-family: var(--font-heading); font-size: 0.61rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
+.footer-socials__list { display: flex; flex-wrap: wrap; gap: 0.55rem 1rem; }
+.footer-socials__list a { display: inline-flex; align-items: center; gap: 0.4rem; color: rgba(255, 255, 255, 0.75); font-size: 0.76rem; transition: color 180ms ease, transform 180ms ease; }
+.footer-socials__list svg { width: 1.15rem; height: 1.15rem; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.footer-socials__list .footer-socials__fill, .footer-socials__list .footer-socials__dot, .footer-socials__list .footer-socials__play { fill: currentColor; stroke: none; }
+.footer-socials__list a:hover, .footer-socials__list a:focus-visible { color: var(--gold); transform: translateY(-1px); }
 .footer-column { display: flex; flex-direction: column; gap: 0.65rem; }
 .footer-column h3 { margin-bottom: 0.5rem; color: var(--gold); font-family: var(--font-heading); font-size: 0.67rem; font-weight: 700; letter-spacing: 0.13em; line-height: 1.2; text-transform: uppercase; }
 .footer-column a, .footer-column address { color: rgba(255, 255, 255, 0.75); font-size: 0.84rem; font-style: normal; }
