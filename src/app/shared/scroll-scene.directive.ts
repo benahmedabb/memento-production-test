@@ -6,6 +6,7 @@ import { lightweightMotionQuery, reducedMotionQuery } from '../core/motion.confi
 export class ScrollSceneDirective {
   @Input('appScrollScene') mode: 'cover' | 'passage' | 'hero' | '' = 'passage';
   @Input() scrollSceneOnMobile = false;
+  @Input() scrollScenePassageOnCompact = false;
 
   private readonly element = inject(ElementRef<HTMLElement>);
   private readonly destroyRef = inject(DestroyRef);
@@ -21,6 +22,7 @@ export class ScrollSceneDirective {
     const host = this.element.nativeElement;
     const preference = window.matchMedia(lightweightMotionQuery);
     const reducedPreference = window.matchMedia(reducedMotionQuery);
+    const compactViewport = window.matchMedia('(max-width: 1023px), (max-height: 779px)');
     let visible = true;
     let frame = 0;
     let observing = false;
@@ -35,7 +37,8 @@ export class ScrollSceneDirective {
       const bounds = host.getBoundingClientRect();
       const viewport = window.innerHeight;
       const header = document.querySelector('.site-header')?.getBoundingClientRect().height ?? 0;
-      const progress = this.mode === 'cover'
+      const usePassageProgress = this.scrollScenePassageOnCompact && compactViewport.matches;
+      const progress = this.mode === 'cover' && !usePassageProgress
         ? (header - bounds.top) / Math.max(1, bounds.height - viewport + header)
         : this.mode === 'hero'
           ? (header - bounds.top) / Math.max(1, bounds.height)

@@ -6,7 +6,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
   selector: 'app-agency-team',
   imports: [RouterLink, ScrollSceneDirective],
   template: `
-    <section id="squadra" class="people-team" appScrollScene="cover" [scrollSceneOnMobile]="true" aria-labelledby="people-team-title">
+    <section id="squadra" class="people-team" appScrollScene="cover" [scrollSceneOnMobile]="true" [scrollScenePassageOnCompact]="true" aria-labelledby="people-team-title">
       <div class="people-team__stage">
         <div class="shell">
           <header class="people-team__heading">

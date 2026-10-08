@@ -236,6 +236,23 @@ app-agency-team { display: block; }
   .people-team__roles a { transition: none; }
 }
 
+/* Medium screens and short desktop viewports keep the whole scene in normal
+   document flow while the roles connect and the key turns during the passage. */
+@media (min-width: 600px) and (max-width: 1023px) and (prefers-reduced-motion: no-preference),
+       (min-width: 1024px) and (max-height: 779px) and (prefers-reduced-motion: no-preference) {
+  .people-team.scroll-scene--active {
+    --assembly: clamp(0, (var(--scene-progress) - 0.08) * 1.9, 1);
+    --connection: clamp(0, (var(--scene-progress) - 0.34) * 2.25, 1);
+
+    .people-team__roles li {
+      transform: translateX(calc((1 - var(--assembly)) * (var(--role-index) - 1.5) * 0.9rem)) rotate(calc((1 - var(--assembly)) * (var(--role-index) - 1.5) * 2.5deg));
+    }
+    .people-team__key { transform: rotate(calc((1 - var(--connection)) * -80deg)); }
+    .people-team__destination { transform: translateX(calc((1 - var(--assembly)) * 0.55rem)); }
+    .people-team__dots i { opacity: calc(0.25 + clamp(0, var(--scene-progress) * 10 - var(--dot-index), 1) * 0.75); }
+  }
+}
+
 /* On phones the scene follows normal scrolling, with a shorter entrance for
    each role and the same turning key. It never pins or intercepts scrolling. */
 @media (max-width: 599px) and (prefers-reduced-motion: no-preference) {
