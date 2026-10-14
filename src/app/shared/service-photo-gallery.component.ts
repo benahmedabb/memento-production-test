@@ -29,6 +29,8 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
           [class.photo-gallery__grid--preview]="selection().photos.length === 3"
           [class.photo-gallery__grid--single]="selection().photos.length === 1"
           [class.photo-gallery__grid--comparison]="selection().layout === 'comparison'"
+          [class.photo-gallery__grid--uniform]="selection().layout === 'uniform'"
+          [class.photo-gallery__grid--uniform-four]="selection().layout === 'uniform' && selection().photos.length === 4"
         >
           @for (photo of selection().photos; track photo.slug) {
             <figure [class.photo-gallery__logo]="photo.contain">
@@ -41,7 +43,11 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
                 <img
                   [src]="source(photo)"
                   [srcset]="srcset(photo)"
-                  sizes="(max-width: 480px) 92vw, (max-width: 1099px) 92vw, 45vw"
+              [attr.sizes]="selection().layout === 'uniform'
+                ? selection().photos.length === 4
+                  ? '(max-width: 480px) 92vw, 45vw'
+                  : '(max-width: 480px) 92vw, (max-width: 1099px) 45vw, 30vw'
+                : '(max-width: 480px) 92vw, (max-width: 1099px) 92vw, 45vw'"
                   [alt]="photo.alt"
                   [width]="photo.width"
                   [height]="photo.height"

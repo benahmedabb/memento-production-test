@@ -41,7 +41,7 @@ export interface PhotoSelection {
   readonly description: string;
   readonly photos: readonly ServicePhoto[];
   readonly hero?: ServicePhoto;
-  readonly layout?: 'comparison';
+  readonly layout?: 'comparison' | 'uniform';
   readonly more?: { readonly path: string; readonly label: string };
 }
 
@@ -51,50 +51,6 @@ export interface ServiceMedia {
 }
 
 const imageRoot = '/images/servizi/';
-
-// Selection from the six properties supplied by the agency. Source file IDs are documented in docs/service-media.md.
-export const propertyPhotos: readonly ServicePhoto[] = [
-  {
-    slug: 'soggiorno-villa-cantalupa',
-    title: 'La luce negli spazi',
-    location: 'Soggiorno · Cantalupa',
-    alt: 'Soggiorno di una villa a Cantalupa, con divano bianco, ampie vetrate e lampadario circolare',
-    width: 1920,
-    height: 1280,
-  },
-  {
-    slug: 'cucina-appartamento-pinerolo',
-    title: 'Gli ambienti di ogni giorno',
-    location: 'Cucina · Pinerolo',
-    alt: 'Cucina contemporanea di un appartamento a Pinerolo, con penisola chiara e pavimento in legno',
-    width: 1920,
-    height: 1280,
-  },
-  {
-    slug: 'camera-villa-cantalupa',
-    title: 'Il carattere degli interni',
-    location: 'Camera da letto · Cantalupa',
-    alt: 'Camera da letto luminosa in una villa a Cantalupa, con letto bianco e pavimento in parquet',
-    width: 1920,
-    height: 1280,
-  },
-  {
-    slug: 'esterno-villa-cumiana',
-    title: 'L’architettura, da fuori',
-    location: 'Esterno · Cumiana',
-    alt: 'Esterno di una villa a Cumiana, con facciata chiara, tetto in legno e vialetto in pietra',
-    width: 1920,
-    height: 1280,
-  },
-  {
-    slug: 'drone-villa-piscina',
-    title: 'Una prospettiva più ampia',
-    location: 'Ripresa con drone · Piscina',
-    alt: 'Fotografia aerea con drone di una villa a Piscina e del suo giardino nel contesto residenziale',
-    width: 1920,
-    height: 1280,
-  },
-];
 
 function youtube(
   id: string,
@@ -519,8 +475,8 @@ const photography: PhotoSelection = {
   credit: 'Fotografie di Memento Production',
   title: 'Prima della visita, uno sguardo.',
   description:
-    'Architettura, luce e contesto. Nuovi scatti di interni ed esterni, insieme alla selezione realizzata per Professionecasa.',
-  photos: [...emailPhotos.property, ...propertyPhotos],
+    'Architettura, luce e contesto. Una selezione di interni, esterni e dettagli per raccontare ogni spazio e ciò che lo circonda.',
+  photos: emailPhotos.property,
 };
 const corporate: FilmSelection = {
   id: 'film-aziendali',
@@ -595,9 +551,10 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
       photos: [
         emailPhotos.corporate[0],
         emailPhotos.food[0],
-        emailPhotos.property[0],
         emailPhotos.product[0],
+        emailPhotos.property[0],
       ],
+      layout: 'uniform',
       description:
         'Persone, food, immobili e prodotti: una selezione dai nostri servizi fotografici. Ogni specializzazione ha la sua galleria.',
     },
@@ -612,6 +569,7 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
       description:
         'Ritratti professionali, team e ambienti di lavoro: immagini che danno un volto all’identità aziendale.',
       photos: emailPhotos.corporate,
+      layout: 'uniform',
     },
     films: [],
   },
@@ -634,6 +592,7 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
       description:
         'Una selezione di scatti dedicati ai prodotti Life: confezioni, texture, colori e composizioni.',
       photos: emailPhotos.product,
+      layout: 'uniform',
     },
     films: [],
   },

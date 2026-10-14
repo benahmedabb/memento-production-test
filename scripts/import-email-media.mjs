@@ -34,7 +34,8 @@ for (const [group, name, relative, title, location, alt, settings = {}] of email
   const originalWidth = Number(info.match(/pixelWidth: (\d+)/)[1]);
   const originalHeight = Number(info.match(/pixelHeight: (\d+)/)[1]);
   const width = Math.min(1920, originalWidth);
-  const height = Math.round((originalHeight * width) / originalWidth);
+  // Match cwebp's rounding when the target height is inferred with -resize WIDTH 0.
+  const height = Math.ceil((originalHeight * width) / originalWidth);
   const widths = [...new Set([Math.min(640, width), Math.min(1200, width), width])];
   for (const size of widths) {
     execFileSync('cwebp', [

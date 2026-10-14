@@ -9,7 +9,7 @@ Integrazione iniziale del 7 ottobre 2026 e aggiornamento del 14 ottobre 2026 dai
 | `/foto`                                   | Quattro anteprime: corporate, food, immobiliare e prodotto |
 | `/foto/fotografia-corporate-torino`       | Cinque ritratti e fotografie di team |
 | `/foto/food-photography-torino`           | Sei fotografie di piatti, cocktail e atmosfera |
-| `/foto/fotografia-immobiliare-torino`     | Sei nuovi scatti e cinque già presenti; quattro film immobiliari |
+| `/foto/fotografia-immobiliare-torino`     | Undici scatti dalla cartella locale senza watermark Professionecasa; quattro film immobiliari |
 | `/foto/product-photography-torino`        | Sei fotografie dei prodotti Life |
 | `/video`                                  | Quattro film aziendali, quattro film immobiliari, anteprima di tre nuovi Reel     |
 | `/video/video-aziendali-torino`           | Quattro film aziendali, con il nuovo spot Memento in apertura                     |
@@ -31,6 +31,22 @@ Integrazione iniziale del 7 ottobre 2026 e aggiornamento del 14 ottobre 2026 dai
 I link che l’agenzia ha elencato sotto TikTok sono presentati come esempi del linguaggio verticale per la piattaforma, mantenendo Instagram come sorgente originale. Non sono usati video come fotografie corporate o lavori di grafica stampata. Restano presenti testi, FAQ, processo, CTA, collegamenti e progetti di portfolio già pubblicati.
 
 ## Fotografie
+
+### Selezione attuale: sostituzione delle foto con watermark
+
+Il 15 ottobre 2026, su richiesta dell’agenzia, i cinque scatti con watermark Professionecasa sono stati sostituiti da cinque fotografie della cartella locale `memento-materiale-email`, controllate visivamente e senza il marchio. Le sei immagini già importate restano invariate: la galleria contiene undici scatti distinti. Nessun ritocco o ritaglio per nascondere i marchi; gli originali non sono stati modificati.
+
+| Nuova immagine | Originale, dentro `01_Fotografia/3. Immobiliare` |
+| --- | --- |
+| `email-immobiliare-veranda` | `Memento_SITO 2`, `11.jpg` |
+| `email-immobiliare-zona-pranzo` | `Memento_SITO 3`, `5.jpg` |
+| `email-immobiliare-soggiorno-camino` | `Memento_SITO 2`, `13.jpg` |
+| `email-immobiliare-villa-giardino` | `Memento_SITO 2`, `2.jpg` |
+| `email-immobiliare-affaccio` | `Memento_SITO 2`, `24.jpg` |
+
+Le nuove immagini usano WebP responsive a 640, 1200 e 1920 pixel, con la stessa conversione della selezione precedente. Manifest, didascalie, alt e sitemap sono aggiornati. I cinque vecchi file non sono più collegati dalla galleria o dalla sitemap; restano su disco per non eliminare materiale esistente. I film immobiliari non sono stati modificati. Solo revisione statica e controllo visivo degli asset, senza build, test, commit o deploy.
+
+### Provenienza storica: cinque scatti sostituiti
 
 Fonte: [cartella Professionecasa](https://drive.google.com/drive/folders/1EaJjQFJHqihHMekKT4Y6R19DKV4q7QC4). Sono state consultate le case 49, 56, 65, 77, 87 e 89; scelti cinque scatti complessivi dagli immobili indicati. Per la casa 89 sono stati usati i JPEG finalizzati della sottocartella `Done`, non i RAW.
 
