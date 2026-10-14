@@ -138,6 +138,16 @@ html:has(.photo-lightbox[open]) {
     margin-inline: auto;
     transform: rotate(2deg);
   }
+  .catalog-real-work--photo-portrait {
+    max-width: 25rem;
+    margin-inline: auto;
+  }
+  .catalog-real-work--logo img {
+    background: #fff;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    padding: 2rem;
+  }
   .catalog-real-work:focus-visible {
     outline: 3px solid #486956;
     outline-offset: 6px;

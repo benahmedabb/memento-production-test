@@ -1,5 +1,6 @@
 import { clientTestimonial } from './client-testimonial';
 import { siteConfig } from './site.config';
+import { emailPhotos } from './email-photos.generated';
 
 export interface ServicePhoto {
   readonly slug: string;
@@ -8,6 +9,8 @@ export interface ServicePhoto {
   readonly alt: string;
   readonly width: number;
   readonly height: number;
+  readonly widths?: readonly number[];
+  readonly contain?: boolean;
 }
 
 export interface ServiceFilm {
@@ -40,9 +43,13 @@ export interface FilmSelection {
 }
 
 export interface PhotoSelection {
+  readonly eyebrow: string;
+  readonly credit: string;
   readonly title: string;
   readonly description: string;
   readonly photos: readonly ServicePhoto[];
+  readonly hero?: ServicePhoto;
+  readonly layout?: 'comparison';
   readonly more?: { readonly path: string; readonly label: string };
 }
 
@@ -52,10 +59,15 @@ export interface ServiceMedia {
 }
 
 const imageRoot = '/images/servizi/';
-export const photoSource = (photo: ServicePhoto, width = 1200) =>
-  `${imageRoot}${photo.slug}-${width}.webp`;
+export const photoSource = (photo: ServicePhoto, width = 1200) => {
+  const available = photo.widths ?? [640, 1200, 1920];
+  const size = available.find((size) => size >= width) ?? available[available.length - 1];
+  return `${imageRoot}${photo.slug}-${size}.webp`;
+};
 export const photoSrcset = (photo: ServicePhoto) =>
-  [640, 1200, 1920].map((width) => `${photoSource(photo, width)} ${width}w`).join(', ');
+  (photo.widths ?? [640, 1200, 1920])
+    .map((width) => `${photoSource(photo, width)} ${width}w`)
+    .join(', ');
 
 // Selection from the six properties supplied by the agency. Source file IDs are documented in docs/service-media.md.
 export const propertyPhotos: readonly ServicePhoto[] = [
@@ -520,10 +532,12 @@ const testimonial: ServiceFilm = {
 };
 
 const photography: PhotoSelection = {
+  eyebrow: 'Fotografia immobiliare',
+  credit: 'Fotografie di Memento Production',
   title: 'Prima della visita, uno sguardo.',
   description:
-    'Tre interni, due prospettive all’aperto. Una selezione di fotografie realizzate per Professionecasa tra Cantalupa, Pinerolo, Cumiana e Piscina.',
-  photos: propertyPhotos,
+    'Architettura, luce e contesto. Nuovi scatti di interni ed esterni, insieme alla selezione realizzata per Professionecasa.',
+  photos: [...emailPhotos.property, ...propertyPhotos],
 };
 const corporate: FilmSelection = {
   id: 'film-aziendali',
@@ -592,18 +606,116 @@ const tiktokSelection: FilmSelection = {
 const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
   '/foto': {
     photography: {
-      ...photography,
-      photos: [propertyPhotos[0], propertyPhotos[3], propertyPhotos[4]],
+      eyebrow: 'Fotografia / Memento Production',
+      credit: 'Fotografie di Memento Production',
+      title: 'Quattro modi di guardare.',
+      photos: [
+        emailPhotos.corporate[0],
+        emailPhotos.food[0],
+        emailPhotos.property[0],
+        emailPhotos.product[0],
+      ],
       description:
-        'Luce, architettura e contesto: alcuni scatti dei servizi immobiliari realizzati per Professionecasa.',
-      more: {
-        path: '/foto/fotografia-immobiliare-torino',
-        label: 'Guarda il servizio immobiliare',
-      },
+        'Persone, food, immobili e prodotti: una selezione dai nostri servizi fotografici. Ogni specializzazione ha la sua galleria.',
     },
     films: [],
   },
   '/foto/fotografia-immobiliare-torino': { photography, films: [properties] },
+  '/foto/fotografia-corporate-torino': {
+    photography: {
+      eyebrow: 'Fotografia corporate',
+      credit: 'Fotografie di Memento Production',
+      title: 'Le persone fanno l’azienda.',
+      description:
+        'Ritratti professionali, team e ambienti di lavoro: immagini che danno un volto all’identità aziendale.',
+      photos: emailPhotos.corporate,
+    },
+    films: [],
+  },
+  '/foto/food-photography-torino': {
+    photography: {
+      eyebrow: 'Food & Drinks',
+      credit: 'Fotografie di Memento Production',
+      title: 'Il gusto comincia dallo sguardo.',
+      description:
+        'Piatti, cocktail e momenti di convivialità. Fotografie che raccontano il prodotto e l’atmosfera del locale.',
+      photos: emailPhotos.food,
+    },
+    films: [],
+  },
+  '/foto/product-photography-torino': {
+    photography: {
+      eyebrow: 'Fotografia di prodotto / Life',
+      credit: 'Fotografie di Memento Production per Life',
+      title: 'Ogni dettaglio conta.',
+      description:
+        'Una selezione di scatti dedicati ai prodotti Life: confezioni, texture, colori e composizioni.',
+      photos: emailPhotos.product,
+    },
+    films: [],
+  },
+  '/grafica': {
+    photography: {
+      eyebrow: 'Grafica / Memento Production',
+      credit: 'Progetti grafici di Memento Production',
+      title: 'Un’identità prende forma.',
+      description:
+        'Dal nostro marchio ai progetti per RARE, Bioveil e Master: loghi, identità coordinate, packaging e materiali per la stampa.',
+      photos: [
+        emailPhotos.graphics[0],
+        emailPhotos.logos[1],
+        emailPhotos.brand[0],
+        emailPhotos.offline[0],
+      ],
+    },
+    films: [],
+  },
+  '/grafica/creazione-loghi-torino': {
+    photography: {
+      eyebrow: 'Creazione loghi / RARE',
+      credit: 'Progetto grafico di Memento Production',
+      title: 'Un segno riconoscibile.',
+      description:
+        'Il monogramma RARE e le sue applicazioni: dal logo alle confezioni e alle shopper.',
+      photos: emailPhotos.logos,
+    },
+    films: [],
+  },
+  '/grafica/brand-identity-torino': {
+    photography: {
+      eyebrow: 'Brand identity / Bioveil',
+      credit: 'Progetto grafico di Memento Production',
+      title: 'La coerenza fa la differenza.',
+      description:
+        'Logotipo, palette e studi di packaging per Bioveil. Un linguaggio visivo che collega il marchio a ogni prodotto.',
+      photos: emailPhotos.brand,
+    },
+    films: [],
+  },
+  '/grafica/grafica-stampa-torino': {
+    photography: {
+      eyebrow: 'Grafica offline',
+      credit: 'Progetti grafici di Memento Production',
+      title: 'Il progetto diventa materia.',
+      description:
+        'La copertina del menu Master e gli studi di etichette e packaging Bioveil: l’identità visiva fuori dallo schermo.',
+      photos: emailPhotos.offline,
+    },
+    films: [],
+  },
+  '/grafica/rebranding-torino': {
+    photography: {
+      eyebrow: 'Rebranding / Master dei Cocktail',
+      credit: 'Logo iniziale fornito dal cliente · Nuova identità di Memento Production',
+      title: 'Dal primo segno alla nuova identità.',
+      description:
+        'Il confronto tra il logo di partenza e il marchio ridisegnato da Memento: tipografia essenziale e un calice integrato nella lettera T.',
+      photos: emailPhotos.rebranding,
+      hero: emailPhotos.rebranding[1],
+      layout: 'comparison',
+    },
+    films: [],
+  },
   '/video': {
     films: [
       corporate,
@@ -654,7 +766,17 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
     ],
   },
   '/social': { films: [socialSelection] },
-  '/social/gestione-social-organica-torino': { films: [organicSelection] },
+  '/social/gestione-social-organica-torino': {
+    photography: {
+      eyebrow: 'Gestione organica / Life',
+      credit: 'Contenuti di Memento Production per Life',
+      title: 'Un messaggio, un’identità.',
+      description:
+        'Una creatività per la comunicazione di Life: il tono di voce e la grafica lavorano insieme per rendere riconoscibile il servizio.',
+      photos: emailPhotos.organic,
+    },
+    films: [organicSelection],
+  },
   '/social/facebook-instagram-torino': { films: [facebookInstagramSelection] },
   '/social/tiktok-torino': { films: [tiktokSelection] },
 };
@@ -670,12 +792,15 @@ export function serviceMediaSchema(path: string, media: ServiceMedia): Record<st
       '@id': `${pageUrl}#${photo.slug}`,
       name: photo.title,
       description: photo.alt,
-      caption: `${photo.location} · Professionecasa`,
+      caption: photo.location,
       contentUrl: `${siteConfig.origin}${photoSource(photo, 1920)}`,
       thumbnailUrl: `${siteConfig.origin}${photoSource(photo, 640)}`,
       width: photo.width,
       height: photo.height,
-      creator: { '@id': `${siteConfig.origin}/#organization` },
+      // The comparison also contains the client's previous logo, not created by Memento.
+      ...(media.photography?.layout === 'comparison'
+        ? {}
+        : { creator: { '@id': `${siteConfig.origin}/#organization` } }),
     })) ?? [];
   const films = media.films.flatMap((selection) => selection.films);
   const uniqueFilms = [...new Map(films.map((film) => [film.id, film])).values()];

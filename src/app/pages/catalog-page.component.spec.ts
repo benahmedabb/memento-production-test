@@ -93,18 +93,18 @@ describe('Service catalog navigation and SEO', () => {
   it('keeps real media, structured data and social previews aligned with the current service', async () => {
     const harness = await RouterTestingHarness.create();
     await harness.navigateByUrl('/foto/fotografia-immobiliare-torino', CatalogPageComponent);
-    expect(harness.routeNativeElement?.querySelectorAll('.photo-gallery figure')).toHaveLength(5);
+    expect(harness.routeNativeElement?.querySelectorAll('.photo-gallery figure')).toHaveLength(11);
     expect(harness.routeNativeElement?.querySelectorAll('.film-card')).toHaveLength(4);
     expect(harness.routeNativeElement?.querySelector('iframe, video')).toBeNull();
     let schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
     expect(
       schema.filter((entry: Record<string, unknown>) => entry['@type'] === 'ImageObject'),
-    ).toHaveLength(5);
+    ).toHaveLength(11);
     expect(
       schema.filter((entry: Record<string, unknown>) => entry['@type'] === 'VideoObject'),
     ).toHaveLength(4);
     expect(document.querySelector('meta[property="og:image"]')?.getAttribute('content')).toContain(
-      'soggiorno-villa-cantalupa',
+      'email-immobiliare-villa',
     );
 
     await harness.navigateByUrl('/video/reel-social-torino', CatalogPageComponent);
@@ -119,13 +119,37 @@ describe('Service catalog navigation and SEO', () => {
     );
 
     await harness.navigateByUrl('/grafica', CatalogPageComponent);
-    expect(harness.routeNativeElement?.querySelector('.film-card, .photo-gallery')).toBeNull();
+    expect(harness.routeNativeElement?.querySelector('.film-card')).toBeNull();
+    expect(harness.routeNativeElement?.querySelectorAll('.photo-gallery figure')).toHaveLength(4);
+    expect(harness.routeNativeElement?.querySelector('.photo-gallery')?.textContent).not.toContain(
+      'Professionecasa',
+    );
     schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
     expect(schema.some((entry: Record<string, unknown>) => entry['@type'] === 'VideoObject')).toBe(
       false,
     );
+    expect(document.querySelector('meta[property="og:image"]')?.getAttribute('content')).toContain(
+      'email-grafica-memento',
+    );
+
+    await harness.navigateByUrl('/social/gestione-social-organica-torino', CatalogPageComponent);
     expect(
-      document.querySelector('meta[property="og:image"]')?.getAttribute('content'),
-    ).not.toContain('/servizi/');
+      harness.routeNativeElement?.querySelector('.catalog-real-work img')?.getAttribute('src'),
+    ).toContain('email-social-life-laser-1080.webp');
+    expect(harness.routeNativeElement?.querySelectorAll('.film-card')).toHaveLength(3);
+    expect(harness.routeNativeElement?.querySelector('.photo-gallery')?.textContent).toContain(
+      'Life',
+    );
+
+    await harness.navigateByUrl('/grafica/rebranding-torino', CatalogPageComponent);
+    expect(
+      harness.routeNativeElement?.querySelector('.catalog-real-work img')?.getAttribute('src'),
+    ).toContain('email-rebranding-master-dopo');
+    expect(
+      harness.routeNativeElement?.querySelectorAll('.photo-gallery__grid--comparison figure'),
+    ).toHaveLength(2);
+    expect(
+      harness.routeNativeElement?.querySelector('.photo-gallery figure')?.textContent,
+    ).toContain('Prima');
   });
 });

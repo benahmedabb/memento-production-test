@@ -19,7 +19,7 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
       <div class="shell">
         <div class="photo-gallery__heading">
           <div>
-            <p class="eyebrow">Fotografia immobiliare / Professionecasa</p>
+            <p class="eyebrow">{{ selection().eyebrow }}</p>
             <h2 id="photo-gallery-title">{{ selection().title }}</h2>
           </div>
           <p>{{ selection().description }}</p>
@@ -27,9 +27,11 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
         <div
           class="photo-gallery__grid"
           [class.photo-gallery__grid--preview]="selection().photos.length === 3"
+          [class.photo-gallery__grid--single]="selection().photos.length === 1"
+          [class.photo-gallery__grid--comparison]="selection().layout === 'comparison'"
         >
           @for (photo of selection().photos; track photo.slug) {
-            <figure>
+            <figure [class.photo-gallery__logo]="photo.contain">
               <a
                 [href]="source(photo, 1920)"
                 (click)="open($event, $index)"
@@ -39,7 +41,7 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
                 <img
                   [src]="source(photo)"
                   [srcset]="srcset(photo)"
-                  sizes="(max-width: 600px) 92vw, (max-width: 900px) 46vw, 40vw"
+                  sizes="(max-width: 480px) 92vw, (max-width: 1099px) 92vw, 45vw"
                   [alt]="photo.alt"
                   [width]="photo.width"
                   [height]="photo.height"
@@ -56,7 +58,7 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
           }
         </div>
         <div class="photo-gallery__footer">
-          <span>Fotografie di Memento Production per Professionecasa</span>
+          <span>{{ selection().credit }}</span>
           @if (selection().more; as more) {
             <a class="text-link" [routerLink]="more.path"
               >{{ more.label }} <span aria-hidden="true">↗</span></a
@@ -68,7 +70,7 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
     <dialog
       #lightbox
       class="photo-lightbox"
-      aria-label="Galleria di fotografia immobiliare"
+      [attr.aria-label]="'Galleria: ' + selection().title"
       (close)="selectedIndex.set(null)"
       (click)="closeOnBackdrop($event)"
       (keydown.arrowLeft)="move($event, -1)"
@@ -82,7 +84,7 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
             type="button"
             (click)="close()"
             autofocus
-            aria-label="Chiudi la fotografia"
+            aria-label="Chiudi l’immagine"
           >
             Chiudi <span aria-hidden="true">×</span>
           </button>
@@ -91,16 +93,17 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
             [alt]="photo.alt"
             [width]="photo.width"
             [height]="photo.height"
+            [class.photo-lightbox__logo]="photo.contain"
           />
           <div class="photo-lightbox__caption">
-            <button type="button" (click)="move($event, -1)" aria-label="Fotografia precedente">
+            <button type="button" (click)="move($event, -1)" aria-label="Immagine precedente">
               ←
             </button>
             <p aria-live="polite">
               <strong>{{ photo.location }}</strong
               ><span>{{ (selectedIndex() ?? 0) + 1 }} / {{ selection().photos.length }}</span>
             </p>
-            <button type="button" (click)="move($event, 1)" aria-label="Fotografia successiva">
+            <button type="button" (click)="move($event, 1)" aria-label="Immagine successiva">
               →
             </button>
           </div>

@@ -3,30 +3,94 @@
   <url><loc>https://mementoproduction.it/</loc></url>
   <url><loc>https://mementoproduction.it/agenzia</loc></url>
   <url><loc>https://mementoproduction.it/servizi</loc></url>
-  <url><loc>https://mementoproduction.it/foto</loc></url>
-  <url><loc>https://mementoproduction.it/foto/fotografia-corporate-torino</loc></url>
-  <url><loc>https://mementoproduction.it/foto/food-photography-torino</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/foto</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-corporate-life-team-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-food-cocktail-frutti-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-immobiliare-villa-1536.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-product-life-creme-1920.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://mementoproduction.it/foto/fotografia-corporate-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-corporate-life-team-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-corporate-life-ritratto-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-corporate-vainella-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-corporate-gr-team-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-corporate-ritratto-studio-1366.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://mementoproduction.it/foto/food-photography-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-food-cocktail-frutti-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-food-astice-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-food-brindisi-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-food-master-cocktail-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-food-forte-piatto-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-food-pasta-1920.webp</image:loc></image:image>
+  </url>
   <url>
     <loc>https://mementoproduction.it/foto/fotografia-immobiliare-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-immobiliare-villa-1536.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-immobiliare-drone-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-immobiliare-soggiorno-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-immobiliare-interni-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-immobiliare-piscina-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-immobiliare-dettaglio-1920.webp</image:loc></image:image>
     <image:image><image:loc>https://mementoproduction.it/images/servizi/soggiorno-villa-cantalupa-1920.webp</image:loc></image:image>
     <image:image><image:loc>https://mementoproduction.it/images/servizi/cucina-appartamento-pinerolo-1920.webp</image:loc></image:image>
     <image:image><image:loc>https://mementoproduction.it/images/servizi/camera-villa-cantalupa-1920.webp</image:loc></image:image>
     <image:image><image:loc>https://mementoproduction.it/images/servizi/esterno-villa-cumiana-1920.webp</image:loc></image:image>
     <image:image><image:loc>https://mementoproduction.it/images/servizi/drone-villa-piscina-1920.webp</image:loc></image:image>
   </url>
-  <url><loc>https://mementoproduction.it/foto/product-photography-torino</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/foto/product-photography-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-product-life-creme-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-product-life-olio-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-product-life-essenze-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-product-life-profumo-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-product-life-linea-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-product-life-scrub-1920.webp</image:loc></image:image>
+  </url>
   <url><loc>https://mementoproduction.it/video</loc></url>
   <url><loc>https://mementoproduction.it/video/video-aziendali-torino</loc></url>
   <url><loc>https://mementoproduction.it/video/reel-social-torino</loc></url>
   <url><loc>https://mementoproduction.it/video/video-animati-torino</loc></url>
   <url><loc>https://mementoproduction.it/video/video-corsi-testimonial-torino</loc></url>
-  <url><loc>https://mementoproduction.it/grafica</loc></url>
-  <url><loc>https://mementoproduction.it/grafica/creazione-loghi-torino</loc></url>
-  <url><loc>https://mementoproduction.it/grafica/brand-identity-torino</loc></url>
-  <url><loc>https://mementoproduction.it/grafica/grafica-stampa-torino</loc></url>
-  <url><loc>https://mementoproduction.it/grafica/rebranding-torino</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/grafica</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-grafica-memento-1771.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-logo-rare-bag-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-brand-bioveil-logo-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-offline-master-menu-978.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://mementoproduction.it/grafica/creazione-loghi-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-logo-rare-1266.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-logo-rare-bag-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-logo-rare-box-1920.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://mementoproduction.it/grafica/brand-identity-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-brand-bioveil-logo-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-brand-bioveil-linea-1509.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-brand-bioveil-pack-1229.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://mementoproduction.it/grafica/grafica-stampa-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-offline-master-menu-978.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-offline-bioveil-zero-1152.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-offline-bioveil-vasetto-1232.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-offline-bioveil-stick-1920.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://mementoproduction.it/grafica/rebranding-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-rebranding-master-prima-1225.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-rebranding-master-dopo-1920.webp</image:loc></image:image>
+  </url>
   <url><loc>https://mementoproduction.it/social</loc></url>
-  <url><loc>https://mementoproduction.it/social/gestione-social-organica-torino</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/social/gestione-social-organica-torino</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-social-life-laser-1080.webp</image:loc></image:image>
+  </url>
   <url><loc>https://mementoproduction.it/social/facebook-instagram-torino</loc></url>
   <url><loc>https://mementoproduction.it/social/tiktok-torino</loc></url>
   <url><loc>https://mementoproduction.it/web</loc></url>
@@ -35,7 +99,16 @@
   <url><loc>https://mementoproduction.it/web/landing-page-torino</loc></url>
   <url><loc>https://mementoproduction.it/web/restyling-siti-web-torino</loc></url>
   <url><loc>https://mementoproduction.it/google-meta-ads</loc></url>
-  <url><loc>https://mementoproduction.it/portfolio</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/portfolio</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-food-forte-piatto-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-food-master-cocktail-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-logo-rare-bag-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-portfolio-trecca-sede-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-portfolio-trecca-mezzo-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-portfolio-trecca-ritratto-1920.webp</image:loc></image:image>
+    <image:image><image:loc>https://mementoproduction.it/images/servizi/email-corporate-vainella-1920.webp</image:loc></image:image>
+  </url>
   <url><loc>https://mementoproduction.it/recensioni</loc></url>
   <url><loc>https://mementoproduction.it/contatti</loc></url>
   <url><loc>https://mementoproduction.it/privacy-policy</loc></url>

@@ -53,9 +53,11 @@
         @if (heroPhoto; as photo) {
           <a
             class="catalog-real-work"
+            [class.catalog-real-work--photo-portrait]="photo.height > photo.width"
+            [class.catalog-real-work--logo]="photo.contain"
             [routerLink]="page.path"
             fragment="scatti-realizzati"
-            aria-label="Guarda la galleria fotografica"
+            aria-label="Guarda la galleria dei lavori"
           >
             <img
               [src]="photoSource(photo)"
@@ -67,7 +69,10 @@
               loading="eager"
               fetchpriority="high"
             />
-            <span><span>Fotografia / Professionecasa</span><span aria-hidden="true">↗</span></span>
+            <span
+              ><span>{{ media.photography?.eyebrow }}</span
+              ><span aria-hidden="true">↗</span></span
+            >
           </a>
         } @else if (heroFilm; as film) {
           <a

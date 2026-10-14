@@ -35,7 +35,7 @@ export class CatalogPageComponent {
     (page) => page.path === this.route.snapshot.data['catalogPath'],
   )!;
   readonly media = serviceMediaFor(this.page.path);
-  readonly heroPhoto = this.media.photography?.photos[0];
+  readonly heroPhoto = this.media.photography?.hero ?? this.media.photography?.photos[0];
   readonly heroFilm = this.media.films[0]?.films[0];
   readonly mediaAnchor = this.media.photography ? 'scatti-realizzati' : this.media.films[0]?.id;
   readonly photoSource = photoSource;
