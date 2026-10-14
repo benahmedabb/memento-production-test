@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, PLATFORM_ID, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { portfolioCaseStudies, portfolioCover } from '../core/portfolio-case-studies';
 import { SeoService } from '../core/seo.service';
@@ -11,7 +12,7 @@ import { PageMotionDirective } from '../shared/page-motion.directive';
   imports: [PageMotionDirective, RouterLink],
   templateUrl: './portfolio-page.component.html',
 })
-export class PortfolioPageComponent implements OnInit {
+export class PortfolioPageComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly projects = portfolioCaseStudies.map((project, index) => {
     const image = portfolioCover(project);
     return {
@@ -34,6 +35,44 @@ export class PortfolioPageComponent implements OnInit {
   );
   readonly tracking = inject(TrackingService);
   private readonly seo = inject(SeoService);
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly imageSections = new Map<string, HTMLElement>();
+  private imageObserver?: IntersectionObserver;
+
+  ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const sections = this.element.nativeElement.querySelectorAll<HTMLElement>('.work-case');
+    sections.forEach((section) => this.imageSections.set(section.id, section));
+
+    if (!('IntersectionObserver' in window)) return;
+
+    // Start native responsive-image requests before a case enters the viewport.
+    // Existing src/srcset attributes remain usable during SSR and without JS.
+    this.imageObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) this.prepareProjectImages(entry.target.id);
+      });
+    }, { rootMargin: `${Math.max(1200, window.innerHeight * 2)}px 0px`, threshold: 0 });
+
+    sections.forEach((section) => this.imageObserver?.observe(section));
+  }
+
+  prepareProjectImages(slug: string): void {
+    const section = this.imageSections.get(slug);
+    if (!section) return;
+
+    section.querySelectorAll<HTMLImageElement>('img[loading="lazy"]').forEach((image) => {
+      image.loading = 'eager';
+    });
+    this.imageObserver?.unobserve(section);
+  }
+
+  ngOnDestroy(): void {
+    this.imageObserver?.disconnect();
+    this.imageSections.clear();
+  }
 
   ngOnInit(): void {
     this.seo.setPage(pageMetadata.portfolio, {

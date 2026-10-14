@@ -15,6 +15,8 @@
         <span class="work-hero__mark" aria-hidden="true">✳&#xFE0E;</span>
         @for (project of heroProjects; track project.slug) {
           <a class="work-hero__shot" routerLink="/portfolio" [fragment]="project.slug"
+            (pointerenter)="prepareProjectImages(project.slug)" (focus)="prepareProjectImages(project.slug)"
+            (click)="prepareProjectImages(project.slug)"
             [attr.aria-label]="'Esplora il caso studio ' + project.client">
             <img [src]="project.image.src" [attr.srcset]="project.image.srcset ?? null"
               sizes="(min-width: 1100px) 320px, (min-width: 760px) 30vw, 55vw"
@@ -45,7 +47,9 @@
     </div>
     <nav class="work-index__links" aria-label="Vai a un caso studio">
       @for (project of projects; track project.slug) {
-        <a routerLink="/portfolio" [fragment]="project.slug">
+        <a routerLink="/portfolio" [fragment]="project.slug"
+          (pointerenter)="prepareProjectImages(project.slug)" (focus)="prepareProjectImages(project.slug)"
+          (click)="prepareProjectImages(project.slug)">
           <span class="work-index__number" aria-hidden="true">{{ project.number }}</span>
           <span>{{ project.shortClient }}</span>
           <span class="work-index__arrow" aria-hidden="true">↘&#xFE0E;</span>
@@ -72,17 +76,15 @@
         <div class="work-case__layout" [class.work-case__layout--reverse]="$odd">
           <div class="work-case__visuals">
             <figure class="work-figure">
-              <div appPageMotion="mask">
-                <a class="work-frame" [class.work-frame--portrait]="project.portrait"
-                  [href]="project.image.src" target="_blank" rel="noopener noreferrer"
-                  [attr.aria-label]="'Apri la foto di ' + project.client + ' in una nuova scheda'">
-                  <img [src]="project.image.src" [attr.srcset]="project.image.srcset ?? null"
-                    sizes="(min-width: 1100px) 640px, (min-width: 760px) 50vw, 92vw"
-                    [alt]="project.image.alt" [width]="project.image.width" [height]="project.image.height"
-                    loading="lazy" decoding="async" />
-                  <span class="work-frame__expand" aria-hidden="true">↗&#xFE0E;</span>
-                </a>
-              </div>
+              <a class="work-frame" [class.work-frame--portrait]="project.portrait"
+                [href]="project.image.src" target="_blank" rel="noopener noreferrer"
+                [attr.aria-label]="'Apri la foto di ' + project.client + ' in una nuova scheda'">
+                <img [src]="project.image.src" [attr.srcset]="project.image.srcset ?? null"
+                  sizes="(min-width: 1100px) 640px, (min-width: 760px) 50vw, 92vw"
+                  [alt]="project.image.alt" [width]="project.image.width" [height]="project.image.height"
+                  loading="lazy" decoding="async" />
+                <span class="work-frame__expand" aria-hidden="true">↗&#xFE0E;</span>
+              </a>
               <figcaption>{{ project.mediaCaption }}</figcaption>
             </figure>
             @if (project.gallery.length) {
