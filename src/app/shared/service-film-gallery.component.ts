@@ -79,7 +79,11 @@ export class ServiceFilmGalleryComponent {
   }
 
   usesExternalContent(selection: FilmSelection): boolean {
-    return selection.films.some((film) => this.isExternal(film));
+    return this.galleryFilms(selection).some((film) => this.isExternal(film));
+  }
+
+  galleryFilms(selection: FilmSelection): readonly ServiceFilm[] {
+    return selection.excludeFirstFromGallery ? selection.films.slice(1) : selection.films;
   }
 
   stop(): void {

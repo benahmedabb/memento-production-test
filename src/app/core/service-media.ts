@@ -31,6 +31,7 @@ export interface FilmSelection {
   readonly description: string;
   readonly format: 'landscape' | 'portrait' | 'post';
   readonly films: readonly ServiceFilm[];
+  readonly excludeFirstFromGallery?: boolean;
   readonly more?: { readonly path: string; readonly label: string };
 }
 
@@ -42,6 +43,7 @@ export interface PhotoSelection {
   readonly photos: readonly ServicePhoto[];
   readonly hero?: ServicePhoto;
   readonly layout?: 'comparison' | 'uniform';
+  readonly showGallery?: boolean;
   readonly more?: { readonly path: string; readonly label: string };
 }
 
@@ -477,6 +479,7 @@ const photography: PhotoSelection = {
   description:
     'Architettura, luce e contesto. Una selezione di interni, esterni e dettagli per raccontare ogni spazio e ciò che lo circonda.',
   photos: emailPhotos.property,
+  layout: 'uniform',
 };
 const corporate: FilmSelection = {
   id: 'film-aziendali',
@@ -504,6 +507,7 @@ const reels: FilmSelection = {
     'Food, retail, immobiliare e strategia: cinque Reel costruiti sul linguaggio e sugli obiettivi di ogni brand.',
   format: 'portrait',
   films: reelSocialFilms,
+  excludeFirstFromGallery: true,
 };
 const socialSelection: FilmSelection = {
   id: 'social-realizzati',
@@ -528,9 +532,10 @@ const facebookInstagramSelection: FilmSelection = {
   eyebrow: 'Formati Meta',
   title: 'Ogni brand, il suo racconto.',
   description:
-    'Cinque produzioni per attività diverse: informazione, posizionamento, apertura e promozione dei servizi.',
+    'Quattro produzioni per attività diverse: informazione, posizionamento, apertura e promozione dei servizi.',
   format: 'portrait',
   films: facebookInstagramFilms,
+  excludeFirstFromGallery: true,
 };
 const tiktokSelection: FilmSelection = {
   id: 'tiktok-realizzati',
@@ -581,6 +586,7 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
       description:
         'Piatti, cocktail e momenti di convivialità. Fotografie che raccontano il prodotto e l’atmosfera del locale.',
       photos: emailPhotos.food,
+      layout: 'uniform',
     },
     films: [],
   },
@@ -665,6 +671,7 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
       {
         ...reels,
         films: reelSocialFilms.slice(0, 3),
+        excludeFirstFromGallery: false,
         more: { path: '/video/reel-social-torino', label: 'Tutti i Reel per i social' },
       },
     ],
@@ -716,6 +723,7 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
       description:
         'Una creatività per la comunicazione di Life: il tono di voce e la grafica lavorano insieme per rendere riconoscibile il servizio.',
       photos: emailPhotos.organic,
+      showGallery: false,
     },
     films: [organicSelection],
   },

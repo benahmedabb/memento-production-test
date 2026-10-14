@@ -1,12 +1,13 @@
 @for (selection of selections(); track selection.id) {
+  @let visibleFilms = galleryFilms(selection);
   <section
     class="film-gallery"
     [id]="selection.id"
     [attr.aria-labelledby]="selection.id + '-title'"
     [class.film-gallery--portrait]="selection.format !== 'landscape'"
     [class.film-gallery--post]="selection.format === 'post'"
-    [class.film-gallery--single]="selection.films.length === 1"
-    [class.film-gallery--four]="selection.films.length === 4"
+    [class.film-gallery--single]="visibleFilms.length === 1"
+    [class.film-gallery--four]="visibleFilms.length === 4"
   >
     <div class="shell">
       <div class="film-gallery__heading">
@@ -17,7 +18,7 @@
         <p>{{ selection.description }}</p>
       </div>
       <div class="film-gallery__grid">
-        @for (film of selection.films; track film.id) {
+        @for (film of visibleFilms; track film.id) {
           <article
             class="film-card"
             [id]="'film-' + film.id"

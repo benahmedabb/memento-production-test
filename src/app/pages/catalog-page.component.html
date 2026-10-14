@@ -75,28 +75,54 @@
             >
           </a>
         } @else if (heroFilm; as film) {
-          <a
-            class="catalog-real-work"
-            [class.catalog-real-work--portrait]="film.provider !== 'youtube'"
-            [routerLink]="page.path"
-            [fragment]="mediaAnchor"
-            [attr.aria-label]="'Guarda i lavori: ' + film.client"
-          >
-            <img
-              [src]="film.poster"
-              [attr.srcset]="film.posterSrcset ?? null"
-              sizes="(max-width: 859px) 90vw, 45vw"
-              [alt]="'Copertina: ' + film.title"
-              [width]="film.width"
-              [height]="film.height"
-              loading="eager"
-              fetchpriority="high"
-            />
-            <span
-              ><span>{{ film.client }}</span
-              ><span aria-hidden="true">↗</span></span
+          @if (media.films[0]?.excludeFirstFromGallery) {
+            <a
+              class="catalog-real-work"
+              [class.catalog-real-work--portrait]="film.provider !== 'youtube'"
+              [href]="film.watchUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="'Apri il Reel di ' + film.client + ' su Instagram'"
             >
-          </a>
+              <img
+                [src]="film.poster"
+                [attr.srcset]="film.posterSrcset ?? null"
+                sizes="(max-width: 859px) 90vw, 45vw"
+                [alt]="'Copertina: ' + film.title"
+                [width]="film.width"
+                [height]="film.height"
+                loading="eager"
+                fetchpriority="high"
+              />
+              <span
+                ><span>{{ film.client }}</span
+                ><span aria-hidden="true">↗</span></span
+              >
+            </a>
+          } @else {
+            <a
+              class="catalog-real-work"
+              [class.catalog-real-work--portrait]="film.provider !== 'youtube'"
+              [routerLink]="page.path"
+              [fragment]="mediaAnchor"
+              [attr.aria-label]="'Guarda i lavori: ' + film.client"
+            >
+              <img
+                [src]="film.poster"
+                [attr.srcset]="film.posterSrcset ?? null"
+                sizes="(max-width: 859px) 90vw, 45vw"
+                [alt]="'Copertina: ' + film.title"
+                [width]="film.width"
+                [height]="film.height"
+                loading="eager"
+                fetchpriority="high"
+              />
+              <span
+                ><span>{{ film.client }}</span
+                ><span aria-hidden="true">↗</span></span
+              >
+            </a>
+          }
         } @else {
           <app-service-visual [category]="page.category" [variant]="variant" />
         }
@@ -172,7 +198,9 @@
 }
 
 @if (media.photography; as photography) {
-  <app-service-photo-gallery [selection]="photography" />
+  @if (photography.showGallery !== false) {
+    <app-service-photo-gallery [selection]="photography" />
+  }
 }
 @if (media.films.length) {
   <app-service-film-gallery [selections]="media.films" [location]="page.path" />
