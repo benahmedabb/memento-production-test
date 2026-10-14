@@ -12,7 +12,7 @@ export interface ServicePhoto {
 
 export interface ServiceFilm {
   readonly id: string;
-  readonly provider: 'youtube' | 'local' | 'instagram-link';
+  readonly provider: 'youtube' | 'local' | 'instagram';
   readonly title: string;
   readonly client: string;
   readonly description: string;
@@ -22,9 +22,11 @@ export interface ServiceFilm {
   readonly height: number;
   readonly watchUrl: string;
   readonly source?: string;
-  readonly uploadDate: string;
-  readonly duration: string;
-  readonly durationLabel: string;
+  readonly embedUrl?: string;
+  readonly uploadDate?: string;
+  readonly duration?: string;
+  readonly durationLabel?: string;
+  readonly mediaLabel?: 'Reel' | 'Post';
 }
 
 export interface FilmSelection {
@@ -32,7 +34,7 @@ export interface FilmSelection {
   readonly eyebrow: string;
   readonly title: string;
   readonly description: string;
-  readonly format: 'landscape' | 'portrait';
+  readonly format: 'landscape' | 'portrait' | 'post';
   readonly films: readonly ServiceFilm[];
   readonly more?: { readonly path: string; readonly label: string };
 }
@@ -128,6 +130,15 @@ function youtube(
 // Dates, durations and embeddability checked against YouTube's public player metadata.
 export const corporateFilms = [
   youtube(
+    'XiSIUwAxMhA',
+    'memento-spot-aziendale',
+    'Spot pubblicitario di Memento Production',
+    'Memento Production',
+    'Uno spot aziendale che racconta il metodo, le competenze e la produzione coordinata da Memento Production.',
+    '2026-10-11T03:17:46-07:00',
+    96,
+  ),
+  youtube(
     'Ude7C8Ae4Us',
     'terravision-video-aziendale',
     'Terravision, corporate presentation',
@@ -195,7 +206,7 @@ export const propertyFilms = [
   ),
 ] as const;
 
-function reel(
+function localReel(
   id: string,
   slug: string,
   title: string,
@@ -203,11 +214,10 @@ function reel(
   description: string,
   uploadDate: string,
   seconds: number,
-  externalOnly = false,
 ): ServiceFilm {
   return {
     id,
-    provider: externalOnly ? 'instagram-link' : 'local',
+    provider: 'local',
     title,
     client,
     description,
@@ -215,50 +225,282 @@ function reel(
     width: 640,
     height: id === 'DZaBhL4oxDw' ? 1136 : 1138,
     watchUrl: `https://www.instagram.com/reel/${id}/`,
-    ...(!externalOnly ? { source: `/videos/servizi/${slug}.mp4` } : {}),
+    source: `/videos/servizi/${slug}.mp4`,
     uploadDate,
     duration: `PT${seconds}S`,
     durationLabel: `${Math.floor(Math.round(seconds) / 60)}:${String(Math.round(seconds) % 60).padStart(2, '0')}`,
   };
 }
 
+function instagram(
+  id: string,
+  slug: string,
+  title: string,
+  client: string,
+  description: string,
+  kind: 'reel' | 'p' = 'reel',
+  height = 1138,
+): ServiceFilm {
+  return {
+    id,
+    provider: 'instagram',
+    title,
+    client,
+    description,
+    poster: `${imageRoot}${slug}.webp`,
+    width: 640,
+    height,
+    watchUrl: `https://www.instagram.com/${kind}/${id}/`,
+    embedUrl: `https://www.instagram.com/${kind}/${id}/embed`,
+    mediaLabel: kind === 'p' ? 'Post' : 'Reel',
+  };
+}
+
+export const arabianFilm = localReel(
+  'DZaBhL4oxDw',
+  'arabian-luxury-beauty',
+  'Il benessere si racconta',
+  'Arabian Luxury Beauty',
+  'Un Reel di presentazione di Arabian Luxury Beauty, centro estetico e benessere a Torino.',
+  '2026-06-10',
+  59.866,
+);
+
+const lifeFilm = instagram(
+  'DbYnt8pAvgN',
+  'centro-benessere-life',
+  'Ogni esigenza, il suo trattamento',
+  'Centro Benessere Life',
+  'Un contenuto verticale dedicato ai trattamenti e ai servizi del centro benessere.',
+);
+
+const speedAnimationFilm = localReel(
+  'DclvAv2oB-b',
+  'speed-trasporti-animazione',
+  'La cura viaggia con la merce',
+  'Speed Trasporti · Animazione',
+  'Un Reel animato di Speed Trasporti dedicato all’attenzione nel trasporto delle merci delicate.',
+  '2026-08-28',
+  17.625,
+);
+
 export const socialFilms = [
-  reel(
-    'DZaBhL4oxDw',
-    'arabian-luxury-beauty',
-    'Il benessere si racconta',
-    'Arabian Luxury Beauty',
-    'Un Reel di presentazione di Arabian Luxury Beauty, centro estetico e benessere a Torino.',
-    '2026-06-10',
-    59.866,
+  instagram(
+    'DeRwMGWNtjl',
+    'memento-comunicazione-online',
+    'Online, ogni dettaglio parla di te',
+    'Memento Production',
+    'Un Reel che mostra come sito, social e presenza su Google costruiscono insieme la percezione di un’attività.',
   ),
-  reel(
-    'DbYnt8pAvgN',
-    'centro-benessere-life',
-    'Ogni esigenza, il suo trattamento',
-    'Centro Benessere Life',
-    'Il Reel di Centro Benessere Life dedicato ai suoi trattamenti. Guarda il contenuto sul profilo Instagram del centro.',
-    '2026-07-29',
-    34.201,
-    true,
+  arabianFilm,
+  instagram(
+    'DeHKHpGOB6k',
+    'villa-dora-social-reel',
+    'Il ritmo di Villa Dora',
+    'Villa Dora Country House',
+    'Un racconto verticale dedicato alla dimora, al parco e all’atmosfera di Villa Dora.',
   ),
-  reel(
-    'DclvAv2oB-b',
-    'speed-trasporti-animazione',
-    'La cura viaggia con la merce',
-    'Speed Trasporti · Animazione',
-    'Un Reel animato di Speed Trasporti dedicato all’attenzione nel trasporto delle merci delicate.',
-    '2026-08-28',
-    17.625,
-  ),
-  reel(
-    'DbIgzo_Igur',
-    'speed-trasporti-logistica',
-    'Anche il ritorno conta',
+  instagram(
+    'DYpW7bmok7i',
+    'speed-trasporti-transpotec',
+    'Speed Trasporti a Transpotec',
     'Speed Trasporti',
-    'Un contenuto social di Speed Trasporti che racconta la logistica inversa: resi, ritiri e rientri della merce.',
-    '2026-07-23',
-    18.875,
+    'La presenza dell’azienda a Transpotec Logitec 2026 raccontata con un Reel dinamico.',
+  ),
+] as const;
+
+const organicPosts = [
+  instagram(
+    'DYChtsyCHHa',
+    'master-colazione-post',
+    'La colazione ha un nuovo sapore',
+    'Master · Pinerolo',
+    'Un contenuto statico che presenta la proposta colazione attraverso prodotto, fotografia e identità visiva.',
+    'p',
+    800,
+  ),
+  instagram(
+    'Dd9VKaFuTpr',
+    'rare-sito-online-post',
+    'Il sito di Rare è online',
+    'Rare',
+    'Un post di lancio costruito per annunciare il nuovo sito e portare il pubblico al catalogo online.',
+    'p',
+    791,
+  ),
+  instagram(
+    'DYFJQDGCMYM',
+    'treccagas-sanificazione-post',
+    'Aria più pulita, più comfort',
+    'Treccagas',
+    'Un contenuto informativo sulla manutenzione e la sanificazione del climatizzatore.',
+    'p',
+    854,
+  ),
+] as const;
+
+const facebookInstagramFilms = [
+  instagram(
+    'DZM8gj2MkGp',
+    'shibumi-med-laser',
+    'Tecnologia e diagnosi per la pelle',
+    'OpenTheDoc · Shibumi Med',
+    'Un Reel informativo sui trattamenti laser e sul valore di una valutazione corretta.',
+  ),
+  instagram(
+    'DW3vu8QCCDP',
+    'speed-trasporti-sicurezza',
+    'La sicurezza inizia prima di partire',
+    'Speed Trasporti',
+    'Controlli, fissaggio e verifica del carico raccontano la cura che precede ogni viaggio.',
+  ),
+  lifeFilm,
+  instagram(
+    'DZaCO9XisMH',
+    'il-forte-colazione',
+    'Il Forte 2.0, una nuova avventura',
+    'Il Forte 2.0',
+    'Un Reel di apertura che presenta l’identità e la proposta del locale di Novi.',
+  ),
+  instagram(
+    'DdrKkv-ooXj',
+    'elle-hair-salon',
+    'Capelli spenti e sfibrati?',
+    'Elle Hair Salon',
+    'Un contenuto dedicato al trattamento professionale per ricostruire il capello in profondità.',
+    'reel',
+    1136,
+  ),
+] as const;
+
+const tiktokFilms = [
+  instagram(
+    'DZcxLn8I5ob',
+    'master-fan-numero-uno',
+    'Fan numero uno',
+    'Master · Pinerolo',
+    'Un format breve e immediato, costruito sul tono spontaneo tipico dei contenuti TikTok.',
+  ),
+  instagram(
+    'DbIieY2OB0T',
+    'openthedoc-segno',
+    'Se aspettavi un segno',
+    'OpenTheDoc',
+    'Un contenuto rapido con apertura forte e invito diretto alla consulenza.',
+  ),
+  instagram(
+    'DZpfif-iH43',
+    'arabian-beauty-tiktok',
+    'Dietro le quinte, con ironia',
+    'Arabian Luxury Beauty',
+    'Un format leggero che usa ironia e quotidianità per rendere il brand più vicino.',
+    'reel',
+    1136,
+  ),
+  instagram(
+    'Dc1MuGngxo8',
+    'centro-benessere-life-manicure',
+    'La risposta era ovvia',
+    'Centro Benessere Life',
+    'Un Reel breve dedicato alla manicure, pensato per intrattenere e portare alla prenotazione.',
+  ),
+] as const;
+
+const reelSocialFilms = [
+  instagram(
+    'DeKJARKAFLL',
+    'master-barman',
+    'Le persone dietro al servizio',
+    'Master · Pinerolo',
+    'Un format a domanda e risposta che presenta lo staff e il lavoro dietro al servizio.',
+  ),
+  instagram(
+    'DeKEPzyKGG1',
+    'pasticceria-primavera-frutta',
+    'La frutta realistica',
+    'Pasticceria Primavera',
+    'Un Reel di prodotto dedicato alla frutta realistica e alla frutta martorana.',
+    'reel',
+    1136,
+  ),
+  instagram(
+    'DaQNNjHNoQm',
+    'kristal-bottega-colori',
+    'Oltre quarant’anni di storia',
+    'Kristal Immobiliare',
+    'Un’attività storica raccontata per presentare una nuova opportunità commerciale.',
+  ),
+  instagram(
+    'DbF9dADtz7F',
+    'memento-crescita-social',
+    'Tre mosse per crescere sui social',
+    'Memento Production',
+    'Un contenuto educational su costanza, sperimentazione e strategia editoriale.',
+  ),
+  instagram(
+    'DRNbwVzDCcW',
+    'delias-farina',
+    'La nostra farina',
+    'Delia’s · Pinerolo',
+    'Uno storytelling ironico che trasforma una materia prima in un tratto riconoscibile del locale.',
+  ),
+] as const;
+
+const animatedFilms = [
+  speedAnimationFilm,
+  instagram(
+    'Dcd2pQio8tm',
+    'speed-trasporti-certificazione',
+    'Concretizza su strada',
+    'Speed Trasporti',
+    'Un contenuto grafico dedicato alla certificazione CERT-ERN e ai valori di sicurezza e affidabilità.',
+  ),
+  instagram(
+    'DaLPZuuCZLn',
+    'arabian-radiofrequenza',
+    'Dentro la radiofrequenza viso',
+    'Arabian Luxury Beauty',
+    'Un Reel che unisce trattamento, spiegazione e grafica per raccontare la radiofrequenza viso.',
+  ),
+  instagram(
+    'Da5nqqLIYd2',
+    'speed-trasporti-storia',
+    'Dal 1998, in movimento',
+    'Speed Trasporti',
+    'Un racconto animato dell’azienda, della flotta e delle soluzioni logistiche in Italia e in Europa.',
+  ),
+] as const;
+
+const courseAndTestimonialFilms = [
+  instagram(
+    'DdLuO9SDVNk',
+    'trainmeup-roberto-testimonial',
+    'Il percorso di Roberto',
+    'TrainMeUP',
+    'Una testimonianza personale sul valore di un percorso seguito, ascoltato e costruito sulle proprie esigenze.',
+  ),
+  instagram(
+    'DeKHUT-oAjJ',
+    'elle-hair-testimonial',
+    'La parola a una cliente',
+    'Elle Hair Salon',
+    'Un’esperienza raccontata in prima persona per mostrare il lavoro e l’accoglienza del salone.',
+    'reel',
+    1136,
+  ),
+  instagram(
+    'DWBopgQjMuW',
+    'shibumi-rimozione-tatuaggio',
+    'Quando un tatuaggio non ti rappresenta più',
+    'OpenTheDoc · Shibumi Med',
+    'Un contenuto informativo sulla rimozione laser dei tatuaggi e sul percorso di trattamento.',
+  ),
+  instagram(
+    'DdbLAvwlCTx',
+    'trainmeup-team-testimonial',
+    'Dentro il team TrainMeUP',
+    'TrainMeUP',
+    'Personal trainer e nutrizionista raccontano il lavoro quotidiano con i clienti del centro.',
   ),
 ] as const;
 
@@ -288,7 +530,7 @@ const corporate: FilmSelection = {
   eyebrow: 'Produzioni aziendali',
   title: 'Le storie hanno un volto.',
   description:
-    'Presentazioni, persone ed eventi. Tre produzioni per vedere come un’identità prende forma in video.',
+    'Spot, presentazioni, persone ed eventi. Quattro produzioni per vedere come un’identità prende forma in video.',
   format: 'landscape',
   films: corporateFilms,
 };
@@ -306,16 +548,45 @@ const reels: FilmSelection = {
   eyebrow: 'Dal set al feed',
   title: 'Storie da guardare in verticale.',
   description:
-    'Benessere e servizi: quattro esempi di contenuti realizzati per i social, ognuno con il linguaggio del proprio brand.',
+    'Food, retail, immobiliare e strategia: cinque Reel costruiti sul linguaggio e sugli obiettivi di ogni brand.',
+  format: 'portrait',
+  films: reelSocialFilms,
+};
+const socialSelection: FilmSelection = {
+  id: 'social-realizzati',
+  eyebrow: 'Strategia e produzione',
+  title: 'Il brand prende voce.',
+  description:
+    'Quattro esempi tra presenza online, benessere, hospitality ed eventi: contenuti diversi, un’identità chiara.',
   format: 'portrait',
   films: socialFilms,
 };
-const socialSelection: FilmSelection = {
-  ...reels,
+const organicSelection: FilmSelection = {
+  id: 'post-organici',
+  eyebrow: 'Piano editoriale',
+  title: 'Contenuti che lavorano insieme.',
   description:
-    'Tre esempi di contenuti social tra benessere, animazione e logistica: linguaggi diversi per raccontare ogni attività.',
-  films: [socialFilms[0], socialFilms[2], socialFilms[3]],
-  more: { path: '/video/reel-social-torino', label: 'Esplora tutti i Reel' },
+    'Tre post statici pensati per informare, presentare un prodotto e accompagnare il pubblico verso un’azione concreta.',
+  format: 'post',
+  films: organicPosts,
+};
+const facebookInstagramSelection: FilmSelection = {
+  id: 'facebook-instagram-realizzati',
+  eyebrow: 'Formati Meta',
+  title: 'Ogni brand, il suo racconto.',
+  description:
+    'Cinque produzioni per attività diverse: informazione, posizionamento, apertura e promozione dei servizi.',
+  format: 'portrait',
+  films: facebookInstagramFilms,
+};
+const tiktokSelection: FilmSelection = {
+  id: 'tiktok-realizzati',
+  eyebrow: 'Contenuti verticali',
+  title: 'Veloci, riconoscibili, spontanei.',
+  description:
+    'Quattro esempi che usano ritmo, ironia e apertura immediata per parlare il linguaggio della piattaforma.',
+  format: 'portrait',
+  films: tiktokFilms,
 };
 
 const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
@@ -338,7 +609,8 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
       corporate,
       properties,
       {
-        ...socialSelection,
+        ...reels,
+        films: reelSocialFilms.slice(0, 3),
         more: { path: '/video/reel-social-torino', label: 'Tutti i Reel per i social' },
       },
     ],
@@ -352,9 +624,9 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
         eyebrow: 'Un progetto animato',
         title: 'Un servizio diventa una storia.',
         description:
-          'Il Reel animato di Speed Trasporti: un esempio di come la grafica in movimento può raccontare un servizio.',
+          'Quattro produzioni che uniscono riprese, identità visiva e grafica in movimento per rendere chiaro un servizio.',
         format: 'portrait',
-        films: [socialFilms[2]],
+        films: animatedFilms,
       },
     ],
   },
@@ -365,24 +637,26 @@ const mediaByPath: Readonly<Record<string, ServiceMedia>> = {
         eyebrow: 'La parola al cliente',
         title: 'Un’esperienza, in prima persona.',
         description:
-          'Il Dr. Alessio Vainella racconta il lavoro con Memento Production. Un esempio di video testimonianza già presente nelle nostre recensioni.',
+          'Il Dr. Alessio Vainella racconta il lavoro con Memento Production. La sua testimonianza resta in primo piano.',
         format: 'landscape',
         films: [testimonial],
         more: { path: '/recensioni', label: 'Leggi anche le recensioni' },
       },
-    ],
-  },
-  '/social': { films: [socialSelection] },
-  '/social/gestione-social-organica-torino': {
-    films: [
       {
-        ...socialSelection,
+        id: 'corsi-testimonial-realizzati',
+        eyebrow: 'Persone e percorsi',
+        title: 'Esperienze che diventano racconto.',
         description:
-          'Una selezione di contenuti pubblicati sui profili dei clienti: esempi di produzione per la comunicazione organica.',
+          'Quattro esempi dedicati a percorsi, servizi e persone, costruiti per essere chiari e credibili nel feed.',
+        format: 'portrait',
+        films: courseAndTestimonialFilms,
       },
     ],
   },
-  '/social/facebook-instagram-torino': { films: [reels] },
+  '/social': { films: [socialSelection] },
+  '/social/gestione-social-organica-torino': { films: [organicSelection] },
+  '/social/facebook-instagram-torino': { films: [facebookInstagramSelection] },
+  '/social/tiktok-torino': { films: [tiktokSelection] },
 };
 
 export const serviceMediaFor = (path: string): ServiceMedia => mediaByPath[path] ?? { films: [] };
@@ -408,7 +682,7 @@ export function serviceMediaSchema(path: string, media: ServiceMedia): Record<st
   return [
     ...images,
     ...uniqueFilms
-      .filter((film) => film.provider !== 'instagram-link')
+      .filter((film) => film.provider === 'youtube' || film.provider === 'local')
       .map((film) => ({
         '@context': 'https://schema.org',
         '@type': 'VideoObject',

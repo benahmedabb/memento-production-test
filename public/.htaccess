@@ -7,6 +7,7 @@ RewriteRule ^ https://mementoproduction.it%{REQUEST_URI} [R=301,L,NE]
 
 # Preserve the old combined service URL when the static site replaces Horizons.
 # Service taxonomy: permanent redirects, without intermediate hops.
+RewriteRule ^home/?$ / [R=301,L,NE]
 RewriteRule ^produzione-video-fotografia/?$ /video [R=301,L,NE]
 RewriteRule ^social-media/?$ /social [R=301,L,NE]
 RewriteRule ^(?:grafica-branding|branding-siti-web)/?$ /grafica [R=301,L,NE]

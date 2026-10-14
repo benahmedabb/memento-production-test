@@ -32,22 +32,26 @@ export class ServiceFilmGalleryComponent {
   readonly failedId = signal<string | null>(null);
   readonly active = computed(() => {
     const film = this.requested();
-    return film?.provider === 'youtube' && !this.consent.preferences().marketing ? null : film;
+    return film && this.isExternal(film) && !this.consent.preferences().marketing ? null : film;
   });
   readonly embedUrl = computed(() => {
     const film = this.active();
     // Only IDs in the editorial catalog can reach this player; no visitor-supplied URLs.
-    return film?.provider === 'youtube' && /^[\w-]{11}$/.test(film.id)
-      ? this.sanitizer.bypassSecurityTrustResourceUrl(
-          `https://www.youtube-nocookie.com/embed/${film.id}?autoplay=1&playsinline=1&rel=0`,
-        )
-      : null;
+    if (!film || !/^[\w-]{11}$/.test(film.id)) return null;
+    if (film.provider === 'youtube')
+      return this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://www.youtube-nocookie.com/embed/${film.id}?autoplay=1&playsinline=1&rel=0`,
+      );
+    if (film.provider === 'instagram' && film.embedUrl)
+      return this.sanitizer.bypassSecurityTrustResourceUrl(film.embedUrl);
+    return null;
   });
 
   constructor() {
     effect(() => {
       if (
-        this.requested()?.provider === 'youtube' &&
+        this.requested() &&
+        this.isExternal(this.requested()!) &&
         !this.consent.preferences().marketing &&
         !this.consent.preferencesOpen()
       )
@@ -64,18 +68,25 @@ export class ServiceFilmGalleryComponent {
   }
 
   play(film: ServiceFilm): void {
-    if (film.provider === 'instagram-link') return;
     this.failedId.set(null);
     this.requested.set(film);
     this.tracking.track('service_video_request', {
       video_id: film.id,
       video_location: this.location(),
     });
-    if (film.provider === 'youtube' && !this.consent.preferences().marketing)
+    if (this.isExternal(film) && !this.consent.preferences().marketing)
       this.consent.openPreferences();
+  }
+
+  usesExternalContent(selection: FilmSelection): boolean {
+    return selection.films.some((film) => this.isExternal(film));
   }
 
   stop(): void {
     this.requested.set(null);
+  }
+
+  private isExternal(film: ServiceFilm): boolean {
+    return film.provider === 'youtube' || film.provider === 'instagram';
   }
 }

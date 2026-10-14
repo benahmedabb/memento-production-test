@@ -3,7 +3,8 @@
     class="film-gallery"
     [id]="selection.id"
     [attr.aria-labelledby]="selection.id + '-title'"
-    [class.film-gallery--portrait]="selection.format === 'portrait'"
+    [class.film-gallery--portrait]="selection.format !== 'landscape'"
+    [class.film-gallery--post]="selection.format === 'post'"
     [class.film-gallery--single]="selection.films.length === 1"
     [class.film-gallery--four]="selection.films.length === 4"
   >
@@ -25,9 +26,12 @@
             <div class="film-card__screen">
               @if (failedId() === film.id) {
                 <div class="film-card__error">
-                  <p>Il video non è disponibile in questo momento.</p>
+                  <p>Il contenuto non è disponibile in questo momento.</p>
                   <a [href]="film.watchUrl" target="_blank" rel="noopener noreferrer"
-                    >Guarda su Instagram ↗</a
+                    >{{
+                      film.provider === 'youtube' ? 'Guarda su YouTube' : 'Guarda su Instagram'
+                    }}
+                    ↗</a
                   >
                 </div>
               } @else if (active()?.id === film.id) {
@@ -55,33 +59,18 @@
                     allowfullscreen
                   ></iframe>
                 }
-              } @else if (film.provider === 'instagram-link') {
-                <a
-                  class="film-card__poster"
-                  [href]="film.watchUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  [attr.aria-label]="'Guarda su Instagram: ' + film.title + ' (nuova scheda)'"
-                >
-                  <img
-                    [src]="film.poster"
-                    [alt]="'Copertina del Reel di ' + film.client"
-                    [width]="film.width"
-                    [height]="film.height"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span class="film-card__play" aria-hidden="true">↗</span
-                  ><span class="film-card__badge">Su Instagram</span>
-                </a>
               } @else {
                 <button
                   type="button"
                   class="film-card__poster"
                   (click)="play(film)"
-                  [attr.aria-label]="'Riproduci: ' + film.title + ', durata ' + film.durationLabel"
+                  [attr.aria-label]="
+                    film.durationLabel
+                      ? 'Riproduci: ' + film.title + ', durata ' + film.durationLabel
+                      : 'Apri il contenuto: ' + film.title
+                  "
                   [attr.aria-describedby]="
-                    film.provider === 'youtube' ? selection.id + '-consent' : null
+                    film.provider !== 'local' ? selection.id + '-consent' : null
                   "
                 >
                   <img
@@ -98,7 +87,7 @@
                     ><svg viewBox="0 0 24 24" width="24" height="24">
                       <path d="m8 4 12 8-12 8Z" /></svg
                   ></span>
-                  <span class="film-card__badge">{{ film.durationLabel }}</span>
+                  <span class="film-card__badge">{{ film.durationLabel ?? film.mediaLabel }}</span>
                 </button>
               }
             </div>
@@ -108,9 +97,7 @@
               <p class="film-card__description">{{ film.description }}</p>
               <div class="film-card__links">
                 <a [href]="film.watchUrl" target="_blank" rel="noopener noreferrer"
-                  >{{
-                    film.provider === 'youtube' ? 'Guarda su YouTube' : 'Apri il post Instagram'
-                  }}
+                  >{{ film.provider === 'youtube' ? 'Guarda su YouTube' : 'Apri su Instagram' }}
                   <span aria-hidden="true">↗</span></a
                 >
                 @if (active()?.id === film.id) {
@@ -124,9 +111,10 @@
         }
       </div>
       <div class="film-gallery__footer">
-        @if (selection.format === 'landscape') {
+        @if (usesExternalContent(selection)) {
           <p [id]="selection.id + '-consent'">
-            I video YouTube si aprono dopo il consenso ai contenuti esterni nelle preferenze cookie.
+            I contenuti YouTube e Instagram si aprono dopo il consenso ai contenuti esterni nelle
+            preferenze cookie.
           </p>
         }
         @if (selection.more; as more) {

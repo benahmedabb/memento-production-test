@@ -82,6 +82,7 @@ export class ClientLogosComponent {
   readonly logos: readonly ClientLogo[] = [
     { src: '/images/Logotipo bianco.png', name: 'AgriDora Società Agricola', width: 917, height: 230 },
     { src: '/images/Logo bianco.png', name: "Dora Motor’s Experience", width: 1086, height: 366 },
+    { src: '/images/logo-trainmeup.png', name: 'TrainMeUp', width: 1600, height: 1131, padded: true, lightBackground: true },
     { src: '/images/Logotipo bianco (1).png', name: 'Villa Dora Country House', width: 996, height: 286 },
     { src: '/images/Logo bianco (1).png', name: 'Novaera Immobiliare', width: 2087, height: 1538, compact: true },
     { src: '/images/Logotipo bianco (3).png', name: 'Bioveil', width: 1052, height: 210 },
@@ -95,7 +96,6 @@ export class ClientLogosComponent {
     { src: '/images/MEEET Logo chiaro.png', name: 'Meeet Beauty Medical Lab', width: 931, height: 670, padded: true },
     { src: '/images/WhatsApp Image 2026-01-07 at 13.22.47.jpeg', name: 'Life Benessere e Solarium', width: 1280, height: 506, darkBackground: true },
     { src: '/images/logo bianco (3).png', name: 'GR L’Immobiliare', width: 1459, height: 325 },
-    { src: '/images/logo-trainmeup.png', name: 'TrainMeUp', width: 1600, height: 1131, padded: true, lightBackground: true },
   ];
   readonly scrollDuration = `${this.logos.length * 7.5}s`;
 

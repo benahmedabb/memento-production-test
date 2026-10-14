@@ -190,6 +190,12 @@
 .film-gallery--portrait .film-card__screen {
   aspect-ratio: 9/16;
 }
+.film-gallery--post .film-card__screen {
+  aspect-ratio: 4/5;
+}
+.film-gallery--portrait .film-card__screen iframe {
+  background: #fff;
+}
 .film-gallery--portrait .film-card h3 {
   font-size: clamp(1.3rem, 1.8vw, 1.75rem);
 }

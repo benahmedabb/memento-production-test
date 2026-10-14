@@ -108,17 +108,12 @@ describe('Service catalog navigation and SEO', () => {
     );
 
     await harness.navigateByUrl('/video/reel-social-torino', CatalogPageComponent);
-    expect(harness.routeNativeElement?.querySelectorAll('.film-card')).toHaveLength(4);
+    expect(harness.routeNativeElement?.querySelectorAll('.film-card')).toHaveLength(5);
     schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
     const videos = schema.filter(
       (entry: Record<string, unknown>) => entry['@type'] === 'VideoObject',
     );
-    expect(videos).toHaveLength(3); // The link-only Reel is not advertised as an embedded video.
-    expect(
-      videos.every((entry: Record<string, string>) =>
-        entry['contentUrl'].startsWith('https://mementoproduction.it/videos/servizi/'),
-      ),
-    ).toBe(true);
+    expect(videos).toHaveLength(0); // Instagram owns the source metadata for these embedded Reels.
     expect(schema.some((entry: Record<string, unknown>) => entry['@type'] === 'ImageObject')).toBe(
       false,
     );
