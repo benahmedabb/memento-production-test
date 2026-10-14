@@ -26,6 +26,7 @@ Integrazione iniziale del 7 ottobre 2026 e aggiornamento del 14 ottobre 2026 dai
 | `/grafica/grafica-stampa-torino` | Anteprima della copertina del menu Master e tre studi di etichette/packaging Bioveil |
 | `/grafica/rebranding-torino` | Confronto prima/dopo Master dei Cocktail, con logo definitivo nella hero |
 | `/portfolio` | Sette progetti: Speed, Dora Events, Il Forte, Master, RARE, TreccaGas e Vainella |
+| `/` | Sei card distinte: Speed, Il Forte, Master, RARE, TreccaGas e Vainella, con foto e descrizioni condivise con il portfolio |
 
 I link che l’agenzia ha elencato sotto TikTok sono presentati come esempi del linguaggio verticale per la piattaforma, mantenendo Instagram come sorgente originale. Non sono usati video come fotografie corporate o lavori di grafica stampata. Restano presenti testi, FAQ, processo, CTA, collegamenti e progetti di portfolio già pubblicati.
 
@@ -88,19 +89,34 @@ Lo script genera le copie WebP e `src/app/core/email-photos.generated.ts`. Le la
 
 Le tre immagini TreccaGas sono state ruotate per correggere l’orientamento dei file ricevuti. Del PDF Master è stata rasterizzata la prima pagina (copertina e retro): il PDF di stampa non viene scaricato dal browser. I loghi trasparenti hanno fondo chiaro e margine per mantenerli leggibili. Nel rebranding il logo precedente è esplicitamente attribuito al cliente.
 
-Per il portfolio sono state lette le anteprime dei sei documenti Pages: `SPEED.pages`, `Senza nome.pages` (Il Forte), `MASTER.pages`, `RARE.pages`, `TRECCA.pages` e `Alessio Vainella.pages`. I contenuti sono sintesi della prima pagina leggibile, non trascrizioni integrali dei documenti. Speed e Il Forte sono stati arricchiti; Master, RARE, TreccaGas e Vainella sono nuovi. Dora Events resta presente. I nuovi casi non mostrano metriche inventate; le metriche preesistenti sono riferite al contenuto social selezionato. Per Vainella è presente il collegamento alla testimonianza già integrata.
+Per il portfolio sono state lette le anteprime dei sei documenti Pages: `SPEED.pages`, `Senza nome.pages` (Il Forte), `MASTER.pages`, `RARE.pages`, `TRECCA.pages` e `Alessio Vainella.pages`. I contenuti sono sintesi della prima pagina leggibile, non trascrizioni integrali dei documenti. Speed e Il Forte sono stati arricchiti; Master, RARE, TreccaGas e Vainella sono nuovi. Dora Events resta presente. Le metriche preesistenti sono state sostituite dai soli valori riscontrati nei documenti forniti, come descritto sotto. Per Vainella è presente il collegamento alla testimonianza già integrata.
+
+Le sei card della Home ora rimandano direttamente ai rispettivi casi studio nel portfolio. La selezione è definita da `featuredOnHome` in `src/app/core/portfolio-case-studies.ts`; foto e descrizioni provengono dalla stessa configurazione usata dal portfolio. I precedenti due gruppi, che ripetevano tre clienti, sono sostituiti da un’unica griglia di sei progetti. Speed usa la copertina locale Transpotec già disponibile; gli altri cinque casi usano le immagini importate dai materiali del cliente. Non sono state generate ulteriori copie. Dora Events rimane nel portfolio, fuori dalla selezione Home.
+
+### Nuovo portfolio e provenienza dei risultati
+
+La pagina usa un’apertura fotografica con tre progetti, un indice navigabile e sette capitoli editoriali: Speed, Il Forte, Master, RARE, TreccaGas, Vainella e Dora Events. Gli identificatori dei progetti restano invariati per i collegamenti dalla Home. Sono presenti immagini ingrandibili in una nuova scheda, materiali aggiuntivi per Master, RARE e TreccaGas, approfondimenti nativi espandibili e il collegamento alla testimonianza di Vainella. Nessun carosello automatico o player esterno caricato all’apertura. Il layout e le transizioni rispettano schermi piccoli e preferenza di movimento ridotto.
+
+Il template è in `src/app/pages/portfolio-page.component.html`; gli stili dedicati, con prefisso `work-`, sono in `src/_portfolio.scss`. L’elenco dei progetti alimenta anche i dati strutturati `ItemList` della pagina. Nessun nuovo file immagine è stato creato.
+
+Le anteprime `preview.jpg` dei sei documenti Pages locali sono state rilette per il controllo dei numeri. Sono pubblicati soltanto:
+
+- **Speed Trasporti:** oltre 400.000 visualizzazioni organiche e oltre 1.000 nuovi follower. Fonte: `Memento_SITO 17/05_Portfolio/SPEED TRASPORTI/SPEED.pages`, sezione “Video Marketing e Successi Virali Organici”. I risultati sono attribuiti esplicitamente al video sul retarder, non alla fotografia Transpotec.
+- **Il Forte 2.0:** oltre 100.000 visualizzazioni organiche. Fonte: `Memento_SITO 17/05_Portfolio/IL FORTE 2.0/Senza nome.pages`, sezione “Risultati Chiave e Metriche di Successo”, relativa al racconto delle personalità del locale.
+
+Si tratta di dichiarazioni contenute nei documenti dell’agenzia, non di una verifica indipendente degli Insights Meta. La pagina mantiene il riferimento alla fonte; il periodo viene mostrato solo quando disponibile, senza una dicitura sostitutiva quando manca. Nessuna metrica viene mostrata per Master, RARE, TreccaGas, Vainella o Dora Events senza una fonte documentale riscontrata. I vecchi 396K/1.050/500+ di Speed, 134K/1,5K/42% di Il Forte e 16K/250K+ di Dora non sono più utilizzati dal portfolio. La configurazione `results` richiede contesto, fonte e metriche: i valori storici di `siteConfig.portfolio` non vengono ereditati.
 
 ### Limiti della consegna
 
 - È stata pubblicata nel codice una selezione rappresentativa, non tutte le 313 risorse locali e le loro varianti.
 - Sorgenti Illustrator, font, archivi ZIP, file temporanei e PDF di stampa completi sono esclusi dagli asset del sito.
-- I collegamenti Drive aggiuntivi contenuti nei documenti Pages non sono stati scaricati: sono stati utilizzati i materiali già disponibili localmente e le copertine già presenti per Speed e Dora Events.
+- I collegamenti Drive aggiuntivi contenuti nei documenti Pages non sono stati scaricati: sono stati utilizzati i materiali già disponibili localmente, inclusa la copertina Transpotec per Speed; Dora Events conserva la copertina precedente.
 - Non tutte le pagine dei documenti Pages sono state trascritte; i testi del portfolio sono sintesi dei contenuti leggibili nelle anteprime.
 - L’integrazione locale non equivale alla pubblicazione online: commit, push e deploy non sono stati eseguiti per questo aggiornamento.
 
 ## SEO e prestazioni
 
-La configurazione è in `src/app/core/service-media.ts`, caricata insieme alle pagine del catalogo. La Home e la navigazione iniziale non importano i dati dei nuovi media. Le nuove anteprime sostituiscono le illustrazioni soltanto nei servizi con materiale pertinente.
+La configurazione dei servizi è in `src/app/core/service-media.ts`. Home e portfolio condividono i casi studio tramite `src/app/core/portfolio-case-studies.ts`; i metodi per le immagini responsive sono separati in `src/app/core/service-photo.ts`, senza richiedere l’importazione della configurazione dei film. Le nuove anteprime sostituiscono le illustrazioni soltanto nei servizi con materiale pertinente.
 
 - Titoli, canonical, H1 e breadcrumb del catalogo sono conservati.
 - Titoli, descrizioni, immagini e link dei lavori sono presenti nel markup reso dal server.
@@ -118,3 +134,7 @@ Controlli iniziali del 7 ottobre effettuati senza build di produzione o commit: 
 Per la prima parte dell’aggiornamento del 14 ottobre (link pubblici): controllo Angular con `ngc --noEmit`, verifica del catalogo e della sitemap, test mirati del catalogo e del player, controllo di tutte le sorgenti locali e dei 28 link pubblici Instagram.
 
 Durante l’integrazione dei file locali, prima dell’indicazione dell’utente di non lanciare build o test: controllo Angular superato e 26 test superati; un test preesistente della Home fallisce perché include nel testo atteso anche il nuovo testo accessibile della hero. Il componente Home non è stato modificato da questa integrazione. Due tentativi di build sono terminati con errore del processo (il primo con deadlock esbuild), quindi la build di produzione non è validata. Dopo l’indicazione dell’utente non sono stati avviati altri build o test. Le ultime rifiniture sono state riviste staticamente; nessun commit, push o deploy eseguito.
+
+Il successivo aggiornamento delle sei card Home è stato controllato tramite revisione statica dei sorgenti e del diff. Nessuna build, test, modifica ai file di test, commit, push o pubblicazione eseguiti per questo intervento.
+
+Anche il redesign del portfolio è stato rivisto soltanto staticamente, confrontando i risultati con i documenti originali e controllando sorgenti, collegamenti e diff. Build, test, file di test, commit, push e deploy non eseguiti; il rendering nel browser non è stato verificato in questa sessione.

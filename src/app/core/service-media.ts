@@ -1,17 +1,9 @@
 import { clientTestimonial } from './client-testimonial';
 import { siteConfig } from './site.config';
 import { emailPhotos } from './email-photos.generated';
+import { photoSource, type ServicePhoto } from './service-photo';
 
-export interface ServicePhoto {
-  readonly slug: string;
-  readonly title: string;
-  readonly location: string;
-  readonly alt: string;
-  readonly width: number;
-  readonly height: number;
-  readonly widths?: readonly number[];
-  readonly contain?: boolean;
-}
+export { photoSource, photoSrcset, type ServicePhoto } from './service-photo';
 
 export interface ServiceFilm {
   readonly id: string;
@@ -59,15 +51,6 @@ export interface ServiceMedia {
 }
 
 const imageRoot = '/images/servizi/';
-export const photoSource = (photo: ServicePhoto, width = 1200) => {
-  const available = photo.widths ?? [640, 1200, 1920];
-  const size = available.find((size) => size >= width) ?? available[available.length - 1];
-  return `${imageRoot}${photo.slug}-${size}.webp`;
-};
-export const photoSrcset = (photo: ServicePhoto) =>
-  (photo.widths ?? [640, 1200, 1920])
-    .map((width) => `${photoSource(photo, width)} ${width}w`)
-    .join(', ');
 
 // Selection from the six properties supplied by the agency. Source file IDs are documented in docs/service-media.md.
 export const propertyPhotos: readonly ServicePhoto[] = [

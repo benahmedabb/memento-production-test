@@ -1,0 +1,178 @@
+<section class="work-hero" aria-labelledby="work-title">
+  <div class="shell">
+    <div class="work-hero__topline">
+      <p>Portfolio / Memento Production</p>
+      <span>Strategia, immagini, identità</span>
+    </div>
+
+    <div class="work-hero__layout">
+      <div class="work-hero__copy" appPageMotion="hero">
+        <h1 id="work-title">Il lavoro.<br />Il segno<br /><em>che resta.</em></h1>
+        <p>Ogni brand ha una storia diversa. Il nostro lavoro è darle una forma che si riconosce, si sente e si ricorda.</p>
+      </div>
+
+      <nav class="work-hero__board" aria-label="Tre sguardi sui nostri progetti">
+        <span class="work-hero__mark" aria-hidden="true">✳&#xFE0E;</span>
+        @for (project of heroProjects; track project.slug) {
+          <a class="work-hero__shot" routerLink="/portfolio" [fragment]="project.slug"
+            [attr.aria-label]="'Esplora il caso studio ' + project.client">
+            <img [src]="project.image.src" [attr.srcset]="project.image.srcset ?? null"
+              sizes="(min-width: 1100px) 320px, (min-width: 760px) 30vw, 55vw"
+              [alt]="project.image.alt" [width]="project.image.width" [height]="project.image.height"
+              loading="eager" [attr.fetchpriority]="$first ? 'high' : 'low'" decoding="async" />
+            <span>{{ project.shortClient }} <span aria-hidden="true">↗&#xFE0E;</span></span>
+          </a>
+        }
+        <span class="work-hero__board-note" aria-hidden="true">Progetti reali. Punti di vista diversi.</span>
+      </nav>
+    </div>
+
+    <div class="work-hero__bottomline">
+      <p><span>{{ projectCount }}</span> progetti selezionati</p>
+      <a routerLink="/portfolio" fragment="indice-progetti">Entra nei progetti <span aria-hidden="true">↓</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="indice-progetti" class="work-index" aria-labelledby="work-index-title">
+  <div class="shell">
+    <div class="work-index__intro">
+      <div>
+        <p class="work-kicker">L’indice dei progetti</p>
+        <h2 id="work-index-title">Ogni brand,<br />una direzione.</h2>
+      </div>
+      <p>Dalla logistica alla ristorazione, dalla moda ai servizi. Scegli un nome o lasciati accompagnare dalle immagini.</p>
+    </div>
+    <nav class="work-index__links" aria-label="Vai a un caso studio">
+      @for (project of projects; track project.slug) {
+        <a routerLink="/portfolio" [fragment]="project.slug">
+          <span class="work-index__number" aria-hidden="true">{{ project.number }}</span>
+          <span>{{ project.shortClient }}</span>
+          <span class="work-index__arrow" aria-hidden="true">↘&#xFE0E;</span>
+        </a>
+      }
+    </nav>
+  </div>
+</section>
+
+<section class="work-selection" aria-label="I casi studio Memento">
+  @for (project of projects; track project.slug) {
+    <article [id]="project.slug" class="work-case" [attr.data-tone]="project.tone"
+      [attr.aria-labelledby]="'work-client-' + project.slug">
+      <div class="shell">
+        <header class="work-case__header">
+          <span class="work-case__number" aria-hidden="true">{{ project.number }}</span>
+          <div>
+            <p class="work-kicker">{{ project.sector }}</p>
+            <h2 [id]="'work-client-' + project.slug">{{ project.client }}</h2>
+          </div>
+          <span class="work-case__location">{{ project.location }}</span>
+        </header>
+
+        <div class="work-case__layout" [class.work-case__layout--reverse]="$odd">
+          <div class="work-case__visuals">
+            <figure class="work-figure">
+              <div appPageMotion="mask">
+                <a class="work-frame" [class.work-frame--portrait]="project.portrait"
+                  [href]="project.image.src" target="_blank" rel="noopener noreferrer"
+                  [attr.aria-label]="'Apri la foto di ' + project.client + ' in una nuova scheda'">
+                  <img [src]="project.image.src" [attr.srcset]="project.image.srcset ?? null"
+                    sizes="(min-width: 1100px) 640px, (min-width: 760px) 50vw, 92vw"
+                    [alt]="project.image.alt" [width]="project.image.width" [height]="project.image.height"
+                    loading="lazy" decoding="async" />
+                  <span class="work-frame__expand" aria-hidden="true">↗&#xFE0E;</span>
+                </a>
+              </div>
+              <figcaption>{{ project.mediaCaption }}</figcaption>
+            </figure>
+            @if (project.gallery.length) {
+              <div class="work-gallery" role="group" [attr.aria-label]="'Altre immagini di ' + project.client">
+                @for (photo of project.gallery; track photo.slug) {
+                  <a [href]="photo.fullSize" target="_blank" rel="noopener noreferrer"
+                    [class.work-gallery__image--logo]="photo.contain"
+                    [attr.aria-label]="'Apri immagine: ' + photo.alt + ' (nuova scheda)'">
+                    <img [src]="photo.src" [srcset]="photo.srcset"
+                      sizes="(min-width: 760px) 260px, 43vw" [alt]="photo.alt"
+                      [width]="photo.width" [height]="photo.height" loading="lazy" decoding="async" />
+                    <span aria-hidden="true">↗&#xFE0E;</span>
+                  </a>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="work-case__story">
+            <p class="work-kicker">La direzione creativa</p>
+            <h3>{{ project.title }}</h3>
+            <p class="work-case__summary">{{ project.summary }}</p>
+            <ul class="work-tags" aria-label="Il nostro intervento">
+              @for (tag of project.tags; track tag) { <li>{{ tag }}</li> }
+            </ul>
+
+            @if (project.paragraphs.length) {
+              <details class="work-detail">
+                <summary>Dentro il progetto <span aria-hidden="true">+</span></summary>
+                <div>
+                  @for (paragraph of project.paragraphs; track $index) { <p>{{ paragraph }}</p> }
+                </div>
+              </details>
+            }
+
+            @if (project.results; as results) {
+              @if (results.metrics.length) {
+                <section class="work-results" [attr.aria-labelledby]="'work-results-' + project.slug">
+                  <p class="work-kicker">Risultati documentati</p>
+                  <h4 [id]="'work-results-' + project.slug">{{ results.context }}</h4>
+                  <dl>
+                    @for (metric of results.metrics; track metric.label) {
+                      <div><dt>{{ metric.label }}</dt><dd>{{ metric.displayValue }}</dd></div>
+                    }
+                  </dl>
+                  <p class="work-results__note">Dati riportati nel caso studio fornito dall’agenzia.
+                    @if (results.period) { Periodo: {{ results.period }}. }
+                  </p>
+                  <details class="work-results__source">
+                    <summary>Riferimento della fonte</summary>
+                    <p>{{ results.source.label }} · {{ results.source.section }}</p>
+                  </details>
+                </section>
+              }
+            }
+
+            <a class="work-link" [href]="project.url" target="_blank" rel="noopener noreferrer">
+              {{ project.linkLabel }} <span aria-hidden="true">↗&#xFE0E;</span>
+              <span class="sr-only">(si apre in una nuova scheda)</span>
+            </a>
+
+            @if (project.testimonial) {
+              <a class="work-testimonial" routerLink="/video/video-corsi-testimonial-torino" fragment="testimonianza-cliente">
+                <span class="work-testimonial__play" aria-hidden="true">▶&#xFE0E;</span>
+                <span><small>La voce del cliente</small>Guarda la testimonianza di Alessio Vainella</span>
+                <span aria-hidden="true">↗&#xFE0E;</span>
+              </a>
+            }
+          </div>
+        </div>
+
+        <footer class="work-case__footer">
+          <span>{{ project.number }} / {{ projectCount }} <span aria-hidden="true">—</span> {{ project.shortClient }}</span>
+          <a routerLink="/portfolio" fragment="indice-progetti">Torna all’indice <span aria-hidden="true">↑</span></a>
+        </footer>
+      </div>
+    </article>
+  }
+</section>
+
+<section class="work-contact" aria-labelledby="work-contact-title">
+  <div class="shell">
+    <p class="work-kicker">Il prossimo progetto / Inizia da una conversazione</p>
+    <div class="work-contact__layout">
+      <h2 id="work-contact-title">Qui manca<br /><em>la tua storia.</em></h2>
+      <div>
+        <p>Un’idea da mettere a fuoco. Un’identità da costruire. Un progetto da far conoscere. Raccontaci da dove vuoi partire.</p>
+        <a class="button button--ink" routerLink="/contatti" (click)="tracking.trackQuote('portfolio_cta')">Parliamone <span aria-hidden="true">↗&#xFE0E;</span></a>
+      </div>
+    </div>
+    <div class="work-contact__signature" aria-hidden="true"><span>Memento Production</span><span>Facciamo spazio alle idee.</span></div>
+  </div>
+</section>

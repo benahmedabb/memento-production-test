@@ -1,21 +1,17 @@
-import { Component, ElementRef, OnInit, ViewChild, computed, inject, signal } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ConsentService } from '../core/consent.service';
+import { homeCaseStudies, portfolioCover } from '../core/portfolio-case-studies';
 import { SeoService } from '../core/seo.service';
 import { pageMetadata, serviceEntries, siteConfig } from '../core/site.config';
 import { TrackingService } from '../core/tracking.service';
-import { AnimatedMetricComponent } from '../shared/animated-metric.component';
 import { PageMotionDirective } from '../shared/page-motion.directive';
 import { CinematicHeroComponent } from '../shared/cinematic-hero.component';
 import { ClientLogosComponent } from '../shared/client-logos.component';
 import { HomeReviewsMarqueeComponent } from '../shared/home-reviews-marquee.component';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 
-type VideoProject = (typeof siteConfig.portfolio)[number];
-
 @Component({
-  imports: [AnimatedMetricComponent, PageMotionDirective, RouterLink, CinematicHeroComponent, ClientLogosComponent, HomeReviewsMarqueeComponent, ScrollSceneDirective],
+  imports: [PageMotionDirective, RouterLink, CinematicHeroComponent, ClientLogosComponent, HomeReviewsMarqueeComponent, ScrollSceneDirective],
   template: `
     <app-cinematic-hero />
     <app-client-logos />
@@ -48,7 +44,7 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
         <div appPageMotion="rise">
           <p class="eyebrow">Progetti selezionati</p>
           <h2>Quando il messaggio trova la sua forma.</h2>
-          <p class="home-projects__intro">Alcuni progetti recenti per aziende di Torino e provincia: video, fotografia, campagne e siti nati dalla stessa idea di partenza. Guarda il risultato.</p>
+          <p class="home-projects__intro">Sei casi studio per aziende del Piemonte: video, fotografia, campagne e identità visive nati dalla stessa idea di partenza. Guarda il risultato.</p>
         </div>
         <a appPageMotion="rise" [motionDelay]="180" class="text-link" routerLink="/portfolio">Apri il portfolio <span aria-hidden="true">→&#xFE0E;</span></a>
       </div>
@@ -56,7 +52,17 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
         @for (preview of projectPreviews; track preview.project.slug) {
           <a class="project-preview" routerLink="/portfolio" [fragment]="preview.project.slug" [attr.aria-labelledby]="'preview-' + preview.project.slug">
             <div class="project-preview__media">
-              <img [src]="preview.image.src" [srcset]="preview.image.srcset" sizes="(min-width: 860px) 30vw, (min-width: 600px) 45vw, 100vw" alt="" width="640" height="400" loading="lazy" decoding="async" />
+              <img
+                [src]="preview.image.src"
+                [attr.srcset]="preview.image.srcset ?? null"
+                sizes="(min-width: 860px) 30vw, (min-width: 600px) 45vw, 100vw"
+                [alt]="preview.image.alt"
+                [width]="preview.image.width"
+                [height]="preview.image.height"
+                [style.object-position]="preview.project.coverPosition ?? '50% 50%'"
+                loading="lazy"
+                decoding="async"
+              />
               <span class="project-preview__index" aria-hidden="true">0{{ $index + 1 }}</span>
               <span class="project-preview__category">{{ preview.category }}</span>
             </div>
@@ -66,26 +72,6 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
               <span class="project-preview__link">Esplora il progetto <span aria-hidden="true">↗&#xFE0E;</span></span>
             </div>
           </a>
-        }
-      </div>
-      <div class="shell home-projects__video-heading">
-        <p class="eyebrow">Dentro i progetti</p>
-        <p>I video. Le reazioni. I risultati.</p>
-      </div>
-      <div class="shell project-preview-grid" aria-label="Video case study">
-        @for (project of config.portfolio; track project.client) {
-          <button class="project-preview project-preview--video" type="button" aria-haspopup="dialog" [attr.aria-label]="'Guarda il video ' + project.title + ' per ' + project.client" (click)="openVideo(project, $event)">
-              <span class="project-preview__media">
-                <img [src]="project.coverUrl" alt="" loading="lazy" decoding="async" width="1280" height="720" />
-                <span class="project-preview__index" aria-hidden="true">0{{ $index + 1 }}</span>
-                <span class="project-preview__category">Video · {{ project.client }}</span>
-              </span>
-              <span class="project-preview__body">
-                <span class="project-preview__title">{{ project.client }}</span>
-                <span class="project-preview__description">{{ project.title }}</span>
-                <span class="project-preview__link">Guarda il video <span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M8 5v14l11-7z" /></svg></span></span>
-              </span>
-          </button>
         }
       </div>
     </section>
@@ -136,41 +122,6 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
       </div>
     </section>
 
-    @if (activeProject(); as project) {
-      <div class="video-dialog-backdrop" (click)="closeVideo()">
-        <section #videoDialog class="video-dialog" role="dialog" aria-modal="true" aria-labelledby="video-dialog-title" tabindex="-1" (click)="$event.stopPropagation()" (keydown.escape)="closeVideo()">
-          <div class="video-dialog__heading">
-            <div><p class="eyebrow">{{ project.client }}</p><h2 id="video-dialog-title">{{ project.title }}</h2></div>
-            <button class="icon-button" type="button" aria-label="Chiudi video" (click)="closeVideo()">×</button>
-          </div>
-          <div class="video-dialog__results">
-            <dl class="video-case__stats" aria-label="Risultati del progetto">
-              @for (stat of project.stats; track stat.label) {
-                <div class="video-case__metric">
-                  <dd><app-animated-metric [metric]="stat" [delay]="$index * 90" /></dd>
-                  <dt>{{ stat.label }}</dt>
-                </div>
-              }
-            </dl>
-          </div>
-
-          @if (consent.preferences().marketing) {
-            <iframe class="video-dialog__embed" [src]="videoEmbedUrl()" [title]="'Video Instagram: ' + project.title" loading="eager" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-          } @else {
-            <div class="video-dialog__privacy">
-              <p class="eyebrow">Contenuto esterno</p>
-              <h3>Per riprodurre il video serve il consenso marketing.</h3>
-              <p>L’embed Instagram viene caricato solo dopo il consenso. Puoi anche aprire il post direttamente su Instagram.</p>
-              <div class="button-row">
-                <button class="button" type="button" (click)="openConsentPreferences()">Modifica preferenze</button>
-                <a class="text-link" [href]="project.instagramPostUrl" target="_blank" rel="noopener noreferrer">Apri Instagram <span aria-hidden="true">↗&#xFE0E;</span></a>
-              </div>
-            </div>
-          }
-        </section>
-      </div>
-    }
-
     <section class="section section--accent cta-band cta-band--graphic cta-band--home-project home-closing">
       <div class="shell cta-band__inner">
         <div appPageMotion="rise">
@@ -188,42 +139,15 @@ type VideoProject = (typeof siteConfig.portfolio)[number];
 export class HomePageComponent implements OnInit {
   readonly statementWords = ['Non', 'basta', 'farsi', 'vedere.', 'Bisogna', 'farsi', 'ricordare.'];
   readonly config = siteConfig;
-  readonly projectPreviews = [
-    { project: siteConfig.portfolio[0], image: siteConfig.images.production, category: 'Video · Storytelling' },
-    { project: siteConfig.portfolio[1], image: siteConfig.images.ads, category: 'Eventi · Promozione' },
-    { project: siteConfig.portfolio[2], image: siteConfig.images.social, category: 'Social · Contenuti' },
-  ];
+  readonly projectPreviews = homeCaseStudies.map((project) => ({
+    project,
+    image: portfolioCover(project),
+    category: project.tags.slice(0, 2).join(' · '),
+  }));
   readonly tracking = inject(TrackingService);
-  readonly consent = inject(ConsentService);
-  readonly activeProject = signal<VideoProject | null>(null);
-  readonly videoEmbedUrl = computed<SafeResourceUrl | null>(() => {
-    const project = this.activeProject();
-    return project ? this.sanitizer.bypassSecurityTrustResourceUrl(project.instagramEmbedUrl) : null;
-  });
 
   private readonly seo = inject(SeoService);
-  private readonly sanitizer = inject(DomSanitizer);
-  private videoTrigger: HTMLButtonElement | null = null;
-
-  @ViewChild('videoDialog') private videoDialog?: ElementRef<HTMLElement>;
   readonly serviceEntries = serviceEntries;
-
-  openVideo(project: VideoProject, event: MouseEvent): void {
-    this.videoTrigger = event.currentTarget as HTMLButtonElement;
-    this.activeProject.set(project);
-    this.tracking.track('video_case_open', { case_study: project.client, video_provider: 'instagram' });
-    setTimeout(() => this.videoDialog?.nativeElement.focus());
-  }
-
-  closeVideo(): void {
-    this.activeProject.set(null);
-    queueMicrotask(() => this.videoTrigger?.focus());
-  }
-
-  openConsentPreferences(): void {
-    this.activeProject.set(null);
-    this.consent.openPreferences();
-  }
 
   ngOnInit(): void {
     this.seo.setPage(pageMetadata.home, [
