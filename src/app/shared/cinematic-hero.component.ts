@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { heroCameraMotionQuery } from '../core/motion.config';
 import { siteConfig } from '../core/site.config';
 import { TrackingService } from '../core/tracking.service';
 import { ScrollSceneDirective } from './scroll-scene.directive';
@@ -13,9 +14,15 @@ import { HeroCameraComponent } from './hero-camera.component';
       <div class="cinema__stage">
         <div class="cinema__ambient" aria-hidden="true"></div>
         <div class="cinema__frame">
-          <img class="cinema__image" [src]="image.src" [srcset]="image.srcset" [sizes]="image.sizes"
-            [alt]="image.alt" width="1920" height="1080" fetchpriority="high" />
-          <app-hero-camera />
+          <picture>
+            <!-- The desktop photo is hidden by the 3D scene: avoid downloading it.
+                 Mobile/reduced-motion keep the original eager image; errors restore it. -->
+            <source [media]="cameraUnavailable() ? 'not all' : cameraMediaQuery"
+              srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+            <img class="cinema__image" [src]="image.src" [srcset]="image.srcset" [sizes]="image.sizes"
+              [alt]="image.alt" width="1920" height="1080" fetchpriority="high" />
+          </picture>
+          <app-hero-camera (unavailable)="cameraUnavailable.set(true)" />
           <div class="cinema__shade" aria-hidden="true"></div>
         </div>
         <div class="cinema__grain" aria-hidden="true"></div>
@@ -59,6 +66,8 @@ import { HeroCameraComponent } from './hero-camera.component';
   `,
 })
 export class CinematicHeroComponent {
+  readonly cameraMediaQuery = heroCameraMotionQuery;
+  readonly cameraUnavailable = signal(false);
   readonly tracking = inject(TrackingService);
   readonly image = siteConfig.images.hero;
 }

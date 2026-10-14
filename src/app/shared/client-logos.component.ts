@@ -32,7 +32,7 @@ interface ClientLogo {
             <ul class="client-logos__group" [class.client-logos__group--copy]="copy === 1" [attr.aria-hidden]="copy === 1 ? 'true' : null" role="list">
               @for (logo of logos; track logo.src) {
                 <li class="client-logos__item" [class.client-logos__item--compact]="logo.compact" [class.client-logos__item--padded]="logo.padded" [class.client-logos__item--dark-background]="logo.darkBackground" [class.client-logos__item--light-background]="logo.lightBackground" [class.client-logos__item--solid-white]="logo.solidWhite">
-                  <img [src]="logo.src" [alt]="copy === 0 ? logo.name : ''" [width]="logo.width" [height]="logo.height" decoding="async" />
+                  <img [src]="logo.src" [alt]="copy === 0 ? logo.name : ''" [width]="logo.width" [height]="logo.height" loading="lazy" fetchpriority="low" decoding="async" />
                 </li>
               }
             </ul>

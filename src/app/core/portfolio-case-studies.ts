@@ -131,7 +131,6 @@ export const portfolioCaseStudies: readonly PortfolioCaseStudy[] = [
     coverPhoto: emailPhotos.food[3],
     coverPosition: '50% 55%',
     featuredOnHome: true,
-    gallery: [emailPhotos.offline[0]],
     url: 'https://www.instagram.com/__master__pinerolo/',
     linkLabel: 'Scopri Master su Instagram',
   },

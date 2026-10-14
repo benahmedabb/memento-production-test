@@ -1,4 +1,5 @@
-import { afterNextRender, ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, NgZone } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, NgZone, output } from '@angular/core';
+import { heroCameraMotionQuery } from '../core/motion.config';
 import type { CameraScene } from './camera-scene';
 
 @Component({
@@ -9,6 +10,7 @@ import type { CameraScene } from './camera-scene';
   template: '<div class="hero-camera__viewport"><canvas></canvas></div>',
 })
 export class HeroCameraComponent {
+  readonly unavailable = output<void>();
   private readonly element: ElementRef<HTMLElement> = inject(ElementRef);
   private readonly destroyRef = inject(DestroyRef);
   private readonly zone = inject(NgZone);
@@ -17,19 +19,28 @@ export class HeroCameraComponent {
     afterNextRender(() => this.zone.runOutsideAngular(() => this.setup()));
   }
 
+  private showFallback(): void {
+    this.element.nativeElement.classList.add('is-fallback');
+    this.zone.run(() => this.unavailable.emit());
+  }
+
   private setup(): void {
     const host = this.element.nativeElement;
     if (!window.matchMedia || !window.IntersectionObserver || !window.ResizeObserver) {
-      host.classList.add('is-fallback');
+      this.showFallback();
       return;
     }
     const stage = host.closest<HTMLElement>('.cinema__stage');
     const canvas = host.querySelector('canvas');
-    if (!stage || !canvas) return;
+    if (!stage || !canvas) { this.showFallback(); return; }
 
-    const preference = window.matchMedia('(min-width: 860px) and (pointer: fine) and (hover: hover) and (prefers-reduced-motion: no-preference)');
+    const preference = window.matchMedia(heroCameraMotionQuery);
     let scene: CameraScene | undefined;
-    let visible = false;
+    // Start an above-the-fold hero without waiting for the first observer callback.
+    const bounds = stage.getBoundingClientRect();
+    let visible = bounds.width > 0 && bounds.height > 0
+      && bounds.bottom > 0 && bounds.top < window.innerHeight
+      && bounds.right > 0 && bounds.left < window.innerWidth;
     let loading = false;
     let failed = false;
     let destroyed = false;
@@ -58,7 +69,7 @@ export class HeroCameraComponent {
         host.classList.add('is-ready');
       } catch {
         // WebGL unavailable, context failure or chunk download failure: retain the photo.
-        if (request === generation) { failed = true; host.classList.add('is-fallback'); teardown(); }
+        if (request === generation) { failed = true; this.showFallback(); teardown(); }
       } finally {
         if (request === generation) loading = false;
       }
@@ -88,7 +99,7 @@ export class HeroCameraComponent {
     const contextLost = (event: Event) => {
       event.preventDefault();
       failed = true;
-      host.classList.add('is-fallback');
+      this.showFallback();
       teardown();
     };
     const observer = new IntersectionObserver(([entry]) => {
@@ -122,5 +133,7 @@ export class HeroCameraComponent {
       preference.removeEventListener('change', sync);
       teardown();
     });
+
+    void sync();
   }
 }

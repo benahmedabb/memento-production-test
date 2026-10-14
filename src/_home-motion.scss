@@ -44,6 +44,9 @@ app-cinematic-hero { display: block; }
   }
 }
 
+// Source selection must not add a layout box around the original fallback image.
+.cinema__frame > picture { display: contents; }
+
 .cinema__image {
   position: absolute;
   left: calc(var(--image-offset) * (1 - var(--scene-progress)));

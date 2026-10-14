@@ -20,7 +20,7 @@ export interface CameraScene {
   dispose(): void;
 }
 
-/** Loaded only after the desktop hero becomes visible. Uses local brand assets. */
+/** Preloaded on desktop Home; the scene is created only while its hero is visible. */
 export function createCameraScene(canvas: HTMLCanvasElement): CameraScene {
   const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
@@ -379,29 +379,15 @@ export function createCameraScene(canvas: HTMLCanvasElement): CameraScene {
 
     model.rotation.set(targetX, targetY, -0.055);
     model.position.set(0, -0.1, 0);
-    const fill = new HemisphereLight(0xe9eff4, 0x17201b, 0.08);
+    // Start fully lit so the first rendered frame already shows the camera.
+    const fill = new HemisphereLight(0xe9eff4, 0x17201b, 0.8);
     scene.add(model, fill);
-    const key = new DirectionalLight(0xfff0db, 0.1);
+    const key = new DirectionalLight(0xfff0db, 3.2);
     key.position.set(-3, 5, 6);
     const rim = new DirectionalLight(0xc5d8ec, 2);
     rim.position.set(4, 2, -3);
     scene.add(key, rim);
-    const reveal = new DirectionalLight(0xffe7c0, 0);
-    scene.add(reveal);
-    scene.environmentIntensity = 0.12;
-    let introElapsed = 0;
-    function updateIntro(dt: number): boolean {
-      introElapsed = Math.min(1.3, introElapsed + dt);
-      const progress = introElapsed / 1.3;
-      const lift = progress * progress * (3 - 2 * progress);
-      fill.intensity = 0.08 + 0.72 * lift;
-      key.intensity = 0.1 + 3.1 * lift;
-      scene.environmentIntensity = 0.12 + 0.58 * lift;
-      reveal.position.set(-4 + progress * 8, 2.8, 4);
-      reveal.intensity = Math.pow(Math.sin(progress * Math.PI), 2) * 2.2;
-      if (progress === 1) reveal.intensity = 0;
-      return progress < 1;
-    }
+    scene.environmentIntensity = 0.7;
 
     const orbitMaterial = material(new MeshBasicMaterial({ color: 0xd1ac67, transparent: true, opacity: 0.19 }));
     const orbit = mesh(new TorusGeometry(2.3, 0.009, 4, 96), orbitMaterial, 0, 0, -1.25, scene);
@@ -418,7 +404,6 @@ export function createCameraScene(canvas: HTMLCanvasElement): CameraScene {
       const dt = previousTime ? Math.min((time - previousTime) / 1000, 0.05) : 1 / 60;
       previousTime = time;
       const ease = 1 - Math.exp(-8 * dt);
-      const entering = introElapsed < 1.3 && updateIntro(dt);
       const shooting = updateShot(dt);
       model.rotation.x += (targetX - model.rotation.x) * ease;
       model.rotation.y += (targetY - model.rotation.y) * ease;
@@ -428,7 +413,7 @@ export function createCameraScene(canvas: HTMLCanvasElement): CameraScene {
       renderer.render(scene, view);
       const moving = Math.abs(targetX - model.rotation.x) + Math.abs(targetY - model.rotation.y)
         + Math.abs(reflectionX - glint.position.x) + Math.abs(reflectionY - glint.position.y) > 0.0005;
-      if (moving || focusing || entering || shooting) schedule();
+      if (moving || focusing || shooting) schedule();
       else previousTime = 0;
     }
     function resize() {
@@ -489,8 +474,6 @@ export function createCameraScene(canvas: HTMLCanvasElement): CameraScene {
         else {
           clearFocus();
           if (shotElapsed !== undefined) { aperture(1); shotElapsed = undefined; }
-          // Do not replay the entrance when scrolling back to the hero.
-          if (introElapsed > 0 && introElapsed < 1.3) updateIntro(1.3);
           cancelAnimationFrame(frame); frame = 0; previousTime = 0;
         }
       },
