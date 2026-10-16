@@ -6,6 +6,7 @@ import { FloatingWhatsappComponent } from './shared/floating-whatsapp.component'
 import { PointerHaloComponent } from './shared/pointer-halo.component';
 import { SiteFooterComponent } from './shared/site-footer.component';
 import { SiteHeaderComponent } from './shared/site-header.component';
+import { TrackingService } from './core/tracking.service';
 
 @Component({
   imports: [
@@ -23,6 +24,7 @@ import { SiteHeaderComponent } from './shared/site-header.component';
 export class App {
   constructor() {
     const document = inject(DOCUMENT);
+    inject(TrackingService);
     // Keep linked portfolio projects visible below the sticky navigation.
     inject(ViewportScroller).setOffset(() => [
       0,

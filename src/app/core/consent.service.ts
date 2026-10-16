@@ -43,6 +43,7 @@ export class ConsentService {
     if (saved) {
       this.preferences.set(saved);
       this.applyGoogleConsent(saved);
+      this.trackGooglePageView(saved);
       return;
     }
 
@@ -79,6 +80,7 @@ export class ConsentService {
   private savePreferences(preferences: ConsentPreferences): void {
     this.preferences.set(preferences);
     this.applyGoogleConsent(preferences);
+    this.trackGooglePageView(preferences);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(preferences));
     this.bannerVisible.set(false);
     this.preferencesOpen.set(false);
@@ -105,6 +107,18 @@ export class ConsentService {
       ad_storage: preferences.marketing ? 'granted' : 'denied',
       ad_user_data: preferences.marketing ? 'granted' : 'denied',
       ad_personalization: preferences.marketing ? 'granted' : 'denied',
+    });
+  }
+
+  private trackGooglePageView(preferences: ConsentPreferences): void {
+    if (!preferences.analytics) {
+      return;
+    }
+
+    window.gtag?.('event', 'page_view', {
+      page_location: window.location.href,
+      page_path: window.location.pathname,
+      page_title: this.document.title,
     });
   }
 

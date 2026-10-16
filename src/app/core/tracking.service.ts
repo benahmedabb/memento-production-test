@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { ConsentService } from './consent.service';
 
 declare global {
   interface Window {
@@ -13,6 +14,17 @@ declare global {
 export class TrackingService {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly router = inject(Router);
+  private readonly consent = inject(ConsentService);
+
+  constructor() {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) this.trackPageView(event.urlAfterRedirects);
+    });
+  }
 
   track(event: string, details: Record<string, string> = {}): void {
     if (!isPlatformBrowser(this.platformId)) {
@@ -33,5 +45,17 @@ export class TrackingService {
 
   trackQuote(location: string, service?: string): void {
     this.track('quote_request_click', { link_location: location, ...(service ? { service } : {}) });
+  }
+
+  private trackPageView(path: string): void {
+    if (!this.consent.preferences().analytics) {
+      return;
+    }
+
+    window.gtag?.('event', 'page_view', {
+      page_location: `${window.location.origin}${path}`,
+      page_path: path,
+      page_title: document.title,
+    });
   }
 }
