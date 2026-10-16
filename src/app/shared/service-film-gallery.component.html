@@ -32,7 +32,7 @@
                     >{{
                       film.provider === 'youtube' ? 'Guarda su YouTube' : 'Guarda su Instagram'
                     }}
-                    ↗</a
+                    ↗&#xFE0E;</a
                   >
                 </div>
               } @else if (active()?.id === film.id) {
@@ -99,7 +99,7 @@
               <div class="film-card__links">
                 <a [href]="film.watchUrl" target="_blank" rel="noopener noreferrer"
                   >{{ film.provider === 'youtube' ? 'Guarda su YouTube' : 'Apri su Instagram' }}
-                  <span aria-hidden="true">↗</span></a
+                  <span aria-hidden="true">↗&#xFE0E;</span></a
                 >
                 @if (active()?.id === film.id) {
                   <button type="button" (click)="stop()">
@@ -119,7 +119,7 @@
           </p>
         }
         @if (selection.more; as more) {
-          <a [routerLink]="more.path">{{ more.label }} <span aria-hidden="true">↗</span></a>
+          <a [routerLink]="more.path">{{ more.label }} <span aria-hidden="true">↗&#xFE0E;</span></a>
         }
       </div>
     </div>

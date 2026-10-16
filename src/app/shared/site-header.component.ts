@@ -76,7 +76,7 @@ interface NavigationItem extends NavigationLink {
                         </div>
                         @if (entry.children?.length) {
                           <ul class="nav-service-group__children" [id]="'service-group-' + $index" [attr.aria-label]="'Servizi ' + entry.label">
-                            @for (child of entry.children; track child.path) { <li><a [routerLink]="child.path" routerLinkActive="is-active" [routerLinkActiveOptions]="pageMatchOptions" ariaCurrentWhenActive="page" (click)="closeMenu()">{{ child.label }}<span aria-hidden="true">↗</span></a></li> }
+                            @for (child of entry.children; track child.path) { <li><a [routerLink]="child.path" routerLinkActive="is-active" [routerLinkActiveOptions]="pageMatchOptions" ariaCurrentWhenActive="page" (click)="closeMenu()">{{ child.label }}<span aria-hidden="true">↗&#xFE0E;</span></a></li> }
                           </ul>
                         } @else if (item.path === '/servizi') { <p class="nav-service-group__note">Creatività, campagne e misurazione.</p> }
                       </li>

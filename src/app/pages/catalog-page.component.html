@@ -31,7 +31,7 @@
             [queryParams]="{ servizio: page.path }"
             fragment="raccontaci"
             (click)="tracking.trackQuote('catalog_hero', page.path)"
-            >Parliamo del progetto <span aria-hidden="true">↗</span></a
+            >Parliamo del progetto <span aria-hidden="true">↗&#xFE0E;</span></a
           >
           <a
             class="catalog-jump"
@@ -71,7 +71,7 @@
             />
             <span
               ><span>{{ media.photography?.eyebrow }}</span
-              ><span aria-hidden="true">↗</span></span
+              ><span aria-hidden="true">↗&#xFE0E;</span></span
             >
           </a>
         } @else if (heroFilm; as film) {
@@ -96,7 +96,7 @@
               />
               <span
                 ><span>{{ film.client }}</span
-                ><span aria-hidden="true">↗</span></span
+                ><span aria-hidden="true">↗&#xFE0E;</span></span
               >
             </a>
           } @else {
@@ -119,7 +119,7 @@
               />
               <span
                 ><span>{{ film.client }}</span
-                ><span aria-hidden="true">↗</span></span
+                ><span aria-hidden="true">↗&#xFE0E;</span></span
               >
             </a>
           }
@@ -131,7 +131,7 @@
     <div class="catalog-opening__foot">
       <span>Strategia. Produzione. Consegna.</span
       ><a routerLink="/agenzia" fragment="chiavi-in-mano"
-        >Un team, dall’inizio alla fine <span aria-hidden="true">↗</span></a
+        >Un team, dall’inizio alla fine <span aria-hidden="true">↗&#xFE0E;</span></a
       >
     </div>
   </div>
@@ -152,7 +152,7 @@
           <a class="specialty-card" [routerLink]="item.path">
             <span class="specialty-card__top"
               ><span>0{{ $index + 1 }}</span
-              ><span aria-hidden="true">↗</span></span
+              ><span aria-hidden="true">↗&#xFE0E;</span></span
             >
             <h3>{{ item.label }}</h3>
             <p>{{ item.summary }}</p>
@@ -253,7 +253,7 @@
           <h2>Il lavoro prende forma.</h2>
         </div>
         <a class="text-link" routerLink="/portfolio"
-          >Tutti i progetti <span aria-hidden="true">↗</span></a
+          >Tutti i progetti <span aria-hidden="true">↗&#xFE0E;</span></a
         >
       </div>
       <div class="catalog-projects__grid">
@@ -267,7 +267,7 @@
                 height="600"
                 loading="lazy"
                 decoding="async"
-              /><span aria-hidden="true">↗</span>
+              /><span aria-hidden="true">↗&#xFE0E;</span>
             </div>
             <span class="eyebrow">{{ project.client }}</span>
             <h3>{{ project.title }}</h3>
@@ -303,7 +303,7 @@
       <p class="eyebrow">Esplora {{ hub.label }}</p>
       <div class="catalog-siblings__links">
         @for (item of siblings; track item.path) {
-          <a [routerLink]="item.path">{{ item.label }} <span aria-hidden="true">↗</span></a>
+          <a [routerLink]="item.path">{{ item.label }} <span aria-hidden="true">↗&#xFE0E;</span></a>
         }
         <a class="catalog-siblings__all" [routerLink]="hub.path"
           >Tutti i servizi {{ hub.label.toLowerCase() }} <span aria-hidden="true">→</span></a
@@ -325,7 +325,7 @@
     <div class="catalog-connections__grid">
       @for (item of related; track item.path) {
         <a [routerLink]="item.path"
-          ><h3>{{ item.label }} <span aria-hidden="true">↗</span></h3>
+          ><h3>{{ item.label }} <span aria-hidden="true">↗&#xFE0E;</span></h3>
           <p>{{ item.summary }}</p></a
         >
       }
@@ -347,7 +347,7 @@
       [queryParams]="{ servizio: page.path }"
       fragment="raccontaci"
       (click)="tracking.trackQuote('catalog_closing', page.path)"
-      >Raccontateci la vostra idea <span aria-hidden="true">↗</span></a
+      >Raccontateci la vostra idea <span aria-hidden="true">↗&#xFE0E;</span></a
     ><a class="catalog-closing__about" routerLink="/agenzia" fragment="chi-siamo"
       >Conoscete il team <span aria-hidden="true">→</span></a
     >

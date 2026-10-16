@@ -54,7 +54,7 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
                   loading="lazy"
                   decoding="async"
                 />
-                <span class="photo-gallery__expand" aria-hidden="true">↗</span>
+                <span class="photo-gallery__expand" aria-hidden="true">↗&#xFE0E;</span>
               </a>
               <figcaption>
                 <span>{{ photo.location }}</span>
@@ -67,7 +67,7 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
           <span>{{ selection().credit }}</span>
           @if (selection().more; as more) {
             <a class="text-link" [routerLink]="more.path"
-              >{{ more.label }} <span aria-hidden="true">↗</span></a
+              >{{ more.label }} <span aria-hidden="true">↗&#xFE0E;</span></a
             >
           }
         </div>
