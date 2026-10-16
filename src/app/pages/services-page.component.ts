@@ -16,7 +16,7 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
       <span class="chapter-hero__frame" aria-hidden="true"></span>
       <app-brand-orbit />
       <div class="page-hero__image" aria-hidden="true">
-        <img src="/images/memento-ufficio-hero.webp" alt="" width="1537" height="1023" fetchpriority="high" />
+        <img src="/images/memento-ufficio-hero.webp" alt="Interno degli uffici di Memento Production a Moncalieri" width="1537" height="1023" fetchpriority="high" />
       </div>
       <div class="shell page-hero__content">
         <p appPageMotion="hero" [motionDelay]="140" class="eyebrow">Servizi</p>
