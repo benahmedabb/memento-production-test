@@ -14,6 +14,7 @@ export interface ServiceDefinition {
 export interface SiteImage {
   readonly src: string;
   readonly srcset: string;
+  readonly socialSrc?: string;
   readonly sizes: string;
   readonly alt: string;
   readonly sourceUrl: string;
@@ -115,20 +116,22 @@ export const siteConfig = {
       credit: 'Phil Hearing / Unsplash',
     },
     production: {
-      src: 'https://images.unsplash.com/photo-1769699167672-9d4bddb46fd5?auto=format&fit=crop&w=1200&q=80',
-      srcset: 'https://images.unsplash.com/photo-1769699167672-9d4bddb46fd5?auto=format&fit=crop&w=640&q=78 640w, https://images.unsplash.com/photo-1769699167672-9d4bddb46fd5?auto=format&fit=crop&w=1200&q=80 1200w',
+      src: '/images/produzione-video-aziendale-torino-1200.webp',
+      srcset: '/images/produzione-video-aziendale-torino-640.webp 640w, /images/produzione-video-aziendale-torino-1200.webp 1200w, /images/produzione-video-aziendale-torino-1920.webp 1920w',
+      socialSrc: '/images/produzione-video-aziendale-torino-social.webp',
       sizes: '(min-width: 900px) 45vw, 100vw',
-      alt: 'Attrezzatura video professionale pronta per una ripresa',
-      sourceUrl: 'https://unsplash.com/photos/professional-video-camera-on-a-tripod-in-a-studio-rSZEhnhoK00',
-      credit: 'Phil Hearing / Unsplash',
+      alt: 'Videocamera professionale per la produzione di video aziendali',
+      sourceUrl: '/images/produzione-video-aziendale-torino-1920.webp',
+      credit: 'Materiale fornito da Memento Production',
     },
     social: {
-      src: 'https://images.unsplash.com/photo-1781606989289-c0b535eac348?auto=format&fit=crop&w=1200&q=80',
-      srcset: 'https://images.unsplash.com/photo-1781606989289-c0b535eac348?auto=format&fit=crop&w=640&q=78 640w, https://images.unsplash.com/photo-1781606989289-c0b535eac348?auto=format&fit=crop&w=1200&q=80 1200w',
+      src: '/images/gestione-social-media-torino-1200.webp',
+      srcset: '/images/gestione-social-media-torino-640.webp 640w, /images/gestione-social-media-torino-1200.webp 1200w, /images/gestione-social-media-torino-1920.webp 1920w',
+      socialSrc: '/images/gestione-social-media-torino-social.webp',
       sizes: '(min-width: 900px) 45vw, 100vw',
-      alt: 'Smartphone e computer per la pianificazione di contenuti social',
-      sourceUrl: 'https://unsplash.com/photos/smartphone-on-tripod-displaying-social-media-next-to-a-laptop-9EeEqiQrmq0',
-      credit: 'SONY / Unsplash',
+      alt: 'Applicazioni social su smartphone per la gestione dei canali aziendali',
+      sourceUrl: '/images/gestione-social-media-torino-1920.webp',
+      credit: 'Materiale fornito da Memento Production',
     },
     ads: {
       src: '/images/memento-ads-service-v2.webp',
@@ -147,12 +150,13 @@ export const siteConfig = {
       credit: 'Unsplash',
     },
     web: {
-      src: '/images/memento-web-ecommerce.svg',
-      srcset: '',
+      src: '/images/siti-web-ecommerce-torino-1200.webp',
+      srcset: '/images/siti-web-ecommerce-torino-640.webp 640w, /images/siti-web-ecommerce-torino-1200.webp 1200w, /images/siti-web-ecommerce-torino-1920.webp 1920w',
+      socialSrc: '/images/siti-web-ecommerce-torino-social.webp',
       sizes: '(min-width: 860px) 45vw, 100vw',
-      alt: 'Progetto di un negozio online su desktop e smartphone, nei colori verde e oro di Memento',
-      sourceUrl: '/images/memento-web-ecommerce.svg',
-      credit: 'Illustrazione Memento Production',
+      alt: 'Codice per lo sviluppo di siti web ed e-commerce professionali',
+      sourceUrl: '/images/siti-web-ecommerce-torino-1920.webp',
+      credit: 'Materiale fornito da Memento Production',
     },
     architecture: {
       src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',

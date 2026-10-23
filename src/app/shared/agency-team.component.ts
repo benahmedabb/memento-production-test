@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, OnDestroy, PLATFORM_ID, ViewChild, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ScrollSceneDirective } from './scroll-scene.directive';
 
@@ -14,7 +15,7 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
             <p>Content creator, strategist, graphic designer e web developer. Una squadra che si costruisce attorno alle esigenze del tuo progetto.</p>
           </header>
           <div class="people-team__composition">
-            <div class="people-team__count"><span>Circa</span><strong>8</strong><span>professionisti.<br />Un team, davvero.</span><div class="people-team__dots" aria-hidden="true">@for (dot of dots; track $index) { <i [style.--dot-index]="$index"></i> }</div></div>
+            <div class="people-team__count"><span>Circa</span><strong>8</strong><span>professionisti.<br />Un team, davvero.</span><div #teamDots class="people-team__dots" aria-hidden="true">@for (dot of dots; track $index) { <i [style.--dot-index]="$index"></i> }</div></div>
             <div class="people-team__flow">
               <ul class="people-team__roles" aria-label="Le competenze del team">
                 @for (role of roles; track role.title) {
@@ -34,7 +35,11 @@ import { ScrollSceneDirective } from './scroll-scene.directive';
     </section>
   `,
 })
-export class AgencyTeamComponent {
+export class AgencyTeamComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('teamDots') private teamDots?: ElementRef<HTMLElement>;
+  private readonly platformId = inject(PLATFORM_ID);
+  private dotsObserver?: IntersectionObserver;
+
   readonly dots = Array.from({ length: 8 });
   readonly roles = [
     { title: 'Content creator', description: 'Fotografia & videomaking', path: '/video' },
@@ -42,4 +47,29 @@ export class AgencyTeamComponent {
     { title: 'Graphic designer', description: 'Identità visiva & branding', path: '/grafica' },
     { title: 'Web developer', description: 'Siti web & e-commerce', path: '/web' },
   ];
+
+  ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const dots = this.teamDots?.nativeElement;
+    if (!dots) return;
+
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      dots.classList.add('people-team__dots--visible');
+      return;
+    }
+
+    this.dotsObserver = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+
+      dots.classList.add('people-team__dots--visible');
+      this.dotsObserver?.disconnect();
+      this.dotsObserver = undefined;
+    }, { rootMargin: '0px 0px -5% 0px', threshold: 0.35 });
+    this.dotsObserver.observe(dots);
+  }
+
+  ngOnDestroy(): void {
+    this.dotsObserver?.disconnect();
+  }
 }

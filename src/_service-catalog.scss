@@ -114,6 +114,10 @@ html:has(.photo-lightbox[open]) {
     color: #f4f1eb;
     box-shadow: 1rem 1rem 0 #d1ac6740;
   }
+  .catalog-service-cover img {
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
   .catalog-real-work img {
     display: block;
     width: 100%;

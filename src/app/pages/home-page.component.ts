@@ -89,7 +89,7 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
           @let image = config.images[service.service.image];
           <a appPageMotion="rise" [motionDelay]="$index * 140" class="service-card" [routerLink]="service.path" [attr.aria-label]="'Scopri il servizio ' + service.service.shortTitle">
             <span class="service-card__media">
-              <img [src]="image.src" [srcset]="image.srcset" [sizes]="image.sizes" [alt]="image.alt" width="1280" height="801" loading="lazy" decoding="async" />
+              <img [src]="image.src" [srcset]="image.srcset" [sizes]="image.sizes" [alt]="image.alt" width="1200" height="800" loading="lazy" decoding="async" />
             </span>
             <span class="service-card__body">
               <span class="service-card__number" aria-hidden="true">0{{ $index + 1 }}</span>

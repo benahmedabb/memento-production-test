@@ -16,6 +16,21 @@ import {
 import { ServicePhotoGalleryComponent } from '../shared/service-photo-gallery.component';
 import { ServiceFilmGalleryComponent } from '../shared/service-film-gallery.component';
 
+function catalogHeroImage(page: CatalogPage) {
+  if (page.kind !== 'hub') return undefined;
+
+  switch (page.category) {
+    case 'video':
+      return siteConfig.images.production;
+    case 'social':
+      return siteConfig.images.social;
+    case 'web':
+      return siteConfig.images.web;
+    default:
+      return undefined;
+  }
+}
+
 @Component({
   imports: [
     RouterLink,
@@ -35,6 +50,7 @@ export class CatalogPageComponent {
     (page) => page.path === this.route.snapshot.data['catalogPath'],
   )!;
   readonly media = serviceMediaFor(this.page.path);
+  readonly heroImage = catalogHeroImage(this.page);
   readonly heroPhoto = this.media.photography?.hero ?? this.media.photography?.photos[0];
   readonly heroFilm = this.media.films[0]?.films[0];
   readonly mediaAnchor =
@@ -77,7 +93,15 @@ export class CatalogPageComponent {
       provider: { '@id': `${siteConfig.origin}/#organization` },
       areaServed: serviceAreas,
     });
-    const socialImage = this.heroPhoto
+    const socialImage = this.heroImage
+      ? {
+          src: this.heroImage.socialSrc,
+          alt: this.heroImage.alt,
+          type: 'image/webp',
+          width: 1200,
+          height: 630,
+        }
+      : this.heroPhoto
       ? {
           src: photoSource(this.heroPhoto, 1920),
           alt: this.heroPhoto.alt,
@@ -102,6 +126,18 @@ export class CatalogPageComponent {
             name: this.page.title,
             description: this.page.description,
             url: `${siteConfig.origin}${this.page.path}`,
+            ...(this.heroImage
+              ? {
+                  image: `${siteConfig.origin}${this.heroImage.src}`,
+                  primaryImageOfPage: {
+                    '@type': 'ImageObject',
+                    contentUrl: `${siteConfig.origin}${this.heroImage.src}`,
+                    caption: this.heroImage.alt,
+                    width: 1200,
+                    height: 800,
+                  },
+                }
+              : {}),
             mainEntity: {
               '@type': 'OfferCatalog',
               name: this.page.heading,

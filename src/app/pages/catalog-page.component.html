@@ -50,7 +50,24 @@
       </div>
       <div class="catalog-opening__art">
         <span class="catalog-edition">0{{ disciplineNumber }} / 05</span>
-        @if (heroPhoto; as photo) {
+        @if (heroImage; as image) {
+          <div class="catalog-real-work catalog-service-cover">
+            <img
+              [src]="image.src"
+              [srcset]="image.srcset"
+              sizes="(max-width: 859px) 90vw, 45vw"
+              [alt]="image.alt"
+              width="1200"
+              height="800"
+              loading="eager"
+              fetchpriority="high"
+            />
+            <span
+              ><span>{{ page.label }} / Memento Production</span
+              ><span>Torino</span></span
+            >
+          </div>
+        } @else if (heroPhoto; as photo) {
           <a
             class="catalog-real-work"
             [class.catalog-real-work--photo-portrait]="photo.height > photo.width"

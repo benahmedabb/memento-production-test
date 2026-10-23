@@ -66,7 +66,10 @@
     <image:image><image:loc>https://mementoproduction.it/images/servizi/email-product-life-linea-1920.webp</image:loc></image:image>
     <image:image><image:loc>https://mementoproduction.it/images/servizi/email-product-life-scrub-1920.webp</image:loc></image:image>
   </url>
-  <url><loc>https://mementoproduction.it/video</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/video</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/produzione-video-aziendale-torino-1920.webp</image:loc></image:image>
+  </url>
   <url><loc>https://mementoproduction.it/video/video-aziendali-torino</loc></url>
   <url><loc>https://mementoproduction.it/video/reel-social-torino</loc></url>
   <url><loc>https://mementoproduction.it/video/video-animati-torino</loc></url>
@@ -102,14 +105,20 @@
     <image:image><image:loc>https://mementoproduction.it/images/servizi/email-rebranding-master-prima-1225.webp</image:loc></image:image>
     <image:image><image:loc>https://mementoproduction.it/images/servizi/email-rebranding-master-dopo-1920.webp</image:loc></image:image>
   </url>
-  <url><loc>https://mementoproduction.it/social</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/social</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/gestione-social-media-torino-1920.webp</image:loc></image:image>
+  </url>
   <url>
     <loc>https://mementoproduction.it/social/gestione-social-organica-torino</loc>
     <image:image><image:loc>https://mementoproduction.it/images/servizi/email-social-life-laser-1080.webp</image:loc></image:image>
   </url>
   <url><loc>https://mementoproduction.it/social/facebook-instagram-torino</loc></url>
   <url><loc>https://mementoproduction.it/social/tiktok-torino</loc></url>
-  <url><loc>https://mementoproduction.it/web</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/web</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/siti-web-ecommerce-torino-1920.webp</image:loc></image:image>
+  </url>
   <url><loc>https://mementoproduction.it/web/realizzazione-siti-web-torino</loc></url>
   <url><loc>https://mementoproduction.it/web/e-commerce-torino</loc></url>
   <url><loc>https://mementoproduction.it/web/landing-page-torino</loc></url>

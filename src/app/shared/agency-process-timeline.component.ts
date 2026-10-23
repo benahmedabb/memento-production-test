@@ -2,7 +2,19 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { siteConfig } from '../core/site.config';
 import { ScrollSceneDirective } from './scroll-scene.directive';
 
-const stages = [
+interface AgencyStage {
+  readonly number: string;
+  readonly title: string;
+  readonly label: string;
+  readonly description: string;
+  readonly detail: string;
+  readonly image: string;
+  readonly srcset: string;
+  readonly alt: string;
+  readonly credit?: { readonly label: string; readonly url: string };
+}
+
+const stages: readonly AgencyStage[] = [
   {
     number: '01', title: 'Ascolto', label: 'Prima le domande.',
     description: 'Mettiamo in comune obiettivi, pubblico, materiale esistente e contesto competitivo.',
@@ -31,7 +43,19 @@ const stages = [
     image: siteConfig.images.ads.src, srcset: siteConfig.images.ads.srcset,
     alt: siteConfig.images.ads.alt,
   },
-] as const;
+  {
+    number: '05', title: 'Risultato', label: 'Il valore diventa visibile.',
+    description: 'Consegniamo un progetto pronto a lavorare e rendiamo leggibili i segnali utili per valutarne l’impatto.',
+    detail: 'Un risultato chiaro, misurabile e utile al passo successivo.',
+    image: '/images/risultato-analisi-performance-1200.webp',
+    srcset: '/images/risultato-analisi-performance-640.webp 640w, /images/risultato-analisi-performance-1200.webp 1200w, /images/risultato-analisi-performance-1920.webp 1920w',
+    alt: 'Dashboard con grafici e indicatori per misurare i risultati di un progetto',
+    credit: {
+      label: 'Stephen Dawson / Unsplash',
+      url: 'https://unsplash.com/photos/turned-on-monitoring-screen-qwtCeJ5cLYs',
+    },
+  },
+];
 
 @Component({
   selector: 'app-agency-process-timeline',
@@ -48,7 +72,7 @@ const stages = [
           <ol class="agency-method__deck">
             @for (stage of stages; track stage.number; let index = $index) {
               <li class="agency-method__card" [id]="'metodo-' + stage.number" [style.--step-index]="index">
-                <div class="agency-method__media"><img [src]="stage.image" [srcset]="stage.srcset" sizes="(min-width: 860px) 50vw, 100vw" [alt]="stage.alt" width="1200" height="800" loading="lazy" decoding="async" /><span class="agency-method__image-label" aria-hidden="true">Memento / {{ stage.number }}</span></div>
+                <div class="agency-method__media"><img [src]="stage.image" [srcset]="stage.srcset" sizes="(min-width: 860px) 50vw, 100vw" [alt]="stage.alt" width="1200" height="800" loading="lazy" decoding="async" /><span class="agency-method__image-label" aria-hidden="true">Memento / {{ stage.number }}</span>@if (stage.credit; as credit) { <a class="agency-method__credit" [href]="credit.url" target="_blank" rel="noopener noreferrer">Foto: {{ credit.label }}</a> }</div>
                 <div class="agency-method__copy">
                   <span class="agency-method__number" aria-hidden="true">{{ stage.number }}</span>
                   <p class="eyebrow">{{ stage.label }}</p>
@@ -87,8 +111,9 @@ export class AgencyProcessTimelineComponent {
 
     const header = parseFloat(getComputedStyle(stage).top) || 0;
     const travel = root.offsetHeight - stage.offsetHeight;
-    // Cards finish arriving at index / 3.4; stop just after that point.
-    const progress = Math.min(1, index / 3.4 + 0.035);
+    // Stop just after the selected card has completed its arrival.
+    const deckEnd = this.stages.length - 1 + 0.4;
+    const progress = Math.min(1, index / deckEnd + 0.035);
     window.scrollTo({ top: window.scrollY + root.getBoundingClientRect().top - header + travel * progress, behavior: 'auto' });
   }
 }
