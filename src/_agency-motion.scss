@@ -59,8 +59,15 @@ section.section--sage.agency-manifesto {
 .agency-manifesto { position: relative; overflow: hidden; }
 .agency-manifesto::before { position: absolute; top: 0; left: 50%; width: 1px; height: 3.5rem; background: var(--gold); content: ''; transform-origin: top; }
 .agency-manifesto.scroll-scene--active::before { transform: scaleY(clamp(0, var(--scene-progress) * 3, 1)); }
-.agency-manifesto .two-column { gap: 3rem 6rem; }
-.agency-manifesto h2 { font-size: clamp(3.3rem, 6.3vw, 6rem); }
+.agency-manifesto__layout { display: grid; align-items: center; gap: 2.5rem clamp(1.75rem, 4vw, 4rem); }
+.agency-manifesto__copy, .agency-manifesto app-agency-brand-fusion { min-width: 0; }
+.agency-manifesto h2 { margin-bottom: 1.7rem; font-size: clamp(2.35rem, 3.7vw, 3.5rem); line-height: 1.08; }
+.agency-manifesto .intro-copy { max-width: 36rem; font-size: 0.94rem; line-height: 1.8; }
+.agency-manifesto .intro-copy p:last-child { margin-bottom: 0; }
+
+@media (min-width: 860px) {
+  .agency-manifesto__layout { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.2fr); }
+}
 
 .agency-method { position: relative; color: var(--paper); background: var(--agency-night); scroll-margin-top: 5.5rem; }
 .agency-method__stage { padding-block: clamp(3rem, 6vw, 6rem); }

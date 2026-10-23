@@ -10,18 +10,23 @@ import { KineticTextComponent } from '../shared/kinetic-text.component';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 import { AgencyTeamComponent } from '../shared/agency-team.component';
 import { PageMotionDirective } from '../shared/page-motion.directive';
+import { AgencyBrandFusionComponent } from '../shared/agency-brand-fusion.component';
 
 @Component({
-  imports: [AgencyOpeningComponent, AgencyPeopleComponent, AgencyProcessTimelineComponent, AgencyTeamComponent, KineticTextComponent, ScrollSceneDirective, PageMotionDirective, RouterLink],
+  imports: [AgencyOpeningComponent, AgencyPeopleComponent, AgencyProcessTimelineComponent, AgencyTeamComponent, AgencyBrandFusionComponent, KineticTextComponent, ScrollSceneDirective, PageMotionDirective, RouterLink],
   template: `
     <app-agency-opening />
 
     <app-agency-process-timeline />
 
-    <section class="section agency-manifesto section--sage" appScrollScene>
-      <div class="shell two-column two-column--offset">
-        <div><p class="eyebrow">Il nostro punto di vista</p><h2><app-kinetic-text mode="ink" text="Estetica e strategia non sono due reparti separati." /></h2></div>
-        <div appPageMotion="rise" [motionDelay]="180" class="intro-copy"><p>La nostra sede è a Moncalieri. Affianchiamo le aziende di Torino, Pinerolo e Chieri nella comunicazione: produzione video e fotografia, gestione social, campagne Google e Meta, grafica e sviluppo web.</p><p>Partiamo da ciò che deve restare impresso, dal pubblico e dall’obiettivo del progetto. Coordiniamo contenuti, identità e canali, così ogni attività contribuisce a una presenza riconoscibile.</p></div>
+    <section class="section agency-manifesto section--sage" appScrollScene aria-labelledby="agency-manifesto-title">
+      <div class="shell agency-manifesto__layout">
+        <div class="agency-manifesto__copy">
+          <p class="eyebrow">Il nostro punto di vista</p>
+          <h2 id="agency-manifesto-title"><app-kinetic-text mode="ink" text="Estetica e strategia non sono due reparti separati." /></h2>
+          <div class="intro-copy"><p>La nostra sede è a Moncalieri. Affianchiamo le aziende di Torino, Pinerolo e Chieri nella comunicazione: produzione video e fotografia, gestione social, campagne Google e Meta, grafica e sviluppo web.</p><p>Partiamo da ciò che deve restare impresso, dal pubblico e dall’obiettivo del progetto. Coordiniamo contenuti, identità e canali, così ogni attività contribuisce a una presenza riconoscibile.</p></div>
+        </div>
+        <app-agency-brand-fusion />
       </div>
     </section>
 

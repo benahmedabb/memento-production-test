@@ -1,0 +1,103 @@
+:host {
+  display: block;
+}
+
+.brand-fusion {
+  --fusion: 1;
+  margin: 0;
+  color: #294334;
+}
+
+.brand-fusion__legend,
+.brand-fusion__legend > span,
+.brand-fusion__swatches,
+.brand-fusion__route {
+  display: flex;
+  align-items: center;
+}
+
+.brand-fusion__legend {
+  gap: clamp(1rem, 3vw, 3rem);
+  margin-bottom: 1.2rem;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.brand-fusion__legend > span { gap: 0.8rem; }
+.brand-fusion__join { flex: 1; height: 1px; background: #48695638; }
+.brand-fusion__swatches { gap: 0.2rem; }
+.brand-fusion__swatches i { width: 0.65rem; height: 0.9rem; background: #486956; }
+.brand-fusion__swatches i:nth-child(2) { background: #d1ac67; }
+.brand-fusion__swatches i:nth-child(3) { background: #294334; }
+.brand-fusion__route { position: relative; justify-content: space-between; width: 2rem; }
+.brand-fusion__route::before { position: absolute; inset: 50% 0 auto; height: 1px; background: #486956; content: ''; }
+.brand-fusion__route i { z-index: 1; width: 0.3rem; height: 0.3rem; border-radius: 50%; background: #486956; }
+
+.brand-fusion__frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  isolation: isolate;
+  background: #e8ddce;
+}
+
+.brand-fusion__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+// The complete artwork is the default for prerendering and reduced motion.
+.brand-fusion__image--left,
+.brand-fusion__light { display: none; }
+
+.brand-fusion__caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: 1.4rem;
+}
+
+.brand-fusion__caption > span { font-size: 0.78rem; line-height: 1.65; }
+.brand-fusion__caption em { font-family: Georgia, serif; font-size: clamp(1.5rem, 2.1vw, 2.1rem); line-height: 1.2; }
+
+@media (prefers-reduced-motion: no-preference) {
+  // Spread the merge over two thirds of the figure's passage through the viewport.
+  // The progress is measured on the figure, not the preceding text section.
+  .brand-fusion.scroll-scene--active {
+    --fusion: clamp(0, (var(--scene-progress, 0) - 0.03) * 1.5, 1);
+
+    .brand-fusion__image--left {
+      display: block;
+      clip-path: inset(0 49.95% 0 0);
+      transform: translate3d(calc((1 - var(--fusion)) * -3%), calc((1 - var(--fusion)) * 1.5%), 0);
+    }
+
+    .brand-fusion__image--right {
+      clip-path: inset(0 0 0 50%);
+      transform: translate3d(calc((1 - var(--fusion)) * 3%), calc((1 - var(--fusion)) * -1.5%), 0);
+    }
+
+    .brand-fusion__light {
+      position: absolute;
+      inset: 0;
+      display: block;
+      pointer-events: none;
+      background: linear-gradient(110deg, transparent 30%, #fff7de80 49%, transparent 65%);
+      opacity: calc(4 * var(--fusion) * (1 - var(--fusion)));
+      transform: translateX(calc((var(--fusion) - 0.5) * 35%));
+    }
+  }
+}
+
+@media (max-width: 599px) {
+  .brand-fusion__legend { font-size: 0.57rem; letter-spacing: 0.1em; margin-bottom: 0.85rem; }
+  .brand-fusion__legend > span { gap: 0.5rem; }
+  .brand-fusion__caption { align-items: start; flex-direction: column; gap: 0.9rem; padding-top: 1rem; }
+  .brand-fusion__caption > span { font-size: 0.75rem; }
+}
