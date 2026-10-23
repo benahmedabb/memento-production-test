@@ -51,6 +51,7 @@ import { PhotoSelection, photoSource, photoSrcset } from '../core/service-media'
                   [alt]="photo.alt"
                   [width]="photo.width"
                   [height]="photo.height"
+                  [style.object-position]="photo.objectPosition ?? null"
                   loading="lazy"
                   decoding="async"
                 />

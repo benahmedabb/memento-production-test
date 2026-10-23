@@ -16,6 +16,7 @@ export const emailMedia = [
     'Un volto, una professione',
     'Corporate · Life',
     'Ritratto di una professionista in divisa nel centro Life',
+    { objectPosition: '50% 25%' },
   ],
   [
     'corporate',
@@ -40,6 +41,7 @@ export const emailMedia = [
     'La forza di un ritratto',
     'Corporate · Ritratto professionale',
     'Ritratto professionale di un uomo in abito grigio',
+    { objectPosition: '50% 12%' },
   ],
   [
     'food',

@@ -20,6 +20,7 @@ export const emailPhotos = {
       width: 1920,
       height: 2880,
       widths: [640, 1200, 1920],
+      objectPosition: '50% 25%',
     },
     {
       slug: 'email-corporate-vainella',
@@ -47,6 +48,7 @@ export const emailPhotos = {
       width: 1366,
       height: 2048,
       widths: [640, 1200, 1366],
+      objectPosition: '50% 12%',
     },
   ],
   food: [

@@ -8,6 +8,7 @@ export interface ServicePhoto {
   readonly widths?: readonly number[];
   readonly sourcePath?: string;
   readonly contain?: boolean;
+  readonly objectPosition?: string;
 }
 
 const imageRoot = '/images/servizi/';

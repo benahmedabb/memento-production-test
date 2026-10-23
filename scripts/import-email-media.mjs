@@ -61,6 +61,7 @@ for (const [group, name, relative, title, location, alt, settings = {}] of email
     height,
     widths,
     ...(settings.contain ? { contain: true } : {}),
+    ...(settings.objectPosition ? { objectPosition: settings.objectPosition } : {}),
   });
   console.log(`${slug}: ${widths.join('/')}px`);
 }

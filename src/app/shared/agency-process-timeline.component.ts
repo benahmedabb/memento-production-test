@@ -50,10 +50,6 @@ const stages: readonly AgencyStage[] = [
     image: '/images/risultato-analisi-performance-1200.webp',
     srcset: '/images/risultato-analisi-performance-640.webp 640w, /images/risultato-analisi-performance-1200.webp 1200w, /images/risultato-analisi-performance-1920.webp 1920w',
     alt: 'Dashboard con grafici e indicatori per misurare i risultati di un progetto',
-    credit: {
-      label: 'Stephen Dawson / Unsplash',
-      url: 'https://unsplash.com/photos/turned-on-monitoring-screen-qwtCeJ5cLYs',
-    },
   },
 ];
 
