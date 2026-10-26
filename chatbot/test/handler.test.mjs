@@ -175,6 +175,7 @@ test('handoff requests can receive a contextual explanation without business sou
   const reply = await (await s.run(request({ ...query, message: 'Quanto costa un sito?' }))).json();
   assert.equal(reply.mode, 'fallback');
   assert.match(reply.text, /preventivo sul sito/);
+  assert.doesNotMatch(reply.text, /\?/);
   assert.equal(s.calls.reserve.length, 2);
 });
 test('a greeting reaches interpretation even when there are no matching knowledge entries', async () => {
@@ -205,12 +206,13 @@ test('out-of-scope questions are redirected without generating or inventing an e
     assert.equal(reply.mode, 'fallback');
     assert.match(reply.text, expected);
     assert.match(reply.text, /Memento/);
+    assert.doesNotMatch(reply.text, /\?/);
     assert.deepEqual(reply.sources, []);
     assert.equal(s.calls.ai, 1);
     assert.equal(s.calls.reserve.length, 1);
   }
 });
-test('a problem statement uses interpreted search terms and preserves dialogue context', async () => {
+test('after one clarification, a repeated need becomes a recommendation without another question', async () => {
   const s = setup();
   let count = 0;
   s.env.AI.run = async (_model, input) => {
@@ -219,12 +221,14 @@ test('a problem statement uses interpreted search terms and preserves dialogue c
     assert.equal(data.cronologia[1].role, 'assistant');
     assert.equal(data.cronologia[1].content, 'Cosa non ti convince?');
     if (count === 1) return { response: { intent: 'needs', queries: ['siti web contenuti interfacce'] } };
+    assert.equal(data.interpretazione, 'recommendation');
     assert.ok(data.fonti.some(source => source.title.includes('Siti')));
-    return { response: { text: 'Capito, il sito non ti soddisfa.', question: 'Ti preoccupa di più l’aspetto del sito o il fatto che non arrivino richieste?', ids: [] } };
+    return { response: { text: 'Per intervenire sul sito senza ripartire alla cieca, il servizio più adatto è un restyling basato sull’analisi di ciò che funziona già.', ids: [data.fonti.find(source => source.title.includes('Siti')).id] } };
   };
   const reply = await (await s.run(request({ ...query, message: 'Il mio sito fa schifo', history: [{ role: 'user', content: 'Vorrei rifare il sito' }, { role: 'assistant', content: 'Cosa non ti convince?' }] }))).json();
   assert.equal(reply.mode, 'ai');
-  assert.match(reply.text, /aspetto del sito/);
+  assert.match(reply.text, /restyling/);
+  assert.doesNotMatch(reply.text, /\?/);
 });
 test('invalid interpretation or a denied second reservation stops further inference', async () => {
   assert.equal(parsePlan({ intent: 'run_command', queries: [] }), null);

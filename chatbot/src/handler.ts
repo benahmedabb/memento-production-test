@@ -138,6 +138,11 @@ export async function handle(request: Request, env: Environment, kb: Knowledge, 
       plan.intent = 'handoff';
       plan.queries = [];
     }
+    // One useful clarification is enough: after the visitor answers it, give the
+    // best available recommendation instead of starting another interview round.
+    if (plan.intent === 'needs' && history.some(item => item.role === 'assistant' && item.content.includes('?'))) {
+      plan.intent = 'recommendation';
+    }
     if (plan.intent === 'out_of_scope') return send(outOfScopeReply(input.message, kb.version));
     const ranked = new Map<string, { entry: Entry; score: number }>();
     // Preserve original names/wording as well as the model's semantic reformulations.

@@ -83,8 +83,9 @@ export function generatedReply(raw: unknown, candidates: Entry[], kb: Knowledge,
     const question = value['question'].trim();
     if (!/^[^?]{1,239}\?$/.test(question)) return errorReply('invalid_model_response', kb.version);
     text = [statements, question].filter(Boolean).join(' ');
-  } else if (plan.intent === 'recommendation') {
-    // Recommendation turns conclude with advice, without an automatic follow-up question.
+  } else if (['information', 'recommendation', 'handoff'].includes(plan.intent)) {
+    // Answers and recommendations conclude with useful information, without an
+    // automatic question added merely to keep the conversation going.
     text = statements;
   }
   if (!text) return errorReply('invalid_model_response', kb.version);
@@ -100,9 +101,9 @@ export function generatedReply(raw: unknown, candidates: Entry[], kb: Knowledge,
 export function outOfScopeReply(message: string, version: string): ChatReply {
   const normalized = message.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
   const text = /\b(?:meteo|previsioni|temperatura|piove|piovera|tempo fa)\b/.test(normalized)
-    ? 'Non posso controllare il meteo o le previsioni. Posso però aiutarti con Memento e con progetti di siti web, grafica, foto, video, social e pubblicità: su cosa stai lavorando?'
+    ? 'Non posso controllare il meteo o le previsioni. Posso però aiutarti con Memento e con progetti di siti web, grafica, foto, video, social e pubblicità.'
     : /\b(?:tv|televisione|palinsesto|programmazione televisiva)\b/.test(normalized)
-      ? 'Non posso consultare la programmazione televisiva. Posso però aiutarti con Memento e con i suoi servizi di comunicazione: c’è un progetto di cui vuoi parlarmi?'
-      : 'Questa richiesta esce dall’ambito dell’assistente Memento. Posso aiutarti con l’agenzia e con progetti di siti web, grafica, foto, video, social e pubblicità: di cosa hai bisogno?';
+      ? 'Non posso consultare la programmazione televisiva. Posso però aiutarti con Memento e con i suoi servizi di comunicazione.'
+      : 'Questa richiesta esce dall’ambito dell’assistente Memento. Posso aiutarti con l’agenzia e con progetti di siti web, grafica, foto, video, social e pubblicità.';
   return { text, sources: [], mode: 'fallback', version };
 }

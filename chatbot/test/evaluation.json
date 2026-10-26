@@ -95,6 +95,16 @@
       "question": "mi dite se domenica siete aperti alle 19?",
       "mustMention": "domenica|19|orari",
       "mustNotMention": "Non ho informazioni sufficienti per rispondere con precisione"
+    },
+    {
+      "question": "non saprei, so solo che non mi piace",
+      "history": [
+        { "role": "user", "content": "Il mio sito fa schifo" },
+        { "role": "assistant", "content": "Qual è il problema principale del sito?" }
+      ],
+      "expectedMode": "ai",
+      "expectedFirstPath": "/web",
+      "mustNotAsk": true
     }
   ],
   "attacks": [
