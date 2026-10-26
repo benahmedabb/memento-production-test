@@ -1,9 +1,10 @@
-import { exactAnswer, fallback, MAX_MESSAGE, normalize, retrieve } from '../shared/protocol';
-import type { ChatRequest, ChatReply, Entry, Knowledge } from '../shared/protocol';
+import { exactAnswer, errorReply, MAX_MESSAGE, normalize, retrieve } from '../shared/protocol';
+import type { ChatRequest, ChatReply, ChatError, Entry, Knowledge } from '../shared/protocol';
 import { ANSWER, answerSchema, generatedReply, parsePlan, PLAN_SCHEMA, UNDERSTAND } from './dialogue';
 
+export type Admission = { allowed: true } | { allowed: false; code: 'rate_limit' | 'daily_limit' | 'invalid_request'; retryAfterSeconds?: number };
 export interface Quota {
-  admit(client: string): Promise<boolean>;
+  admitDetailed(client: string): Promise<Admission>;
   reserve(amount: number): Promise<string | null>;
   settle(id: string, actual: number): Promise<void>;
 }
@@ -65,6 +66,7 @@ export function milliNeurons(inputTokens: number, outputTokens: number): number 
 }
 
 class BudgetExceeded extends Error {}
+class ServiceTimeout extends Error {}
 
 async function infer(env: Environment, quota: Quota, messages: { role: string; content: string }[], maxTokens: number, timeout: number, schema: object): Promise<unknown> {
   const bytes = encoder.encode(JSON.stringify(messages)).length;
@@ -82,7 +84,7 @@ async function infer(env: Environment, quota: Quota, messages: { role: string; c
 
 async function within<T>(promise: Promise<T>, ms: number): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined;
-  try { return await Promise.race([promise, new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('timeout')), ms); })]); }
+  try { return await Promise.race([promise, new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new ServiceTimeout()), ms); })]); }
   finally { if (timer !== undefined) clearTimeout(timer); }
 }
 
@@ -94,39 +96,43 @@ export async function handle(request: Request, env: Environment, kb: Knowledge, 
     'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff',
     'vary': 'Origin', ...(cors ? { 'access-control-allow-origin': origin } : {}),
   };
-  const send = (body: ChatReply, status = 200) => new Response(JSON.stringify(body), { status, headers });
-  if (new URL(request.url).pathname !== '/v1/chat') return send(fallback(kb.version), 404);
-  if (!cors) return send(fallback(kb.version), 403);
+  const send = (body: ChatReply, status = 200) => new Response(JSON.stringify(body), { status, headers: {
+    ...headers, ...(body.error?.retryAfterSeconds ? { 'retry-after': String(body.error.retryAfterSeconds), 'access-control-expose-headers': 'Retry-After' } : {}),
+  } });
+  const fail = (code: ChatError, status: number, retryAfterSeconds?: number) => send(errorReply(code, kb.version, retryAfterSeconds), status);
+  if (new URL(request.url).pathname !== '/v1/chat') return fail('invalid_request', 404);
+  if (!cors) return fail('access_denied', 403);
   if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...headers, 'access-control-allow-methods': 'POST', 'access-control-allow-headers': 'Content-Type', 'access-control-max-age': '600' } });
-  if (request.method !== 'POST') return send(fallback(kb.version), 405);
-  if (request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') return send(fallback(kb.version), 415);
+  if (request.method !== 'POST') return fail('invalid_request', 405);
+  if (request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') return fail('invalid_request', 415);
   let input: ChatRequest | null;
-  try { input = validateInput(await within(readBody(request), 3000), kb); } catch { return send(fallback(kb.version), 400); }
-  if (!input) return send(fallback(kb.version), 400);
+  try { input = validateInput(await within(readBody(request), 3000), kb); } catch { return fail('invalid_request', 400); }
+  if (!input) return fail('invalid_request', 400);
   const exact = exactAnswer(kb, input.message, input.page);
   if (exact) return send(exact);
-  if (env.AI_ENABLED !== 'true' || !env.AI || !env.TURNSTILE_SECRET || !env.IP_HASH_SECRET || env.IP_HASH_SECRET.length < 32) return send(fallback(kb.version));
+  if (env.AI_ENABLED !== 'true' || !env.AI || !env.TURNSTILE_SECRET || !env.IP_HASH_SECRET || env.IP_HASH_SECRET.length < 32) return fail('unavailable', 503);
   // Browser origin is not authentication. Turnstile + trusted edge IP + atomic quotas are independent checks.
   const ip = request.headers.get('CF-Connecting-IP');
-  if (!ip || !input.turnstileToken) return send(fallback(kb.version), 403);
+  if (!ip || !input.turnstileToken) return fail('verification_failed', 403);
   try {
-    if (!await within(quota.admit(await clientHash(ip, env.IP_HASH_SECRET)), 2000)) return send(fallback(kb.version), 429);
+    const admission = await within(quota.admitDetailed(await clientHash(ip, env.IP_HASH_SECRET)), 2000);
+    if (!admission.allowed) return fail(admission.code, admission.code === 'invalid_request' ? 400 : 429, admission.retryAfterSeconds);
     const verification = await verifyFetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ secret: env.TURNSTILE_SECRET, response: input.turnstileToken, remoteip: ip }),
       signal: AbortSignal.timeout(4000),
     });
-    if (!verification.ok) return send(fallback(kb.version), 403);
+    if (!verification.ok) return fail('verification_failed', 403);
     const verdict = await verification.json() as { success?: boolean; hostname?: string; action?: string };
-    if (verdict.success !== true || verdict.hostname !== new URL(origin).hostname || verdict.action !== 'memento_chat') return send(fallback(kb.version), 403);
+    if (verdict.success !== true || verdict.hostname !== new URL(origin).hostname || verdict.action !== 'memento_chat') return fail('verification_failed', 403);
     // Minimise accidental personal information sent to the model. This is a heuristic, not a DLP system.
     const history = (input.history ?? []).slice(-4).map(item => ({ role: item.role, content: item.content.slice(0, 400) }));
-    if (/[\w.+-]+@[\w.-]+\.[a-z]{2,}|(?:\+?\d[\s().-]*){9,}/i.test([input.message, ...history.filter(item => item.role === 'user').map(item => item.content)].join(' '))) return send(fallback(kb.version));
+    if (/[\w.+-]+@[\w.-]+\.[a-z]{2,}|(?:\+?\d[\s().-]*){9,}/i.test([input.message, ...history.filter(item => item.role === 'user').map(item => item.content)].join(' '))) return fail('personal_data', 422);
     const plan = parsePlan(await infer(env, quota, [
       { role: 'system', content: UNDERSTAND },
       { role: 'user', content: JSON.stringify({ messaggio: input.message, cronologia: history, pagina: input.page }) },
     ], 220, 10_000, PLAN_SCHEMA));
-    if (!plan) return send(fallback(kb.version));
+    if (!plan) return fail('invalid_model_response', 502);
     // Sensitive commercial/account requests still go to the team after interpretation.
     if (/\b(?:scont\w*|prezz\w*|costa|costano|garant\w*|prenot\w*|disponibil\w*|privat\w*|password|fatturato)\b/.test(normalize(input.message))) {
       plan.intent = 'handoff';
@@ -146,6 +152,11 @@ export async function handle(request: Request, env: Environment, kb: Knowledge, 
       { role: 'user', content: JSON.stringify({ messaggio: input.message, cronologia: history, interpretazione: plan.intent, fonti: candidates.map(({ id, title, text }) => ({ id, title, text })) }) },
     ];
     // An empty retrieval does not prevent a greeting or a useful clarifying question.
-    return send(generatedReply(await infer(env, quota, messages, 350, 15_000, answerSchema(candidates)), candidates, kb, plan));
-  } catch (error) { return send(fallback(kb.version), error instanceof BudgetExceeded ? 429 : 200); }
+    const reply = generatedReply(await infer(env, quota, messages, 350, 15_000, answerSchema(candidates)), candidates, kb, plan);
+    return send(reply, reply.error ? 502 : 200);
+  } catch (error) {
+    if (error instanceof BudgetExceeded) return fail('budget_exhausted', 429, Math.ceil((86_400_000 - Date.now() % 86_400_000) / 1000));
+    if (error instanceof ServiceTimeout) return fail('timeout', 504);
+    return fail('unavailable', 503);
+  }
 }

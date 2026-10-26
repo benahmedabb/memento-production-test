@@ -27,7 +27,7 @@ function setup(overrides = {}) {
     } }, ...overrides,
   };
   const quota = {
-    async admit() { calls.admit++; return true; },
+    async admitDetailed() { calls.admit++; return { allowed: true }; },
     async reserve(amount) { calls.reserve.push(amount); return `reservation-${calls.reserve.length}`; },
     async settle(id, amount) { calls.settle.push([id, amount]); },
   };
@@ -90,9 +90,9 @@ test('a spoofed Origin alone cannot bypass Turnstile, hostname or action checks'
   assert.equal(s.calls.ai, 0);
 });
 test('client or global budget denial never calls the model', async () => {
-  for (const gate of ['admit', 'reserve']) {
+  for (const gate of ['admitDetailed', 'reserve']) {
     const s = setup();
-    s.quota[gate] = async () => gate === 'admit' ? false : null;
+    s.quota[gate] = async () => gate === 'admitDetailed' ? { allowed: false, code: 'rate_limit', retryAfterSeconds: 60 } : null;
     assert.equal((await s.run(request(query))).status, 429);
     assert.equal(s.calls.ai, 0);
   }
@@ -114,7 +114,9 @@ test('provider errors retain the reservation and do not retry', async () => {
   const s = setup();
   let attempts = 0;
   s.env.AI.run = async () => { attempts++; throw new Error('provider'); };
-  assert.equal((await (await s.run(request(query))).json()).mode, 'fallback');
+  const response = await s.run(request(query));
+  assert.equal(response.status, 503);
+  assert.equal((await response.json()).error.code, 'unavailable');
   assert.equal(attempts, 1);
   assert.equal(s.calls.reserve.length, 1);
   assert.equal(s.calls.settle.length, 0);
@@ -129,7 +131,7 @@ test('generated output is bounded and rejects arbitrary URLs, unknown sources an
   const candidate = kb.entries[0];
   const plan = { intent: 'information', queries: ['sede'] };
   for (const raw of [null, [], 123, true, '<script>alert(1)</script>', 'null', { text: 'Risposta', ids: ['s999999'] }, { text: 'Risposta', ids: [kb.entries[1].id] }, { text: 'Risposta', ids: [candidate.id], extra: true }, { text: 'a'.repeat(1801), ids: [] }, { text: '', ids: [] }, ...['https://evil.example', '<script>alert(1)</script>', 'javascript:alert(1)', 'Ti costa 10 euro', 'Prenotazione confermata', 'Abbiamo inviato la email'].map(text => ({ text, ids: [candidate.id] }))]) {
-    assert.equal(generatedReply(raw, [candidate], kb, plan).mode, 'fallback');
+    assert.equal(generatedReply(raw, [candidate], kb, plan).error.code, 'invalid_model_response');
   }
   const output = { text: candidate.text, ids: [candidate.id] };
   const reply = generatedReply(JSON.stringify(output), [candidate], kb, plan);
@@ -225,4 +227,95 @@ test('retrieval finds rare names, singular/plural terms and editing synonyms', (
   assert.ok(retrieve(kb, 'Mi racconti di Elena?').some(entry => entry.text.startsWith('Elena')));
   assert.ok(retrieve(kb, 'Foto degli interni immobiliari').some(entry => entry.path.includes('immobiliare')));
   assert.ok(retrieve(kb, 'Montate i nostri video per i social?').some(entry => entry.text.includes('montaggio')));
+});
+
+test('technical errors are distinct from missing knowledge and reveal no provider details', async () => {
+  for (const code of ['rate_limit', 'daily_limit']) {
+    const s = setup();
+    s.quota.admitDetailed = async () => ({ allowed: false, code, retryAfterSeconds: code === 'rate_limit' ? 30 : 3600 });
+    const response = await s.run(request(query));
+    const reply = await response.json();
+    assert.equal(response.status, 429);
+    assert.equal(reply.error.code, code);
+    assert.equal(response.headers.get('retry-after'), String(reply.error.retryAfterSeconds));
+    assert.doesNotMatch(reply.text, /informazioni sufficienti/);
+    assert.equal(s.calls.ai, 0);
+    assert.equal(s.calls.verification, 0);
+  }
+  const budget = setup();
+  budget.quota.reserve = async () => null;
+  const exhausted = await budget.run(request(query));
+  assert.equal(exhausted.status, 429);
+  assert.equal((await exhausted.json()).error.code, 'budget_exhausted');
+
+  const verification = setup();
+  const denied = await handle(request(query), verification.env, kb, verification.quota, async () => Response.json({ success: false }));
+  assert.equal(denied.status, 403);
+  assert.equal((await denied.json()).error.code, 'verification_failed');
+
+  const invalid = setup({ AI: { run: async () => ({ response: { intent: 'unknown', queries: [] } }) } });
+  const malformed = await invalid.run(request(query));
+  assert.equal(malformed.status, 502);
+  assert.equal((await malformed.json()).error.code, 'invalid_model_response');
+
+  const failure = setup({ AI: { run: async () => { throw new Error('private provider implementation detail'); } } });
+  const unavailable = await failure.run(request(query));
+  assert.equal(unavailable.status, 503);
+  assert.doesNotMatch(await unavailable.text(), /private provider|informazioni sufficienti/);
+});
+
+test('a model timeout is explicit, retains its reservation and does not retry', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const s = setup();
+  s.env.AI.run = () => {
+    s.calls.ai++;
+    queueMicrotask(() => t.mock.timers.tick(10_001));
+    return new Promise(() => {});
+  };
+  const response = await s.run(request(query));
+  assert.equal(response.status, 504);
+  assert.equal((await response.json()).error.code, 'timeout');
+  assert.equal(s.calls.ai, 1);
+  assert.equal(s.calls.reserve.length, 1);
+  assert.equal(s.calls.settle.length, 0);
+});
+
+test('the design follow-up reaches both model stages with all four preceding messages', async () => {
+  const corpus = JSON.parse(await readFile(new URL('./evaluation.json', import.meta.url), 'utf8'));
+  const example = corpus.regressions[0];
+  const s = setup();
+  const inputs = [];
+  s.env.AI.run = async (_model, input) => {
+    const data = JSON.parse(input.messages[1].content);
+    inputs.push(data);
+    return { response: input.max_tokens === 220 ? { intent: 'needs', queries: ['design sito web colori disposizione'] } : { text: 'Capito, vuoi rivedere colori e disposizione del sito. Che stile vorresti ottenere?', ids: [] } };
+  };
+  const response = await s.run(request({ ...query, message: example.question, history: example.history }));
+  assert.equal(response.status, 200);
+  const reply = await response.json();
+  assert.equal(reply.error, undefined);
+  assert.equal(reply.mode, 'ai');
+  assert.equal(inputs.length, 2);
+  for (const input of inputs) {
+    assert.equal(input.messaggio, example.question);
+    assert.deepEqual(input.cronologia, example.history);
+  }
+});
+
+test('empty retrieval still generates a contextual reply to a need', async () => {
+  const s = setup();
+  let calls = 0;
+  s.env.AI.run = async (_model, input) => {
+    calls++;
+    if (calls === 1) return { response: { intent: 'needs', queries: ['design sito web'] } };
+    assert.deepEqual(JSON.parse(input.messages[1].content).fonti, []);
+    return { response: { text: 'Vuoi migliorare l’aspetto del sito. Di che attività si tratta?', ids: [] } };
+  };
+  const response = await handle(request({ ...query, message: 'il mio sitto nn mi piace' }), s.env, { version: 'empty', entries: [] }, s.quota, s.verify);
+  assert.equal(response.status, 200);
+  const reply = await response.json();
+  assert.equal(reply.mode, 'ai');
+  assert.equal(reply.error, undefined);
+  assert.deepEqual(reply.sources, []);
+  assert.equal(calls, 2);
 });

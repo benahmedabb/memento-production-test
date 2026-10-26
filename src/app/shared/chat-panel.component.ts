@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, afterNextRender, inject, output, signal, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { siteConfig } from '../core/site.config';
-import { exactAnswer, fallback, MAX_MESSAGE } from '../../../chatbot/shared/protocol';
+import { exactAnswer, errorReply, ERROR_TEXT, MAX_MESSAGE } from '../../../chatbot/shared/protocol';
 import type { ChatReply, Knowledge } from '../../../chatbot/shared/protocol';
 
 interface TurnstileApi {
@@ -9,7 +9,7 @@ interface TurnstileApi {
   remove(id: string): void;
 }
 interface ChatWindow extends Window { turnstile?: TurnstileApi }
-interface Message { role: 'user' | 'assistant'; text: string; sources?: ChatReply['sources'] }
+interface Message { role: 'user' | 'assistant'; text: string; sources?: ChatReply['sources']; failed?: boolean }
 interface ChatConfig { apiUrl: string; turnstileSiteKey: string; allowedOrigins: string[] }
 
 @Component({
@@ -76,19 +76,23 @@ export class ChatPanelComponent implements OnDestroy {
     const message = (suggestion ?? this.draft()).trim();
     if (!this.ready() || this.busy() || !message || message.length > MAX_MESSAGE) return;
     const epoch = this.epoch;
-    const previous = this.messages().slice(-4).map(item => ({ role: item.role, content: item.text.slice(0, MAX_MESSAGE) }));
+    const previous = this.messages().filter(item => !item.failed).slice(-4).map(item => ({ role: item.role, content: item.text.slice(0, MAX_MESSAGE) }));
     this.messages.update(items => [...items.slice(-39), { role: 'user', text: message }]);
     this.draft.set('');
     this.busy.set(true);
     this.status.set('Sto cercando una risposta…');
     this.scrollToEnd();
     const page = this.router.url.split(/[?#]/)[0];
-    let reply = exactAnswer(this.knowledge, message, page) ?? fallback(this.knowledge.version);
+    const exact = exactAnswer(this.knowledge, message, page);
+    let reply = exact ?? errorReply('unavailable', this.knowledge.version);
+    let stage: 'verification' | 'request' = 'verification';
+    let failed = false;
     try {
-      if (reply.mode === 'fallback' && this.config.apiUrl && this.config.turnstileSiteKey) {
+      if (!exact && this.config.apiUrl && this.config.turnstileSiteKey) {
         this.status.set('Verifica di sicurezza in corso…');
         const token = await this.turnstileToken();
         if (epoch !== this.epoch) return;
+        stage = 'request';
         this.status.set('Sto cercando una risposta…');
         const response = await fetch(this.config.apiUrl, {
           method: 'POST', credentials: 'omit', headers: { 'content-type': 'application/json' },
@@ -96,13 +100,21 @@ export class ChatPanelComponent implements OnDestroy {
           signal: AbortSignal.any([this.controller.signal, AbortSignal.timeout(45_000)]),
         });
         const data = await response.json();
-        if (this.isReply(data)) reply = data;
+        failed = !response.ok;
+        reply = this.isReply(data) ? data : errorReply('unavailable', this.knowledge.version);
       }
-    } catch { /* Offline, blocked challenge or quota: preserve local contact fallback. */ }
+    } catch (error) {
+      reply = errorReply(stage === 'verification' ? 'verification_failed' : error instanceof Error && error.name === 'TimeoutError' ? 'timeout' : 'network_error', this.knowledge.version);
+    }
     finally {
       if (epoch === this.epoch) {
         this.removeChallenge();
-        this.messages.update(items => [...items, { role: 'assistant', text: reply.text, sources: reply.sources }]);
+        failed ||= !!reply.error;
+        // Failed attempts stay visible, but cannot crowd the useful dialogue out of history.
+        this.messages.update(items => [
+          ...items.map((item, index) => index === items.length - 1 && failed ? { ...item, failed: true } : item),
+          { role: 'assistant', text: reply.text, sources: reply.sources, failed },
+        ]);
         this.busy.set(false);
         this.status.set('');
         this.scrollToEnd();
@@ -114,6 +126,7 @@ export class ChatPanelComponent implements OnDestroy {
   private isReply(value: unknown): value is ChatReply {
     const reply = value as ChatReply | null;
     return !!reply && typeof reply.text === 'string' && reply.text.length <= 4000 &&
+      (reply.error === undefined || (!!reply.error && Object.hasOwn(ERROR_TEXT, reply.error.code) && (reply.error.retryAfterSeconds === undefined || (Number.isSafeInteger(reply.error.retryAfterSeconds) && reply.error.retryAfterSeconds > 0 && reply.error.retryAfterSeconds <= 86400)))) &&
       ['faq', 'ai', 'fallback', 'clarification'].includes(reply.mode) && Array.isArray(reply.sources) && reply.sources.length <= 3 &&
       reply.sources.every(source => typeof source.title === 'string' && source.title.length <= 200 && typeof source.path === 'string' && /^\/[a-z0-9/-]*(#[a-z0-9-]+)?$/.test(source.path));
   }

@@ -20,9 +20,27 @@ export interface ChatReply {
   sources: Source[];
   version: string;
   mode: 'faq' | 'ai' | 'clarification' | 'fallback';
+  error?: { code: ChatError; retryAfterSeconds?: number };
+}
+export const ERROR_TEXT = {
+  invalid_request: 'Non riesco a leggere questo messaggio. Prova a inviarlo di nuovo.',
+  access_denied: 'La chat non è abilitata su questa pagina.',
+  verification_failed: 'La verifica di sicurezza non è riuscita. Riprova a inviare il messaggio.',
+  rate_limit: 'Sono arrivati diversi messaggi in poco tempo. Attendi un minuto e riprova.',
+  daily_limit: 'È stato raggiunto il limite giornaliero della chat per questa connessione. Puoi continuare con il team su WhatsApp o tramite i contatti.',
+  budget_exhausted: 'La chat ha esaurito la disponibilità IA di oggi. Puoi continuare con il team su WhatsApp o tramite i contatti.',
+  unavailable: 'Il servizio di chat è temporaneamente indisponibile. Riprova più tardi oppure contatta il team.',
+  timeout: 'La risposta sta impiegando troppo tempo. Riprova tra poco oppure contatta il team.',
+  invalid_model_response: 'Non sono riuscito a formulare una risposta valida. Puoi riprovare oppure contattare il team.',
+  personal_data: 'Per la tua privacy, invia il messaggio senza email o numeri di telefono. Puoi condividere i recapiti direttamente con il team tramite i contatti.',
+  network_error: 'Non riesco a collegarmi al servizio di chat. Controlla la connessione e riprova.',
+} as const;
+export type ChatError = keyof typeof ERROR_TEXT;
+export function errorReply(code: ChatError, version = 'unavailable', retryAfterSeconds?: number): ChatReply {
+  return { text: ERROR_TEXT[code], sources: [{ title: 'Contatti', path: '/contatti' }], mode: 'fallback', version,
+    error: { code, ...(retryAfterSeconds === undefined ? {} : { retryAfterSeconds }) } };
 }
 export const MAX_MESSAGE = 800;
-export const FALLBACK = 'Non ho informazioni sufficienti per rispondere con precisione. Puoi parlare con Memento su WhatsApp oppure usare il modulo contatti.';
 export function normalize(value: string): string {
   return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 }
@@ -31,9 +49,6 @@ const ALIASES: Record<string, string> = { montare: 'montaggio', montate: 'montag
 export function terms(value: string): string[] {
   // Light singular/plural matching, shared by the generated index and query lookup.
   return [...new Set(normalize(value).split(' ').filter(word => word.length > 2 && !STOP.has(word)).map(word => ALIASES[word] ?? word).map(word => word.length > 4 ? word.replace(/[aeio]$/, '') : word))];
-}
-export function fallback(version = 'unavailable'): ChatReply {
-  return { text: FALLBACK, sources: [{ title: 'Contatti', path: '/contatti' }], mode: 'fallback', version };
 }
 export function replyFrom(entries: Entry[], version: string, mode: 'faq' | 'ai'): ChatReply {
   const sources = [...new Map(entries.map(entry => [`${entry.path}:${entry.title}`, { title: entry.title, path: entry.path }])).values()];

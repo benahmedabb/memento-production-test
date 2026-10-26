@@ -1,4 +1,5 @@
 import { DurableObject } from 'cloudflare:workers';
+import type { Admission } from './handler';
 
 const DAY = 86_400_000;
 export const DAILY_BUDGET = 8_000_000; // milli-neurons, shared by every Worker instance.
@@ -13,8 +14,13 @@ export class ChatQuota extends DurableObject<unknown> {
     `);
   }
 
+  // Keep the boolean RPC compatible with older Worker versions during deployment.
   async admit(client: string): Promise<boolean> {
-    if (!/^[a-f0-9]{64}$/.test(client)) return false;
+    return (await this.admitDetailed(client)).allowed;
+  }
+
+  async admitDetailed(client: string): Promise<Admission> {
+    if (!/^[a-f0-9]{64}$/.test(client)) return { allowed: false, code: 'invalid_request' };
     const now = Date.now();
     const day = Math.floor(now / DAY);
     // Schedule deletion even when traffic stops. No raw IPs or conversations stored.
@@ -22,10 +28,11 @@ export class ChatQuota extends DurableObject<unknown> {
     return this.ctx.storage.transactionSync(() => {
       const row = this.ctx.storage.sql.exec<{ total: number; recent: string }>('SELECT total, recent FROM clients WHERE day = ? AND client = ?', day, client).toArray()[0];
       const recent: number[] = row ? JSON.parse(row.recent).filter((time: number) => time > now - 60_000) : [];
-      if ((row?.total ?? 0) >= 20 || recent.length >= 3) return false;
+      if ((row?.total ?? 0) >= 20) return { allowed: false, code: 'daily_limit', retryAfterSeconds: Math.ceil(((day + 1) * DAY - now) / 1000) };
+      if (recent.length >= 3) return { allowed: false, code: 'rate_limit', retryAfterSeconds: Math.max(1, Math.ceil((recent[0] + 60_000 - now) / 1000)) };
       recent.push(now);
       this.ctx.storage.sql.exec('INSERT INTO clients VALUES (?, ?, ?, ?) ON CONFLICT(day,client) DO UPDATE SET total = excluded.total, recent = excluded.recent', day, client, (row?.total ?? 0) + 1, JSON.stringify(recent));
-      return true;
+      return { allowed: true };
     });
   }
 

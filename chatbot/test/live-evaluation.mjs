@@ -18,6 +18,7 @@ const corpusQuestions = [
   ...corpus.normal.map(([question, expectedPath]) => ({ category: 'normal', question, expectedPath })),
   ...corpus.missing.map(question => ({ category: 'missing', question })),
   ...corpus.attacks.map(question => ({ category: 'attack', question })),
+  ...(corpus.regressions ?? []).map(item => ({ category: 'dialogue', ...item })),
 ];
 const limit = Math.max(1, Math.min(corpusQuestions.length, Number(process.argv[2]) || corpusQuestions.length));
 const selection = process.argv.find(arg => arg.startsWith('--cases='))?.slice(8).split(',').map(Number);
@@ -27,7 +28,7 @@ let calls = 0;
 let modelOutput = [];
 const reservations = new Map();
 const quota = {
-  async admit() { return true; }, // Local synthetic evaluation, not an HTTP-accessible bypass.
+  async admitDetailed() { return { allowed: true }; }, // Local synthetic evaluation, not an HTTP-accessible bypass.
   async reserve(amount) {
     if (charged + amount > 4_000_000) return null; // Hard conservative test budget: 4,000 neurons.
     const id = crypto.randomUUID(); reservations.set(id, amount); charged += amount; return id;
@@ -46,9 +47,15 @@ try {
     IP_HASH_SECRET: 'local-synthetic-evaluation-key-not-used-in-production', TURNSTILE_SECRET: 'local-evaluation-only',
     AI: { async run(...args) {
       calls++;
-      const result = await proxy.env.AI.run(...args);
-      modelOutput.push({ response: result.response, usage: result.usage });
-      return result;
+      const started = Date.now();
+      try {
+        const result = await proxy.env.AI.run(...args);
+        modelOutput.push({ response: result.response, usage: result.usage, durationMs: Date.now() - started });
+        return result;
+      } catch (error) {
+        modelOutput.push({ error: String(error), durationMs: Date.now() - started });
+        throw error;
+      }
     } },
   };
   for (const item of questions) {
@@ -56,12 +63,12 @@ try {
     const req = new Request('https://local-evaluation.invalid/v1/chat', { method: 'POST', headers: { origin: env.ALLOWED_ORIGINS, 'content-type': 'application/json', 'CF-Connecting-IP': '203.0.113.12' }, body: JSON.stringify({ message: item.question, history: item.history, turnstileToken: 'local-evaluation' }) });
     const response = await handle(req, env, kb, quota, async () => Response.json({ success: true, hostname: 'mementoproduction.it', action: 'memento_chat' }));
     const reply = await response.json();
-    const pass = item.category === 'dialogue'
-      ? (item.expectedMode ? reply.mode === item.expectedMode : reply.sources.some(source => source.path.startsWith(item.expectedPath))) && (!item.mustAsk || reply.text.includes('?'))
+    const pass = response.ok && !reply.error && (item.category === 'dialogue'
+      ? (item.expectedMode ? reply.mode === item.expectedMode : !item.expectedPath || reply.sources.some(source => source.path.startsWith(item.expectedPath))) && (!item.mustAsk || reply.text.includes('?')) && (!item.mustMention || new RegExp(item.mustMention, 'i').test(reply.text)) && (!item.mustNotMention || !new RegExp(item.mustNotMention, 'i').test(reply.text))
       : item.category === 'normal'
       ? (reply.mode === 'clarification' || reply.sources.some(source => source.path.startsWith(item.expectedPath))) && reply.mode !== 'fallback'
-      : reply.mode === 'fallback';
-    report.push({ ...item, pass, reply, modelOutput });
+      : reply.mode === 'fallback');
+    report.push({ ...item, pass, status: response.status, reply, modelOutput });
     console.log(`${report.length}/${questions.length} ${pass ? 'PASS' : 'REVIEW'} ${reply.mode}: ${item.question}`);
     await writeFile(new URL('report.json', directory), JSON.stringify({ version: kb.version, calls, reservedOrUsedNeurons: charged / 1000, results: report }, null, 2));
   }
