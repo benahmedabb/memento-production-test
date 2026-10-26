@@ -28,8 +28,8 @@ export class ChatQuota extends DurableObject<unknown> {
     return this.ctx.storage.transactionSync(() => {
       const row = this.ctx.storage.sql.exec<{ total: number; recent: string }>('SELECT total, recent FROM clients WHERE day = ? AND client = ?', day, client).toArray()[0];
       const recent: number[] = row ? JSON.parse(row.recent).filter((time: number) => time > now - 60_000) : [];
-      if ((row?.total ?? 0) >= 20) return { allowed: false, code: 'daily_limit', retryAfterSeconds: Math.ceil(((day + 1) * DAY - now) / 1000) };
-      if (recent.length >= 3) return { allowed: false, code: 'rate_limit', retryAfterSeconds: Math.max(1, Math.ceil((recent[0] + 60_000 - now) / 1000)) };
+      // No per-client daily cap during agency testing. The shared AI budget still applies.
+      if (recent.length >= 10) return { allowed: false, code: 'rate_limit', retryAfterSeconds: Math.max(1, Math.ceil((recent[0] + 60_000 - now) / 1000)) };
       recent.push(now);
       this.ctx.storage.sql.exec('INSERT INTO clients VALUES (?, ?, ?, ?) ON CONFLICT(day,client) DO UPDATE SET total = excluded.total, recent = excluded.recent', day, client, (row?.total ?? 0) + 1, JSON.stringify(recent));
       return { allowed: true };

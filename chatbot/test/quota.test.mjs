@@ -6,7 +6,7 @@ const require = createRequire(new URL('../package.json', import.meta.url));
 const { Miniflare, convertV4MiniflareOptions } = require('miniflare');
 const { build } = require('esbuild');
 
-test('SQLite Durable Object enforces concurrency, daily counts, settlement and deletion', async t => {
+test('SQLite Durable Object allows more than 20 daily attempts while enforcing burst and shared budget limits', async t => {
   const result = await build({
     stdin: { contents: `
       import { ChatQuota } from './src/quota.ts';
@@ -36,18 +36,17 @@ test('SQLite Durable Object enforces concurrency, daily counts, settlement and d
   const client = 'a'.repeat(64);
   assert.deepEqual(await call('admitDetailed', ['invalid']), { allowed: false, code: 'invalid_request' });
   const attempts = await Promise.all(Array.from({ length: 12 }, () => call('admitDetailed', [client])));
-  assert.equal(attempts.filter(result => result.allowed).length, 3);
+  assert.equal(attempts.filter(result => result.allowed).length, 10);
   assert.ok(attempts.filter(result => !result.allowed).every(result => result.code === 'rate_limit' && result.retryAfterSeconds > 0 && result.retryAfterSeconds <= 60));
   assert.equal(await call('admit', [client]), false, 'older Worker RPC remains fail-closed');
-  for (let count = 3; count < 20; count++) {
+  // Keep the same persisted client row: previously exhausted clients also regain access.
+  for (let count = 10; count < 40; count++) {
     await call('clearMinute');
     assert.equal(await call('admit', [client]), true);
   }
   await call('clearMinute');
-  assert.equal(await call('admit', [client]), false);
-  const daily = await call('admitDetailed', [client]);
-  assert.equal(daily.code, 'daily_limit');
-  assert.ok(daily.retryAfterSeconds > 0 && daily.retryAfterSeconds <= 86400);
+  for (let count = 0; count < 10; count++) assert.deepEqual(await call('admitDetailed', [client]), { allowed: true });
+  assert.equal((await call('admitDetailed', [client])).code, 'rate_limit');
   const reservations = await Promise.all(Array.from({ length: 12 }, () => call('reserve', [1_000_000])));
   assert.equal(reservations.filter(Boolean).length, 8);
   await call('settle', [reservations.find(Boolean), 500_000]);
