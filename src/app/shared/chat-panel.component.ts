@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, afterNextRender, inject, output, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, InjectionToken, OnDestroy, afterNextRender, inject, output, signal, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { siteConfig } from '../core/site.config';
 import { exactAnswer, errorReply, ERROR_TEXT, MAX_MESSAGE } from '../../../chatbot/shared/protocol';
@@ -11,6 +11,7 @@ interface TurnstileApi {
 interface ChatWindow extends Window { turnstile?: TurnstileApi }
 interface Message { role: 'user' | 'assistant'; text: string; sources?: ChatReply['sources']; failed?: boolean }
 interface ChatConfig { apiUrl: string; turnstileSiteKey: string; allowedOrigins: string[] }
+export const CHAT_TYPING_DELAY = new InjectionToken<number>('CHAT_TYPING_DELAY', { providedIn: 'root', factory: () => 8_000 });
 
 @Component({
   selector: 'app-chat-panel',
@@ -29,6 +30,7 @@ export class ChatPanelComponent implements OnDestroy {
   readonly contact = siteConfig.contact;
   readonly suggestions = ['Quali servizi offrite?', 'Dove vi trovate?', 'Come posso contattarvi?'];
   private readonly router = inject(Router);
+  private readonly typingDelay = inject(CHAT_TYPING_DELAY);
   private readonly input = viewChild<ElementRef<HTMLTextAreaElement>>('input');
   private readonly log = viewChild<ElementRef<HTMLElement>>('log');
   private readonly challenge = viewChild<ElementRef<HTMLElement>>('challenge');
@@ -38,6 +40,8 @@ export class ChatPanelComponent implements OnDestroy {
   private controller = new AbortController();
   private widget?: string;
   private cancelChallenge?: () => void;
+  private typingTimer?: ReturnType<typeof setTimeout>;
+  private finishTypingDelay?: () => void;
 
   constructor() {
     afterNextRender(() => {
@@ -81,6 +85,7 @@ export class ChatPanelComponent implements OnDestroy {
     this.draft.set('');
     this.busy.set(true);
     this.status.set('Sto cercando una risposta…');
+    const minimumTypingDelay = this.startTypingDelay();
     this.scrollToEnd();
     const page = this.router.url.split(/[?#]/)[0];
     const exact = exactAnswer(this.knowledge, message, page);
@@ -107,6 +112,7 @@ export class ChatPanelComponent implements OnDestroy {
       reply = errorReply(stage === 'verification' ? 'verification_failed' : error instanceof Error && error.name === 'TimeoutError' ? 'timeout' : 'network_error', this.knowledge.version);
     }
     finally {
+      await minimumTypingDelay;
       if (epoch === this.epoch) {
         this.removeChallenge();
         failed ||= !!reply.error;
@@ -165,18 +171,38 @@ export class ChatPanelComponent implements OnDestroy {
     this.widget = undefined;
   }
 
+  private startTypingDelay(): Promise<void> {
+    this.cancelTypingDelay();
+    return new Promise(resolve => {
+      this.finishTypingDelay = resolve;
+      this.typingTimer = setTimeout(() => {
+        this.typingTimer = undefined;
+        this.finishTypingDelay = undefined;
+        resolve();
+      }, this.typingDelay);
+    });
+  }
+
+  private cancelTypingDelay(): void {
+    if (this.typingTimer !== undefined) clearTimeout(this.typingTimer);
+    this.typingTimer = undefined;
+    this.finishTypingDelay?.();
+    this.finishTypingDelay = undefined;
+  }
+
   reset(): void {
     this.epoch++;
     this.controller.abort();
     this.controller = new AbortController();
     this.removeChallenge();
+    this.cancelTypingDelay();
     this.messages.set([]); this.draft.set(''); this.busy.set(false); this.status.set('');
     this.input()?.nativeElement.focus();
     if (!this.ready()) void this.initialize();
   }
 
   close(): void { this.dismiss.emit(); }
-  ngOnDestroy(): void { this.epoch++; this.controller.abort(); this.removeChallenge(); }
+  ngOnDestroy(): void { this.epoch++; this.controller.abort(); this.removeChallenge(); this.cancelTypingDelay(); }
   private scrollToEnd(): void {
     setTimeout(() => { const log = this.log()?.nativeElement; if (log) log.scrollTop = log.scrollHeight; });
   }

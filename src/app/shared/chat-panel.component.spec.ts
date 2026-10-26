@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { errorReply } from '../../../chatbot/shared/protocol';
 import type { ChatRequest } from '../../../chatbot/shared/protocol';
-import { ChatPanelComponent } from './chat-panel.component';
+import { CHAT_TYPING_DELAY, ChatPanelComponent } from './chat-panel.component';
 
 describe('Chat conversation recovery', () => {
   let fixture: ComponentFixture<ChatPanelComponent>;
@@ -35,7 +35,7 @@ describe('Chat conversation recovery', () => {
       },
       remove: vi.fn(),
     });
-    TestBed.configureTestingModule({ imports: [ChatPanelComponent], providers: [provideRouter([])] });
+    TestBed.configureTestingModule({ imports: [ChatPanelComponent], providers: [provideRouter([]), { provide: CHAT_TYPING_DELAY, useValue: 0 }] });
     fixture = TestBed.createComponent(ChatPanelComponent);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -60,6 +60,18 @@ describe('Chat conversation recovery', () => {
       expect(request.history).toEqual(dialogue.map(item => ({ role: item.role, content: item.text })));
     }
     expect(fixture.componentInstance.messages().at(-1)?.failed).toBe(false);
+  });
+
+  it('shows three typing dots as soon as a message is sent', async () => {
+    let finishRequest!: (response: Response) => void;
+    backend.mockImplementationOnce(() => new Promise(resolve => { finishRequest = resolve; }));
+    const sending = fixture.componentInstance.send('colori e disposizione degli elementi');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('.typing-dot')).toHaveLength(3);
+    expect(fixture.componentInstance.busy()).toBe(true);
+    await vi.waitFor(() => expect(backend).toHaveBeenCalledOnce());
+    finishRequest(Response.json({ text: 'Va bene.', sources: [], version: 'test', mode: 'ai' }));
+    await sending;
   });
 
   it('reports a connection failure without treating it as missing knowledge', async () => {

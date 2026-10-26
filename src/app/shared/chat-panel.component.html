@@ -1,45 +1,80 @@
 <section class="chat-panel" role="dialog" aria-labelledby="chat-title" (keydown.escape)="$event.stopPropagation(); close()">
-  <header>
-    <div><p class="chat-eyebrow">MEMENTO PRODUCTION</p><h2 id="chat-title">Da dove partiamo?</h2></div>
-    <button type="button" class="close" aria-label="Chiudi assistente" (click)="close()">×</button>
+  <header class="chat-header">
+    <div class="chat-heading">
+      <span class="header-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13a2 2 0 0 1 2-2h1v6H6a2 2 0 0 1-2-2v-2Zm16 0a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2v-2Z"/><path d="M17 17c0 2-1.6 3-4 3h-1"/></svg>
+      </span>
+      <div><h2 id="chat-title">Assistente Memento</h2><p>Risponde un assistente virtuale</p></div>
+    </div>
+    <div class="header-actions">
+      @if (messages().length) { <button type="button" class="new-chat" (click)="reset()">Nuova chat</button> }
+      <button type="button" class="close" aria-label="Chiudi assistente" (click)="close()">×</button>
+    </div>
   </header>
-  <div class="chat-intro">
-    <p>Sono l’assistente automatico di Memento. Ti aiuto a trovare informazioni sui nostri servizi.</p>
-    <p class="privacy">Le risposte possono essere inesatte. Non inserire dati personali o riservati. <a routerLink="/privacy-policy">Privacy</a></p>
-  </div>
+
   <div #log class="messages" role="log" aria-label="Conversazione" aria-live="polite" aria-relevant="additions" tabindex="0">
     @if (!messages().length) {
-      <p class="welcome">Hai già un’idea, o vuoi conoscerci meglio?</p>
+      <div class="message-row assistant-row">
+        <span class="assistant-avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13a2 2 0 0 1 2-2h1v6H6a2 2 0 0 1-2-2v-2Zm16 0a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2v-2Z"/><path d="M17 17c0 2-1.6 3-4 3h-1"/></svg>
+        </span>
+        <div class="bubble assistant-bubble"><p>Ciao! Sono l’assistente virtuale di Memento. Come posso aiutarti?</p></div>
+      </div>
       <div class="suggestions">
-        @for (question of suggestions; track question) { <button type="button" [disabled]="!ready()" (click)="send(question)">{{ question }} <span aria-hidden="true">↗</span></button> }
+        @for (question of suggestions; track question) { <button type="button" [disabled]="!ready()" (click)="send(question)">{{ question }}</button> }
       </div>
     }
     @for (message of messages(); track $index) {
-      <article class="message" [class.from-user]="message.role === 'user'">
-        <span class="speaker">{{ message.role === 'user' ? 'Tu' : 'Assistente Memento' }}</span>
-        <p>{{ message.text }}</p>
-        @if (message.sources?.length) {
-          <ul class="sources" aria-label="Pagine di riferimento">
-            @for (source of message.sources; track source.path + ':' + source.title) {
-              <li><a [routerLink]="source.path.split('#')[0]" [fragment]="source.path.split('#')[1]">{{ source.title }} ↗</a></li>
-            }
-          </ul>
+      <div class="message-row" [class.assistant-row]="message.role === 'assistant'" [class.user-row]="message.role === 'user'">
+        @if (message.role === 'assistant') {
+          <span class="assistant-avatar" [class.error-avatar]="message.failed" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13a2 2 0 0 1 2-2h1v6H6a2 2 0 0 1-2-2v-2Zm16 0a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2v-2Z"/><path d="M17 17c0 2-1.6 3-4 3h-1"/></svg>
+          </span>
         }
-      </article>
+        <article class="bubble" [class.assistant-bubble]="message.role === 'assistant'" [class.user-bubble]="message.role === 'user'" [attr.aria-label]="message.role === 'user' ? 'Tu' : 'Assistente Memento'">
+          <p>{{ message.text }}</p>
+          @if (message.sources?.length) {
+            <ul class="sources" aria-label="Pagine di riferimento">
+              @for (source of message.sources; track source.path + ':' + source.title) {
+                <li><a [routerLink]="source.path.split('#')[0]" [fragment]="source.path.split('#')[1]">{{ source.title }} ↗</a></li>
+              }
+            </ul>
+          }
+        </article>
+      </div>
+    }
+    @if (busy()) {
+      <div class="message-row assistant-row typing-row">
+        <span class="assistant-avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13a2 2 0 0 1 2-2h1v6H6a2 2 0 0 1-2-2v-2Zm16 0a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2v-2Z"/><path d="M17 17c0 2-1.6 3-4 3h-1"/></svg>
+        </span>
+        <div class="bubble assistant-bubble typing-bubble">
+          <span class="typing-indicator" role="status" aria-live="polite">
+            <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+            <span class="sr-only">L’assistente sta scrivendo…</span>
+          </span>
+        </div>
+      </div>
     }
   </div>
+
   <div class="compose">
-    <p class="status" role="status">{{ status() || (!ready() ? 'Caricamento…' : '') }}</p>
+    <p class="status sr-only" role="status">{{ status() || (!ready() ? 'Caricamento…' : '') }}</p>
     <div #challenge class="challenge"></div>
     <form (submit)="$event.preventDefault(); send()">
       <label for="chat-question" class="sr-only">La tua domanda</label>
-      <textarea #input id="chat-question" rows="2" [maxLength]="maxMessage" [value]="draft()" (input)="draft.set(input.value)" (keydown.enter)="onEnter($event)" placeholder="Chiedici dei nostri servizi…" aria-describedby="chat-limit"></textarea>
-      <button class="send" type="submit" [disabled]="!ready() || busy() || !draft().trim()" aria-label="Invia domanda">↑</button>
+      <div class="input-shell">
+        <textarea #input id="chat-question" rows="1" [maxLength]="maxMessage" [value]="draft()" (input)="draft.set(input.value)" (keydown.enter)="onEnter($event)" placeholder="Scrivi un messaggio…" aria-describedby="chat-limit"></textarea>
+        <button class="send" type="submit" [disabled]="!ready() || busy() || !draft().trim()" aria-label="Invia messaggio">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 16-8-6 16-2.7-6.7L4 12Z"/><path d="m11.3 13.3 4.2-4.2"/></svg>
+        </button>
+      </div>
     </form>
-    <div class="compose-tools"><span id="chat-limit">{{ draft().length }}/{{ maxMessage }}</span><button type="button" (click)="reset()">Cancella conversazione</button></div>
+    <span id="chat-limit" class="character-count">{{ draft().length }}/{{ maxMessage }}</span>
   </div>
-  <footer>
-    <span>Preferisci parlare con noi?</span>
-    <div><a [href]="contact.whatsappUrl" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a><a routerLink="/contatti">Modulo contatti ↗</a></div>
+
+  <footer class="chat-footer">
+    <p>Le risposte possono essere inesatte. Non inserire dati personali. <a routerLink="/privacy-policy">Privacy</a></p>
+    <div><a [href]="contact.whatsappUrl" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a><a routerLink="/contatti">Contatti ↗</a></div>
   </footer>
 </section>
