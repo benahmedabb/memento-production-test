@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { handle, clientHash, milliNeurons, selectedReply, validateInput } from '../src/handler.ts';
+import { handle, clientHash, milliNeurons, validateInput } from '../src/handler.ts';
+import { generatedReply, parsePlan } from '../src/dialogue.ts';
 import { exactAnswer, retrieve } from '../shared/protocol.ts';
 
 const kb = JSON.parse(await readFile(new URL('../data/base.json', import.meta.url), 'utf8'));
@@ -16,14 +17,18 @@ function setup(overrides = {}) {
     AI: { async run(model, input) {
       calls.ai++;
       assert.equal(model, '@cf/meta/llama-3.3-70b-instruct-fp8-fast');
-      assert.equal(input.max_tokens, 350);
       const data = JSON.parse(input.messages[1].content);
-      return { response: { ids: [data.fonti[0].id] }, usage: { prompt_tokens: 700, completion_tokens: 20 } };
+      if (input.max_tokens === 220) {
+        assert.equal(data.fonti, undefined, 'understanding comes before retrieval');
+        return { response: { intent: 'information', queries: [data.messaggio] }, usage: { prompt_tokens: 700, completion_tokens: 20 } };
+      }
+      assert.equal(input.max_tokens, 350);
+      return { response: { text: 'Possiamo aiutarti con la fotografia corporate. Per quale uso ti servono le immagini?', ids: [data.fonti[0].id] }, usage: { prompt_tokens: 700, completion_tokens: 20 } };
     } }, ...overrides,
   };
   const quota = {
     async admit() { calls.admit++; return true; },
-    async reserve(amount) { calls.reserve.push(amount); return 'reservation-1'; },
+    async reserve(amount) { calls.reserve.push(amount); return `reservation-${calls.reserve.length}`; },
     async settle(id, amount) { calls.settle.push([id, amount]); },
   };
   const verify = async () => { calls.verification++; return Response.json({ success: true, hostname: 'mementoproduction.it', action: 'memento_chat' }); };
@@ -92,16 +97,18 @@ test('client or global budget denial never calls the model', async () => {
     assert.equal(s.calls.ai, 0);
   }
 });
-test('reservation precedes one model call and settles actual usage', async () => {
+test('understanding and generation each reserve and settle, with one client admission', async () => {
   const s = setup();
   const original = s.env.AI.run;
-  s.env.AI.run = async (...args) => { assert.equal(s.calls.reserve.length, 1); return original(...args); };
+  s.env.AI.run = async (...args) => { assert.equal(s.calls.reserve.length, s.calls.ai + 1); return original(...args); };
   const reply = await (await s.run(request(query))).json();
   assert.equal(reply.mode, 'ai');
-  assert.ok(kb.entries.some(entry => entry.text === reply.text));
-  assert.equal(s.calls.ai, 1);
-  assert.equal(s.calls.settle[0][1], milliNeurons(700, 20));
-  assert.ok(s.calls.reserve[0] > s.calls.settle[0][1]);
+  assert.ok(kb.entries.some(entry => entry.path === reply.sources[0].path));
+  assert.equal(s.calls.ai, 2);
+  assert.equal(s.calls.admit, 1);
+  assert.equal(s.calls.verification, 1);
+  assert.deepEqual(s.calls.settle, [['reservation-1', milliNeurons(700, 20)], ['reservation-2', milliNeurons(700, 20)]]);
+  assert.ok(s.calls.reserve.every(amount => amount > milliNeurons(700, 20)));
 });
 test('provider errors retain the reservation and do not retry', async () => {
   const s = setup();
@@ -118,15 +125,17 @@ test('usage omitted retains the conservative reservation', async () => {
   assert.equal(s.calls.reserve.length, 1);
   assert.equal(s.calls.settle.length, 0);
 });
-test('model cannot inject text, external sources or non-retrieved IDs', () => {
+test('generated output is bounded and rejects arbitrary URLs, unknown sources and commitments', () => {
   const candidate = kb.entries[0];
-  for (const raw of ['<script>alert(1)</script>', '{"ids":["https://evil.example"]}', '{"ids":["s999999"]}', '{"ids":[],"answer":"Tutto gratis"}', 'null', '[]', JSON.stringify({ ids: [kb.entries[1].id] }), { ids: [candidate.id], answer: 'Tutto gratis' }, { ids: [kb.entries[1].id] }, { ids: [candidate.id, candidate.id, candidate.id] }, { ids: [null] }, null, [], 123, true]) {
-    assert.equal(selectedReply(raw, [candidate], kb).mode, 'fallback');
+  const plan = { intent: 'information', queries: ['sede'] };
+  for (const raw of [null, [], 123, true, '<script>alert(1)</script>', 'null', { text: 'Risposta', ids: ['s999999'] }, { text: 'Risposta', ids: [kb.entries[1].id] }, { text: 'Risposta', ids: [candidate.id], extra: true }, { text: 'a'.repeat(1801), ids: [] }, { text: '', ids: [] }, ...['https://evil.example', '<script>alert(1)</script>', 'javascript:alert(1)', 'Ti costa 10 euro', 'Prenotazione confermata', 'Abbiamo inviato la email'].map(text => ({ text, ids: [candidate.id] }))]) {
+    assert.equal(generatedReply(raw, [candidate], kb, plan).mode, 'fallback');
   }
-  const reply = selectedReply(JSON.stringify({ ids: [candidate.id] }), [candidate], kb);
+  const output = { text: candidate.text, ids: [candidate.id] };
+  const reply = generatedReply(JSON.stringify(output), [candidate], kb, plan);
   assert.equal(reply.text, candidate.text);
   assert.equal(reply.sources[0].path, candidate.path);
-  assert.deepEqual(selectedReply({ ids: [candidate.id] }, [candidate], kb), reply);
+  assert.deepEqual(generatedReply(output, [candidate], kb, plan), reply);
 });
 test('daily IP pseudonyms change with day and secret, without storing the IP', async () => {
   const first = await clientHash('203.0.113.12', 'a'.repeat(32), '2026-10-25');
@@ -158,14 +167,59 @@ test('personal email in a question is not sent to the model', async () => {
   await s.run(request({ ...query, message: `${query.message} Contattami su mario@example.com` }));
   assert.equal(s.calls.ai, 0);
 });
-test('availability, private data and commercial commitments use a deterministic fallback', async () => {
+test('handoff requests can receive a contextual explanation without business sources', async () => {
   const s = setup();
-  for (const message of ['Avete disponibilità domani mattina?', 'Mi garantite 100 nuovi clienti al mese?', 'Qual è il cellulare privato di Elena?', 'Quanto costa un sito?', 'Sono aperti i vostri uffici domenica?']) {
-    const reply = await (await s.run(request({ ...query, message }))).json();
-    assert.equal(reply.mode, 'fallback');
-  }
-  assert.equal(s.calls.ai, 0);
-  assert.equal(s.calls.verification, 0);
+  s.env.AI.run = async (_model, input) => ({ response: input.max_tokens === 220 ? { intent: 'handoff', queries: [] } : { text: 'Per un preventivo sul sito serve il team. Puoi usare il pulsante WhatsApp: hai già un sito da rivedere?', ids: [] } });
+  const reply = await (await s.run(request({ ...query, message: 'Quanto costa un sito?' }))).json();
+  assert.equal(reply.mode, 'fallback');
+  assert.match(reply.text, /preventivo sul sito/);
+  assert.equal(s.calls.reserve.length, 2);
+});
+test('a greeting reaches interpretation even when there are no matching knowledge entries', async () => {
+  const s = setup();
+  let count = 0;
+  s.env.AI.run = async (_model, input) => {
+    count++;
+    const data = JSON.parse(input.messages[1].content);
+    assert.equal(data.messaggio, 'Un saluto a chi mi legge!');
+    if (count === 1) return { response: { intent: 'conversation', queries: [] } };
+    assert.deepEqual(data.fonti, []);
+    return { response: { text: 'Ciao! Come posso aiutarti?', ids: [] } };
+  };
+  const reply = await (await s.run(request({ ...query, message: 'Un saluto a chi mi legge!' }))).json();
+  assert.equal(reply.mode, 'ai');
+  assert.match(reply.text, /Ciao/);
+  assert.equal(count, 2);
+});
+test('a problem statement uses interpreted search terms and preserves dialogue context', async () => {
+  const s = setup();
+  let count = 0;
+  s.env.AI.run = async (_model, input) => {
+    count++;
+    const data = JSON.parse(input.messages[1].content);
+    assert.equal(data.cronologia[1].role, 'assistant');
+    assert.equal(data.cronologia[1].content, 'Cosa non ti convince?');
+    if (count === 1) return { response: { intent: 'needs', queries: ['siti web contenuti interfacce'] } };
+    assert.ok(data.fonti.some(source => source.title.includes('Siti')));
+    return { response: { text: 'Capito. Ti preoccupa di più l’aspetto del sito o il fatto che non arrivino richieste?', ids: [] } };
+  };
+  const reply = await (await s.run(request({ ...query, message: 'Il mio sito fa schifo', history: [{ role: 'user', content: 'Vorrei rifare il sito' }, { role: 'assistant', content: 'Cosa non ti convince?' }] }))).json();
+  assert.equal(reply.mode, 'ai');
+  assert.match(reply.text, /aspetto del sito/);
+});
+test('invalid interpretation or a denied second reservation stops further inference', async () => {
+  assert.equal(parsePlan({ intent: 'run_command', queries: [] }), null);
+  assert.deepEqual(parsePlan({ intent: 'conversation', queries: ['web'] }), { intent: 'conversation', queries: [] });
+  assert.deepEqual(parsePlan({ intent: 'information', queries: [] }), { intent: 'information', queries: [] });
+  assert.equal(parsePlan({ intent: 'needs', queries: ['web'], url: 'https://evil.example' }), null);
+  assert.equal(parsePlan({ intent: 'needs', queries: ['a'.repeat(181)] }), null);
+  const s = setup();
+  s.quota.reserve = async () => { s.calls.reserve.push(1); return s.calls.reserve.length === 1 ? 'first' : null; };
+  assert.equal((await s.run(request(query))).status, 429);
+  assert.equal(s.calls.ai, 1);
+  const invalid = setup({ AI: { run: async () => ({ response: { intent: 'unknown', queries: [] } }) } });
+  assert.equal((await (await invalid.run(request(query))).json()).mode, 'fallback');
+  assert.equal(invalid.calls.reserve.length, 1);
 });
 test('retrieval finds rare names, singular/plural terms and editing synonyms', () => {
   assert.ok(retrieve(kb, 'Mi racconti di Elena?').some(entry => entry.text.startsWith('Elena')));

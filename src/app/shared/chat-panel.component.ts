@@ -93,7 +93,7 @@ export class ChatPanelComponent implements OnDestroy {
         const response = await fetch(this.config.apiUrl, {
           method: 'POST', credentials: 'omit', headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ message, page, history: previous, turnstileToken: token }),
-          signal: AbortSignal.any([this.controller.signal, AbortSignal.timeout(25_000)]),
+          signal: AbortSignal.any([this.controller.signal, AbortSignal.timeout(45_000)]),
         });
         const data = await response.json();
         if (this.isReply(data)) reply = data;

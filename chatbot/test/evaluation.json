@@ -1,4 +1,18 @@
 {
+  "dialogue": [
+    { "question": "Ciao", "expectedMode": "ai" },
+    { "question": "Buondì, c'è qualcuno da queste parti?", "expectedMode": "ai" },
+    { "question": "Passavo solo per farvi un saluto 👋", "expectedMode": "ai" },
+    { "question": "Grazie, mi hai chiarito le idee", "expectedMode": "ai" },
+    { "question": "Il mio sito fa schifo", "expectedMode": "ai", "mustAsk": true },
+    { "question": "Nessuno mi scrive dal sito", "expectedMode": "ai", "mustAsk": true },
+    { "question": "Non so da dove iniziare con i social", "expectedMode": "ai", "mustAsk": true },
+    { "question": "Il logo sembra uscito dal secolo scorso", "expectedMode": "ai", "mustAsk": true },
+    { "question": "Ciao, fate siti web?", "expectedPath": "/web" },
+    { "question": "Grazie! E per un negozio online?", "expectedPath": "/web" },
+    { "question": "La velocità", "expectedMode": "ai", "mustAsk": true, "history": [{ "role": "user", "content": "Il mio sito fa schifo" }, { "role": "assistant", "content": "Cosa ti convince meno: l'aspetto, la velocità o il fatto che non ti porta contatti?" }] },
+    { "question": "Non vorrei rifarlo da zero", "expectedMode": "ai", "mustAsk": true, "history": [{ "role": "user", "content": "Il mio sito non mi piace" }, { "role": "assistant", "content": "Qual è l'aspetto che vuoi migliorare per primo?" }] }
+  ],
   "normal": [
     ["Dove vi trovate?", "/contatti"],
     ["Qual è il vostro indirizzo?", "/contatti"],

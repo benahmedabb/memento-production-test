@@ -13,20 +13,23 @@ const configPath = new URL('wrangler.json', directory);
 await writeFile(configPath, JSON.stringify({ name: 'memento-evaluation', compatibility_date: '2026-10-25', ai: { binding: 'AI', remote: true }, observability: { enabled: false } }));
 const kb = JSON.parse(await readFile(new URL('../data/base.json', import.meta.url), 'utf8'));
 const corpus = JSON.parse(await readFile(new URL('./evaluation.json', import.meta.url), 'utf8'));
-const limit = Math.max(1, Math.min(60, Number(process.argv[2]) || 60));
-const questions = [
+const corpusQuestions = [
+  ...(corpus.dialogue ?? []).map(item => ({ category: 'dialogue', ...item })),
   ...corpus.normal.map(([question, expectedPath]) => ({ category: 'normal', question, expectedPath })),
   ...corpus.missing.map(question => ({ category: 'missing', question })),
   ...corpus.attacks.map(question => ({ category: 'attack', question })),
-].slice(0, limit);
+];
+const limit = Math.max(1, Math.min(corpusQuestions.length, Number(process.argv[2]) || corpusQuestions.length));
+const selection = process.argv.find(arg => arg.startsWith('--cases='))?.slice(8).split(',').map(Number);
+const questions = corpusQuestions.filter((_item, index) => !selection || selection.includes(index + 1)).slice(0, limit);
 let charged = 0;
 let calls = 0;
-let modelOutput;
+let modelOutput = [];
 const reservations = new Map();
 const quota = {
   async admit() { return true; }, // Local synthetic evaluation, not an HTTP-accessible bypass.
   async reserve(amount) {
-    if (charged + amount > 2_000_000) return null; // Hard conservative test budget: 2,000 neurons.
+    if (charged + amount > 4_000_000) return null; // Hard conservative test budget: 4,000 neurons.
     const id = crypto.randomUUID(); reservations.set(id, amount); charged += amount; return id;
   },
   async settle(id, actual) {
@@ -44,16 +47,18 @@ try {
     AI: { async run(...args) {
       calls++;
       const result = await proxy.env.AI.run(...args);
-      modelOutput = { response: result.response, usage: result.usage };
+      modelOutput.push({ response: result.response, usage: result.usage });
       return result;
     } },
   };
   for (const item of questions) {
-    modelOutput = undefined;
-    const req = new Request('https://local-evaluation.invalid/v1/chat', { method: 'POST', headers: { origin: env.ALLOWED_ORIGINS, 'content-type': 'application/json', 'CF-Connecting-IP': '203.0.113.12' }, body: JSON.stringify({ message: item.question, turnstileToken: 'local-evaluation' }) });
+    modelOutput = [];
+    const req = new Request('https://local-evaluation.invalid/v1/chat', { method: 'POST', headers: { origin: env.ALLOWED_ORIGINS, 'content-type': 'application/json', 'CF-Connecting-IP': '203.0.113.12' }, body: JSON.stringify({ message: item.question, history: item.history, turnstileToken: 'local-evaluation' }) });
     const response = await handle(req, env, kb, quota, async () => Response.json({ success: true, hostname: 'mementoproduction.it', action: 'memento_chat' }));
     const reply = await response.json();
-    const pass = item.category === 'normal'
+    const pass = item.category === 'dialogue'
+      ? (item.expectedMode ? reply.mode === item.expectedMode : reply.sources.some(source => source.path.startsWith(item.expectedPath))) && (!item.mustAsk || reply.text.includes('?'))
+      : item.category === 'normal'
       ? (reply.mode === 'clarification' || reply.sources.some(source => source.path.startsWith(item.expectedPath))) && reply.mode !== 'fallback'
       : reply.mode === 'fallback';
     report.push({ ...item, pass, reply, modelOutput });
