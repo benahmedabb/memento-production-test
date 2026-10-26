@@ -1,6 +1,6 @@
 import { exactAnswer, errorReply, MAX_MESSAGE, normalize, retrieve } from '../shared/protocol';
 import type { ChatRequest, ChatReply, ChatError, Entry, Knowledge } from '../shared/protocol';
-import { ANSWER, answerSchema, generatedReply, parsePlan, PLAN_SCHEMA, UNDERSTAND } from './dialogue';
+import { ANSWER, answerSchema, generatedReply, outOfScopeReply, parsePlan, PLAN_SCHEMA, UNDERSTAND } from './dialogue';
 
 export type Admission = { allowed: true } | { allowed: false; code: 'rate_limit' | 'daily_limit' | 'invalid_request'; retryAfterSeconds?: number };
 export interface Quota {
@@ -138,9 +138,10 @@ export async function handle(request: Request, env: Environment, kb: Knowledge, 
       plan.intent = 'handoff';
       plan.queries = [];
     }
+    if (plan.intent === 'out_of_scope') return send(outOfScopeReply(input.message, kb.version));
     const ranked = new Map<string, { entry: Entry; score: number }>();
     // Preserve original names/wording as well as the model's semantic reformulations.
-    const queries = ['information', 'needs'].includes(plan.intent) ? [...new Set([input.message, ...plan.queries])] : [];
+    const queries = ['information', 'needs', 'recommendation'].includes(plan.intent) ? [...new Set([...plan.queries, input.message])] : [];
     for (const query of queries) {
       retrieve(kb, query, input.page).forEach((entry, rank) => {
         if (entry.text.length <= 900) ranked.set(entry.id, { entry, score: (ranked.get(entry.id)?.score ?? 0) + 1 / (rank + 1) });
@@ -152,7 +153,7 @@ export async function handle(request: Request, env: Environment, kb: Knowledge, 
       { role: 'user', content: JSON.stringify({ messaggio: input.message, cronologia: history, interpretazione: plan.intent, fonti: candidates.map(({ id, title, text }) => ({ id, title, text })) }) },
     ];
     // An empty retrieval does not prevent a greeting or a useful clarifying question.
-    const reply = generatedReply(await infer(env, quota, messages, 350, 15_000, answerSchema(candidates)), candidates, kb, plan);
+    const reply = generatedReply(await infer(env, quota, messages, 350, 15_000, answerSchema(candidates, plan)), candidates, kb, plan);
     return send(reply, reply.error ? 502 : 200);
   } catch (error) {
     if (error instanceof BudgetExceeded) return fail('budget_exhausted', 429, Math.ceil((86_400_000 - Date.now() % 86_400_000) / 1000));

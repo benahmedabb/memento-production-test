@@ -2,7 +2,7 @@
   position: fixed;
   z-index: 50;
   right: 1.5rem;
-  bottom: calc(6rem + env(safe-area-inset-bottom));
+  bottom: calc(9rem + env(safe-area-inset-bottom));
   width: min(360px, calc(100vw - 2rem));
 }
 
@@ -11,7 +11,7 @@
 
 .chat-panel {
   display: flex;
-  max-height: min(620px, calc(100dvh - 7.5rem));
+  max-height: min(620px, calc(100dvh - 10rem - env(safe-area-inset-bottom)));
   flex-direction: column;
   overflow: hidden;
   border: 1px solid rgba(17, 36, 29, .12);
@@ -88,7 +88,6 @@
 
 .compose { position: relative; padding: .75rem 1rem .55rem; border-top: 1px solid rgba(17, 36, 29, .09); background: #fff; }
 .challenge:empty { display: none; }
-.challenge:not(:empty) { padding: 0 0 .6rem; }
 .input-shell { display: flex; min-height: 3rem; align-items: flex-end; gap: .45rem; padding: .34rem .38rem .34rem .85rem; border: 1px solid rgba(17, 36, 29, .16); border-radius: 999px; background: #f6f7f5; transition: border-color 180ms ease, box-shadow 180ms ease; }
 .input-shell:focus-within { border-color: var(--green); box-shadow: 0 0 0 3px rgba(72, 105, 86, .11); }
 textarea { width: 100%; min-width: 0; max-height: 5.2rem; min-height: 2.3rem; resize: none; padding: .48rem 0 .34rem; border: 0; outline: 0; color: var(--ink); background: transparent; font: inherit; font-size: 16px; line-height: 1.35; }
@@ -118,8 +117,8 @@ textarea::placeholder { color: #7d867f; }
 @keyframes typing-pulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
 
 @media (max-width: 480px) {
-  :host { right: .65rem; bottom: calc(5.5rem + env(safe-area-inset-bottom)); width: calc(100vw - 1.3rem); }
-  .chat-panel { max-height: calc(100dvh - 6.3rem - env(safe-area-inset-bottom)); }
+  :host { right: .65rem; bottom: calc(8.75rem + env(safe-area-inset-bottom)); width: calc(100vw - 1.3rem); }
+  .chat-panel { max-height: calc(100dvh - 9.4rem - env(safe-area-inset-bottom)); }
   .chat-header { padding-inline: .85rem; }
   .messages { padding: .85rem; }
   .chat-footer { align-items: flex-start; }

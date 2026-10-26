@@ -64,7 +64,7 @@ try {
     const response = await handle(req, env, kb, quota, async () => Response.json({ success: true, hostname: 'mementoproduction.it', action: 'memento_chat' }));
     const reply = await response.json();
     const pass = response.ok && !reply.error && (item.category === 'dialogue'
-      ? (item.expectedMode ? reply.mode === item.expectedMode : !item.expectedPath || reply.sources.some(source => source.path.startsWith(item.expectedPath))) && (!item.mustAsk || reply.text.includes('?')) && (!item.mustMention || new RegExp(item.mustMention, 'i').test(reply.text)) && (!item.mustNotMention || !new RegExp(item.mustNotMention, 'i').test(reply.text))
+      ? (!item.expectedMode || reply.mode === item.expectedMode) && (!item.expectedPath || reply.sources.some(source => source.path.startsWith(item.expectedPath))) && (!item.expectedFirstPath || reply.sources[0]?.path.startsWith(item.expectedFirstPath)) && (!item.mustAsk || reply.text.includes('?')) && (!item.mustNotAsk || !reply.text.includes('?')) && (!item.mustMention || new RegExp(item.mustMention, 'i').test(reply.text)) && (!item.mustNotMention || !new RegExp(item.mustNotMention, 'i').test(reply.text))
       : item.category === 'normal'
       ? (reply.mode === 'clarification' || reply.sources.some(source => source.path.startsWith(item.expectedPath))) && reply.mode !== 'fallback'
       : reply.mode === 'fallback');

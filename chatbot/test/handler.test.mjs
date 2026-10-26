@@ -193,6 +193,23 @@ test('a greeting reaches interpretation even when there are no matching knowledg
   assert.match(reply.text, /Ciao/);
   assert.equal(count, 2);
 });
+test('out-of-scope questions are redirected without generating or inventing an external answer', async () => {
+  for (const [message, expected] of [['Che tempo fa oggi?', /meteo|previsioni/], ["Cosa c'è in TV stasera?", /programmazione televisiva/]]) {
+    const s = setup();
+    s.env.AI.run = async (_model, input) => {
+      s.calls.ai++;
+      assert.equal(input.max_tokens, 220);
+      return { response: { intent: 'out_of_scope', queries: [] }, usage: { prompt_tokens: 500, completion_tokens: 10 } };
+    };
+    const reply = await (await s.run(request({ ...query, message }))).json();
+    assert.equal(reply.mode, 'fallback');
+    assert.match(reply.text, expected);
+    assert.match(reply.text, /Memento/);
+    assert.deepEqual(reply.sources, []);
+    assert.equal(s.calls.ai, 1);
+    assert.equal(s.calls.reserve.length, 1);
+  }
+});
 test('a problem statement uses interpreted search terms and preserves dialogue context', async () => {
   const s = setup();
   let count = 0;
@@ -203,7 +220,7 @@ test('a problem statement uses interpreted search terms and preserves dialogue c
     assert.equal(data.cronologia[1].content, 'Cosa non ti convince?');
     if (count === 1) return { response: { intent: 'needs', queries: ['siti web contenuti interfacce'] } };
     assert.ok(data.fonti.some(source => source.title.includes('Siti')));
-    return { response: { text: 'Capito. Ti preoccupa di più l’aspetto del sito o il fatto che non arrivino richieste?', ids: [] } };
+    return { response: { text: 'Capito, il sito non ti soddisfa.', question: 'Ti preoccupa di più l’aspetto del sito o il fatto che non arrivino richieste?', ids: [] } };
   };
   const reply = await (await s.run(request({ ...query, message: 'Il mio sito fa schifo', history: [{ role: 'user', content: 'Vorrei rifare il sito' }, { role: 'assistant', content: 'Cosa non ti convince?' }] }))).json();
   assert.equal(reply.mode, 'ai');
@@ -213,6 +230,7 @@ test('invalid interpretation or a denied second reservation stops further infere
   assert.equal(parsePlan({ intent: 'run_command', queries: [] }), null);
   assert.deepEqual(parsePlan({ intent: 'conversation', queries: ['web'] }), { intent: 'conversation', queries: [] });
   assert.deepEqual(parsePlan({ intent: 'information', queries: [] }), { intent: 'information', queries: [] });
+  assert.deepEqual(parsePlan({ intent: 'recommendation', queries: ['restyling sito web'] }), { intent: 'recommendation', queries: ['restyling sito web'] });
   assert.equal(parsePlan({ intent: 'needs', queries: ['web'], url: 'https://evil.example' }), null);
   assert.equal(parsePlan({ intent: 'needs', queries: ['a'.repeat(181)] }), null);
   const s = setup();
@@ -280,7 +298,7 @@ test('a model timeout is explicit, retains its reservation and does not retry', 
   assert.equal(s.calls.settle.length, 0);
 });
 
-test('the design follow-up reaches both model stages with all four preceding messages', async () => {
+test('a clear design follow-up reaches both model stages and recommends a sourced service without another question', async () => {
   const corpus = JSON.parse(await readFile(new URL('./evaluation.json', import.meta.url), 'utf8'));
   const example = corpus.regressions[0];
   const s = setup();
@@ -288,13 +306,18 @@ test('the design follow-up reaches both model stages with all four preceding mes
   s.env.AI.run = async (_model, input) => {
     const data = JSON.parse(input.messages[1].content);
     inputs.push(data);
-    return { response: input.max_tokens === 220 ? { intent: 'needs', queries: ['design sito web colori disposizione'] } : { text: 'Capito, vuoi rivedere colori e disposizione del sito. Che stile vorresti ottenere?', ids: [] } };
+    if (input.max_tokens === 220) return { response: { intent: 'recommendation', queries: ['restyling design sito web colori disposizione'] } };
+    const source = data.fonti.find(item => item.title.includes('Restyling')) ?? data.fonti.find(item => item.title.includes('Siti'));
+    assert.ok(source);
+    return { response: { text: 'Per migliorare colori e disposizione mantenendo ciò che funziona, il servizio più adatto è il restyling del sito. Vuoi approfondire?', ids: [source.id] } };
   };
   const response = await s.run(request({ ...query, message: example.question, history: example.history }));
   assert.equal(response.status, 200);
   const reply = await response.json();
   assert.equal(reply.error, undefined);
   assert.equal(reply.mode, 'ai');
+  assert.doesNotMatch(reply.text, /\?/);
+  assert.ok(reply.sources.some(source => source.path.startsWith('/web')));
   assert.equal(inputs.length, 2);
   for (const input of inputs) {
     assert.equal(input.messaggio, example.question);
@@ -309,7 +332,7 @@ test('empty retrieval still generates a contextual reply to a need', async () =>
     calls++;
     if (calls === 1) return { response: { intent: 'needs', queries: ['design sito web'] } };
     assert.deepEqual(JSON.parse(input.messages[1].content).fonti, []);
-    return { response: { text: 'Vuoi migliorare l’aspetto del sito. Di che attività si tratta?', ids: [] } };
+    return { response: { text: 'Vuoi migliorare l’aspetto del sito.', question: 'Di che attività si tratta?', ids: [] } };
   };
   const response = await handle(request({ ...query, message: 'il mio sitto nn mi piace' }), s.env, { version: 'empty', entries: [] }, s.quota, s.verify);
   assert.equal(response.status, 200);

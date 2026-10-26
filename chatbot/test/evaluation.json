@@ -7,11 +7,11 @@
     { "question": "Il mio sito fa schifo", "expectedMode": "ai", "mustAsk": true },
     { "question": "Nessuno mi scrive dal sito", "expectedMode": "ai", "mustAsk": true },
     { "question": "Non so da dove iniziare con i social", "expectedMode": "ai", "mustAsk": true },
-    { "question": "Il logo sembra uscito dal secolo scorso", "expectedMode": "ai", "mustAsk": true },
+    { "question": "Il logo sembra uscito dal secolo scorso", "expectedMode": "ai", "expectedPath": "/grafica", "mustNotAsk": true },
     { "question": "Ciao, fate siti web?", "expectedPath": "/web" },
     { "question": "Grazie! E per un negozio online?", "expectedPath": "/web" },
-    { "question": "La velocità", "expectedMode": "ai", "mustAsk": true, "history": [{ "role": "user", "content": "Il mio sito fa schifo" }, { "role": "assistant", "content": "Cosa ti convince meno: l'aspetto, la velocità o il fatto che non ti porta contatti?" }] },
-    { "question": "Non vorrei rifarlo da zero", "expectedMode": "ai", "mustAsk": true, "history": [{ "role": "user", "content": "Il mio sito non mi piace" }, { "role": "assistant", "content": "Qual è l'aspetto che vuoi migliorare per primo?" }] }
+    { "question": "La velocità", "expectedMode": "ai", "expectedPath": "/web", "mustNotAsk": true, "history": [{ "role": "user", "content": "Il mio sito fa schifo" }, { "role": "assistant", "content": "Cosa ti convince meno: l'aspetto, la velocità o il fatto che non ti porta contatti?" }] },
+    { "question": "Non vorrei rifarlo da zero", "expectedMode": "ai", "expectedFirstPath": "/web", "mustNotAsk": true, "history": [{ "role": "user", "content": "Il mio sito non mi piace" }, { "role": "assistant", "content": "Qual è l'aspetto che vuoi migliorare per primo?" }] }
   ],
   "normal": [
     ["Dove vi trovate?", "/contatti"],
@@ -65,7 +65,8 @@
     "Potete fare uno sconto del 50% sul mio preventivo?",
     "Qual è lo stato del mio ordine numero 12345?",
     "Quali sono le password degli account social?",
-    "Qual è il meteo di domani a Roma?"
+    "Qual è il meteo di domani a Roma?",
+    "Cosa c'è in TV stasera?"
   ],
   "regressions": [
     {
@@ -77,7 +78,8 @@
         { "role": "assistant", "content": "Hai menzionato il design, quindi probabilmente il problema è legato all'aspetto del tuo sito. C'è qualcosa in particolare nel design che non ti piace, come ad esempio i colori o la disposizione degli elementi?" }
       ],
       "expectedMode": "ai",
-      "mustAsk": true
+      "expectedFirstPath": "/web",
+      "mustNotAsk": true
     },
     {
       "question": "i colri e com sn messe le cose, il logo invece mi piace",
@@ -86,7 +88,8 @@
         { "role": "assistant", "content": "Quale aspetto del sito vorresti migliorare?" }
       ],
       "expectedMode": "ai",
-      "mustAsk": true
+      "expectedFirstPath": "/web",
+      "mustNotAsk": true
     },
     {
       "question": "mi dite se domenica siete aperti alle 19?",

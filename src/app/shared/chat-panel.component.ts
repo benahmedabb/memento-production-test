@@ -157,7 +157,7 @@ export class ChatPanelComponent implements OnDestroy {
       const fail = () => { clearTimeout(timer); reject(new Error('challenge')); };
       this.cancelChallenge = fail;
       this.widget = win.turnstile!.render(this.challenge()!.nativeElement, {
-        sitekey: this.config.turnstileSiteKey, action: 'memento_chat', theme: 'light', size: 'flexible',
+        sitekey: this.config.turnstileSiteKey, action: 'memento_chat', theme: 'light', size: 'flexible', appearance: 'interaction-only',
         callback: (token: string) => { clearTimeout(timer); resolve(token); },
         'error-callback': fail, 'expired-callback': fail, 'timeout-callback': fail,
       });
