@@ -63,7 +63,8 @@ try {
     const req = new Request('https://local-evaluation.invalid/v1/chat', { method: 'POST', headers: { origin: env.ALLOWED_ORIGINS, 'content-type': 'application/json', 'CF-Connecting-IP': '203.0.113.12' }, body: JSON.stringify({ message: item.question, history: item.history, turnstileToken: 'local-evaluation' }) });
     const response = await handle(req, env, kb, quota, async () => Response.json({ success: true, hostname: 'mementoproduction.it', action: 'memento_chat' }));
     const reply = await response.json();
-    const pass = response.ok && !reply.error && (item.category === 'dialogue'
+    const safeText = !/\b(?:fonte|source|id)\s+s\d+\b|\bs\d+\b/i.test(reply.text);
+    const pass = response.ok && !reply.error && safeText && (item.category === 'dialogue'
       ? (!item.expectedMode || reply.mode === item.expectedMode) && (!item.expectedPath || reply.sources.some(source => source.path.startsWith(item.expectedPath))) && (!item.expectedFirstPath || reply.sources[0]?.path.startsWith(item.expectedFirstPath)) && (!item.mustAsk || reply.text.includes('?')) && (!item.mustNotAsk || !reply.text.includes('?')) && (!item.mustMention || new RegExp(item.mustMention, 'i').test(reply.text)) && (!item.mustNotMention || !new RegExp(item.mustNotMention, 'i').test(reply.text))
       : item.category === 'normal'
       ? (reply.mode === 'clarification' || reply.sources.some(source => source.path.startsWith(item.expectedPath))) && reply.mode !== 'fallback'

@@ -138,6 +138,9 @@ test('generated output is bounded and rejects arbitrary URLs, unknown sources an
   assert.equal(reply.text, candidate.text);
   assert.equal(reply.sources[0].path, candidate.path);
   assert.deepEqual(generatedReply(output, [candidate], kb, plan), reply);
+  const leaked = generatedReply({ text: `Il servizio è adatto, come descritto nella fonte ${candidate.id}.`, ids: [candidate.id] }, [candidate], kb, plan);
+  assert.equal(leaked.text, 'Il servizio è adatto.');
+  assert.doesNotMatch(leaked.text, /fonte\s+s\d+|\bs\d+\b/i);
 });
 test('daily IP pseudonyms change with day and secret, without storing the IP', async () => {
   const first = await clientHash('203.0.113.12', 'a'.repeat(32), '2026-10-25');
