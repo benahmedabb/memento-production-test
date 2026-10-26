@@ -9,6 +9,12 @@
 
 # Node
 /node_modules
+**/node_modules/
+**/.wrangler/
+**/.dev.vars*
+**/.env*
+!**/.env.example
+/chatbot/worker-configuration.d.ts
 npm-debug.log
 yarn-error.log
 

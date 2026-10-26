@@ -1,5 +1,7 @@
 # MementoProduction
 
+La prova locale dell'assistente, l'anteprima Vercel, la configurazione Cloudflare e i test sono descritti in [docs/chatbot.md](docs/chatbot.md). In locale sono disponibili le FAQ; sui domini configurati il chatbot usa anche il backend IA su Cloudflare.
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.5.
 
 ## Development server

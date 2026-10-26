@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "npm run chatbot:knowledge && ng serve",
+    "build": "npm run chatbot:knowledge && ng build",
+    "chatbot:knowledge": "node scripts/build-chatbot-knowledge.mjs",
+    "chatbot:dev": "npm run chatbot:knowledge && npm --prefix chatbot run dev",
+    "chatbot:test": "node --import ./scripts/register-types.mjs --test chatbot/test/*.test.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

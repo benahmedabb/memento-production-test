@@ -1,0 +1,15 @@
+{
+  "name": "memento-chatbot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --env local --ip 127.0.0.1",
+    "types": "wrangler types worker-configuration.d.ts",
+    "check": "npm run types && tsc --noEmit -p tsconfig.json",
+    "dry-run": "wrangler deploy --env='' --dry-run --outdir .wrangler/dry-run",
+    "deploy": "wrangler deploy --env=''"
+  },
+  "devDependencies": {
+    "wrangler": "4.152.0"
+  }
+}

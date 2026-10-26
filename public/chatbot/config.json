@@ -1,0 +1,9 @@
+{
+  "apiUrl": "https://memento-assistente.benakkush.workers.dev/v1/chat",
+  "turnstileSiteKey": "0x4AAAAAAFm0RiWfp7MweTCW",
+  "allowedOrigins": [
+    "https://mementoproduction.it",
+    "https://www.mementoproduction.it",
+    "https://memento-production-test-2.vercel.app"
+  ]
+}

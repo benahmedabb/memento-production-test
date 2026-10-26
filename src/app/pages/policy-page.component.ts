@@ -38,6 +38,7 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
       </div>
 
       <div appPageMotion="rise" class="shell policy-notice">
+        <p><strong>Assistente automatico:</strong> la conversazione rimane nella memoria del browser e viene cancellata chiudendo la chat, ricaricando la pagina o usando “Cancella conversazione”. Non inserire dati personali o riservati. Le risposte frequenti sono disponibili sul dispositivo; quando la funzione IA è attiva, domanda e breve contesto vengono inviati a Cloudflare per elaborare la risposta. Cloudflare Turnstile verifica le richieste. Il backend non archivia le conversazioni; conserva contatori anti-abuso con identificativi derivati dall’indirizzo IP, rinnovati ogni giorno e cancellati entro 48 ore. Per informazioni sul trattamento dei dati puoi contattare il titolare.</p>
         <p><strong>Titolare del trattamento:</strong> {{ config.contact.legalName }} · P. IVA {{ config.contact.vatNumber }} · {{ config.contact.address }} · <a [href]="'mailto:' + config.contact.email" (click)="tracking.trackContact('email', 'privacy_policy')">{{ config.contact.email }}</a></p>
         <p>Questa pagina rende disponibili le informative ufficiali; non ne sostituisce il contenuto.</p>
       </div>

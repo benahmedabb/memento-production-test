@@ -1,0 +1,45 @@
+<section class="chat-panel" role="dialog" aria-labelledby="chat-title" (keydown.escape)="$event.stopPropagation(); close()">
+  <header>
+    <div><p class="chat-eyebrow">MEMENTO PRODUCTION</p><h2 id="chat-title">Da dove partiamo?</h2></div>
+    <button type="button" class="close" aria-label="Chiudi assistente" (click)="close()">×</button>
+  </header>
+  <div class="chat-intro">
+    <p>Sono l’assistente automatico di Memento. Ti aiuto a trovare informazioni sui nostri servizi.</p>
+    <p class="privacy">Le risposte possono essere inesatte. Non inserire dati personali o riservati. <a routerLink="/privacy-policy">Privacy</a></p>
+  </div>
+  <div #log class="messages" role="log" aria-label="Conversazione" aria-live="polite" aria-relevant="additions" tabindex="0">
+    @if (!messages().length) {
+      <p class="welcome">Hai già un’idea, o vuoi conoscerci meglio?</p>
+      <div class="suggestions">
+        @for (question of suggestions; track question) { <button type="button" [disabled]="!ready()" (click)="send(question)">{{ question }} <span aria-hidden="true">↗</span></button> }
+      </div>
+    }
+    @for (message of messages(); track $index) {
+      <article class="message" [class.from-user]="message.role === 'user'">
+        <span class="speaker">{{ message.role === 'user' ? 'Tu' : 'Assistente Memento' }}</span>
+        <p>{{ message.text }}</p>
+        @if (message.sources?.length) {
+          <ul class="sources" aria-label="Pagine di riferimento">
+            @for (source of message.sources; track source.path + ':' + source.title) {
+              <li><a [routerLink]="source.path.split('#')[0]" [fragment]="source.path.split('#')[1]">{{ source.title }} ↗</a></li>
+            }
+          </ul>
+        }
+      </article>
+    }
+  </div>
+  <div class="compose">
+    <p class="status" role="status">{{ status() || (!ready() ? 'Caricamento…' : '') }}</p>
+    <div #challenge class="challenge"></div>
+    <form (submit)="$event.preventDefault(); send()">
+      <label for="chat-question" class="sr-only">La tua domanda</label>
+      <textarea #input id="chat-question" rows="2" [maxLength]="maxMessage" [value]="draft()" (input)="draft.set(input.value)" (keydown.enter)="onEnter($event)" placeholder="Chiedici dei nostri servizi…" aria-describedby="chat-limit"></textarea>
+      <button class="send" type="submit" [disabled]="!ready() || busy() || !draft().trim()" aria-label="Invia domanda">↑</button>
+    </form>
+    <div class="compose-tools"><span id="chat-limit">{{ draft().length }}/{{ maxMessage }}</span><button type="button" (click)="reset()">Cancella conversazione</button></div>
+  </div>
+  <footer>
+    <span>Preferisci parlare con noi?</span>
+    <div><a [href]="contact.whatsappUrl" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a><a routerLink="/contatti">Modulo contatti ↗</a></div>
+  </footer>
+</section>
