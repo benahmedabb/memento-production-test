@@ -77,8 +77,8 @@ for (const project of portfolioCaseStudies) {
 for (const review of site.reviews) add(`Recensione · ${review.person}`, '/recensioni', review.content);
 if (aiServiceEnabled) {
   add('Soluzioni IA · assistenti per aziende', pageMetadata.aiSolutions.path,
-    'Memento progetta assistenti IA per siti aziendali. Usano informazioni approvate dall’azienda per rispondere a domande su servizi, processo e contatti, aiutano a orientarsi e indirizzano al team le richieste che richiedono una persona.',
-    ['Fate assistenti IA per siti web?', 'Offrite chatbot per aziende?', 'Avete soluzioni IA per rispondere ai clienti?']);
+    'Memento progetta soluzioni di intelligenza artificiale per siti aziendali, in particolare assistenti IA che usano informazioni approvate dall’azienda per rispondere a domande su servizi, processo e contatti, aiutano a orientarsi e indirizzano al team le richieste che richiedono una persona.',
+    ['Fate assistenti IA per siti web?', 'Offrite chatbot per aziende?', 'Avete soluzioni IA per rispondere ai clienti?', 'Vi occupate di intelligenza artificiale?', 'Fate soluzioni di intelligenza artificiale per aziende?']);
   add('Soluzioni IA · come si progetta', pageMetadata.aiSolutions.path,
     'Il progetto parte dalle domande ricorrenti e dai contenuti affidabili dell’azienda. Si definiscono tono di voce, limiti di risposta e casi da passare al team; poi l’assistente viene provato anche con domande incomplete o ambigue.',
     ['Come progettate un assistente IA?', 'L’assistente può rispondere con le informazioni della mia azienda?']);

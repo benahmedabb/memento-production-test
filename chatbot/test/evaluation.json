@@ -21,6 +21,7 @@
     ["Qual è la vostra email?", "/contatti"],
     ["Qual è la partita IVA?", "/contatti"],
     ["Quali servizi offrite?", "/servizi"],
+    ["Vi occupate di intelligenza artificiale?", "/soluzioni-ia-torino"],
     ["Chi ha fondato Memento Production?", "/agenzia"],
     ["Di cosa si occupa Elena?", "/agenzia"],
     ["Quanti professionisti ci sono nel team?", "/agenzia"],
