@@ -12,8 +12,8 @@ export class SeoService {
   private readonly meta = inject(Meta);
   private readonly title = inject(Title);
 
-  setPage(metadata: PageMetadata, schema: JsonLd): void {
-    const canonicalUrl = `${siteConfig.origin}${metadata.path}`;
+  setPage(metadata: PageMetadata, schema: JsonLd, origin: string = siteConfig.origin): void {
+    const canonicalUrl = `${origin}${metadata.path}`;
     const socialImage = metadata.socialImage ?? {
       src: siteConfig.socialPreviewImage,
       alt: 'Memento Production, agenzia di comunicazione e marketing a Moncalieri',
@@ -21,7 +21,7 @@ export class SeoService {
       width: 1672,
       height: 941,
     };
-    const socialPreviewImage = `${siteConfig.origin}${socialImage.src}`;
+    const socialPreviewImage = `${origin}${socialImage.src}`;
 
     this.title.setTitle(metadata.title);
     this.updateName('description', metadata.description);

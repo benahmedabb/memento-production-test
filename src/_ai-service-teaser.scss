@@ -1,0 +1,19 @@
+.ai-service-teaser { color: var(--paper); background: #0d2118; }
+.ai-service-teaser__grid { display: grid; grid-template-columns: 1fr .9fr; align-items: center; gap: clamp(2rem, 7vw, 7rem); }
+.ai-service-teaser h2 { max-width: 13ch; margin-bottom: 1.3rem; font-size: clamp(2.4rem, 4.5vw, 4.8rem); text-wrap: balance; }
+.ai-service-teaser p:not(.eyebrow) { max-width: 36rem; margin-bottom: 2rem; color: #f4f1ebc4; line-height: 1.7; }
+.ai-service-teaser__image { display: block; overflow: hidden; border: 1px solid #d1ac6740; }
+.ai-service-teaser__image img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 68% center; transition: transform .7s ease; }
+.ai-service-teaser__image:hover img { transform: scale(1.04); }
+@media (max-width: 780px) { .ai-service-teaser__grid { grid-template-columns: 1fr; } .ai-service-teaser__image img { aspect-ratio: 3 / 2; } }
+@media (prefers-reduced-motion: reduce) { .ai-service-teaser__image img { transition: none; } }
+
+.home-ai-promo { display: grid; grid-template-columns: 1fr .65fr; align-items: stretch; gap: 0; margin-top: clamp(2rem, 5vw, 4rem); border: 1px solid #d1ac675e; background: #10271d; }
+.home-ai-promo__copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: clamp(1.5rem, 4vw, 3.5rem); }
+.home-ai-promo h3 { max-width: 16ch; margin-bottom: 1rem; font-size: clamp(2rem, 3.5vw, 3.8rem); line-height: 1.05; text-wrap: balance; }
+.home-ai-promo p:not(.eyebrow) { max-width: 32rem; margin-bottom: 1.4rem; color: #f4f1ebbd; font-size: .91rem; line-height: 1.7; }
+.home-ai-promo__image { display: block; min-height: 340px; overflow: hidden; }
+.home-ai-promo__image img { width: 100%; height: 100%; object-fit: cover; object-position: 68% center; transition: transform .7s ease; }
+.home-ai-promo__image:hover img { transform: scale(1.04); }
+@media (max-width: 780px) { .home-ai-promo { grid-template-columns: 1fr; } .home-ai-promo__image { min-height: 260px; max-height: 360px; } }
+@media (prefers-reduced-motion: reduce) { .home-ai-promo__image img { transition: none; } }

@@ -1,4 +1,5 @@
 @use 'service-catalog';
+@use 'ai-service-teaser';
 @use './fonts';
 @use './local-content';
 @use './home-motion';
@@ -26,7 +27,7 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: auto; }
 body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--font-body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-body:has(.primary-nav.is-open), body:has(.consent-dialog-backdrop), body:has(.video-dialog-backdrop) { overflow: hidden; }
+body:has(.primary-nav.is-open), body:has(.video-dialog-backdrop) { overflow: hidden; }
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button, input, textarea, select { font: inherit; }
@@ -396,27 +397,6 @@ section.reviews-section { background: #486956; }
 
 html body .iubenda-tp-btn { right: auto !important; bottom: 1rem !important; left: 1rem !important; }
 
-.consent-banner { position: fixed; z-index: 60; right: 1rem; bottom: 1rem; left: 1rem; display: grid; gap: 1rem; max-width: 700px; padding: 1.25rem; border: 1px solid rgba(209, 172, 103, 0.5); color: var(--paper); background: var(--green-deep); box-shadow: 0 15px 45px rgba(7, 15, 12, 0.35); }
-.consent-banner h2 { margin-bottom: 0.4rem; font-size: 2rem; }
-.consent-banner p:not(.eyebrow) { max-width: 480px; margin-bottom: 0; color: rgba(255, 255, 255, 0.7); font-size: 0.78rem; }
-.consent-actions { display: flex; flex-wrap: wrap; gap: 0.55rem; align-items: center; }
-.consent-actions .button { min-height: 2.6rem; padding: 0.6rem 0.75rem; font-size: 0.61rem; }
-.consent-actions .button--quiet { color: var(--paper); background: transparent; border-color: rgba(255, 255, 255, 0.28); }
-.consent-actions .button--quiet:hover { color: var(--ink); background: var(--gold-pale); border-color: var(--gold-pale); }
-.consent-actions .button--outline { color: var(--paper); background: transparent; border-color: rgba(209, 172, 103, 0.72); }
-.consent-actions .button--outline:hover { color: var(--ink); background: var(--gold); border-color: var(--gold); }
-.consent-dialog-backdrop { position: fixed; z-index: 70; inset: 0; display: grid; overflow: auto; place-items: end center; padding: 1rem; background: rgba(6, 16, 12, 0.65); }
-.consent-dialog { width: min(100%, 590px); padding: 1.25rem; color: var(--ink); background: var(--paper); box-shadow: 0 15px 45px rgba(7, 15, 12, 0.35); }
-.dialog-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: start; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
-.dialog-heading h2 { margin-bottom: 0; font-size: 2.3rem; }
-.icon-button { width: 2.3rem; height: 2.3rem; border: 1px solid var(--line); color: var(--ink); background: transparent; font-size: 1.5rem; line-height: 1; }
-.consent-option { display: flex; gap: 0.8rem; align-items: start; padding-block: 1rem; border-bottom: 1px solid var(--line); }
-.consent-option input { width: 1rem; height: 1rem; margin-top: 0.2rem; accent-color: var(--green); }
-.consent-option span { display: grid; gap: 0.15rem; }
-.consent-option small { color: rgba(24, 33, 30, 0.68); font-size: 0.78rem; }
-.dialog-actions { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; padding-top: 1.25rem; }
-.dialog-actions > a { color: var(--green); font-size: 0.75rem; font-family: var(--font-heading); font-weight: 700; text-decoration: underline; }
-
 @media (min-width: 620px) {
   .shell { width: min(100% - 4rem, 1220px); }
   .video-case-rail { grid-auto-columns: minmax(360px, 44vw); }
@@ -430,8 +410,6 @@ html body .iubenda-tp-btn { right: auto !important; bottom: 1rem !important; lef
   .whatsapp-fab { right: 1rem; bottom: 4.5rem; width: 4rem; height: 4rem; }
   .whatsapp-fab svg { width: 2.1rem; height: 2.1rem; }
   html body .iubenda-tp-btn { bottom: 1.5rem !important; left: 1.5rem !important; }
-  .consent-banner { left: auto; }
-  .consent-dialog-backdrop { place-items: center; }
 }
 
 @media (min-width: 860px) {

@@ -1,5 +1,6 @@
 import { catalogLinks } from './core/service-navigation';
 import { serviceRedirects } from './core/service-redirects';
+import { aiServiceEnabled } from './core/ai-service-availability';
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './pages/home-page.component';
 
@@ -11,6 +12,7 @@ export const routes: Routes = [
   ...catalogLinks.map(catalogPage => ({ path: catalogPage.path.slice(1), loadComponent: () => import('./pages/catalog-page.component').then(m => m.CatalogPageComponent), data: { catalogPath: catalogPage.path } })),
   ...serviceRedirects.map(({ from, to }) => ({ path: from.slice(1), redirectTo: to, pathMatch: 'full' as const })),
   { path: 'google-meta-ads', loadComponent: () => import('./pages/service-detail-page.component').then(m => m.ServiceDetailPageComponent), data: { serviceKey: 'ads' } },
+  ...(aiServiceEnabled ? [{ path: 'soluzioni-ia-torino', loadComponent: () => import('./pages/ai-solutions-page.component').then(m => m.AiSolutionsPageComponent) }] : []),
   { path: 'portfolio', loadComponent: () => import('./pages/portfolio-page.component').then(m => m.PortfolioPageComponent) },
   { path: 'recensioni', loadComponent: () => import('./pages/reviews-page.component').then(m => m.ReviewsPageComponent) },
   { path: 'contatti', loadComponent: () => import('./pages/contact-page.component').then(m => m.ContactPageComponent) },

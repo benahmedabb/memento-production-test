@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { homeCaseStudies, portfolioCover } from '../core/portfolio-case-studies';
 import { SeoService } from '../core/seo.service';
 import { pageMetadata, serviceEntries, siteConfig } from '../core/site.config';
+import { aiServiceEnabled } from '../core/ai-service-availability';
 import { TrackingService } from '../core/tracking.service';
 import { PageMotionDirective } from '../shared/page-motion.directive';
 import { CinematicHeroComponent } from '../shared/cinematic-hero.component';
@@ -100,6 +101,17 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
           </a>
         }
       </div>
+      @if (aiServiceEnabled) {
+        <div class="shell home-ai-promo" appScrollScene>
+          <div appPageMotion="rise" class="home-ai-promo__copy">
+            <p class="eyebrow eyebrow--gold">Nuovo percorso · Soluzioni IA</p>
+            <h3>Ogni domanda merita una prima risposta.</h3>
+            <p>Assistenti IA che conoscono i tuoi servizi, aiutano i clienti a orientarsi e lasciano al team le richieste che contano.</p>
+            <a class="text-link text-link--light" routerLink="/soluzioni-ia-torino">Scopri come funziona <span aria-hidden="true">↗&#xFE0E;</span></a>
+          </div>
+          <a class="home-ai-promo__image" routerLink="/soluzioni-ia-torino" aria-label="Scopri le soluzioni IA per aziende"><img src="/images/soluzioni-ia-rete-neurale-hero.webp" alt="Rete neurale astratta di luce verde e oro" width="1672" height="941" loading="lazy" decoding="async" /></a>
+        </div>
+      }
     </section>
 
     <section id="territorio" class="section section--sage local-presence" aria-labelledby="local-title">
@@ -148,6 +160,7 @@ export class HomePageComponent implements OnInit {
 
   private readonly seo = inject(SeoService);
   readonly serviceEntries = serviceEntries;
+  readonly aiServiceEnabled = aiServiceEnabled;
 
   ngOnInit(): void {
     this.seo.setPage(pageMetadata.home, [

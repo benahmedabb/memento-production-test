@@ -920,10 +920,18 @@ export function serviceMediaSchema(path: string, media: ServiceMedia): Record<st
       thumbnailUrl: `${siteConfig.origin}${photoSource(photo, 640)}`,
       width: photo.width,
       height: photo.height,
+      creditText: media.photography?.credit,
       // The comparison also contains the client's previous logo, not created by Memento.
       ...(media.photography?.layout === 'comparison'
         ? {}
-        : { creator: { '@id': `${siteConfig.origin}/#organization` } }),
+        : {
+            creator: {
+              '@type': 'Organization',
+              '@id': `${siteConfig.origin}/#organization`,
+              name: 'Memento Production',
+              url: siteConfig.origin,
+            },
+          }),
     })) ?? [];
   const films = media.films.flatMap((selection) => selection.films);
   const uniqueFilms = [...new Map(films.map((film) => [film.id, film])).values()];

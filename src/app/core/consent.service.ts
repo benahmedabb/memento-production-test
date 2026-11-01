@@ -1,30 +1,46 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Injectable, PLATFORM_ID, inject, signal } from '@angular/core';
-import { siteConfig } from './site.config';
+import { Injectable, OnDestroy, PLATFORM_ID, inject, signal } from '@angular/core';
 
 interface ConsentPreferences {
   readonly analytics: boolean;
+  /** Consent for external platform content (Iubenda purpose 3: Experience). */
   readonly marketing: boolean;
+}
+
+interface IubendaPreferences {
+  readonly consent?: boolean;
+  readonly purposes?: Record<string, boolean>;
 }
 
 interface IubendaWindow extends Window {
   _iub?: {
-    csConfiguration?: Record<string, unknown>;
-    cs?: { api?: { openPreferences: () => void } };
+    cs?: {
+      api?: {
+        getPreferences?: () => IubendaPreferences | null | false;
+        openPreferences?: () => void;
+      };
+    };
   };
 }
 
-const STORAGE_KEY = 'memento-consent-v1';
+const IUBENDA_PREFERENCES_EVENT = 'memento:iubenda-preferences-changed';
+const IUBENDA_READY_RETRIES = 40;
+const IUBENDA_RETRY_DELAY_MS = 250;
 
 @Injectable({ providedIn: 'root' })
-export class ConsentService {
-  readonly bannerVisible = signal(false);
+export class ConsentService implements OnDestroy {
   readonly preferencesOpen = signal(false);
   readonly preferences = signal<ConsentPreferences>({ analytics: false, marketing: false });
 
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
   private initialized = false;
+  private syncTimer: ReturnType<typeof setTimeout> | undefined;
+  private openTimer: ReturnType<typeof setTimeout> | undefined;
+  private readonly handleIubendaPreferencesChanged = () => {
+    this.preferencesOpen.set(false);
+    this.syncFromIubenda();
+  };
 
   initialize(): void {
     if (this.initialized || !isPlatformBrowser(this.platformId)) {
@@ -32,123 +48,77 @@ export class ConsentService {
     }
 
     this.initialized = true;
-
-    if (siteConfig.iubenda.siteId) {
-      this.loadIubenda();
-      return;
-    }
-
-    const saved = this.readPreferences();
-
-    if (saved) {
-      this.preferences.set(saved);
-      this.applyGoogleConsent(saved);
-      this.trackGooglePageView(saved);
-      return;
-    }
-
-    this.bannerVisible.set(true);
-  }
-
-  acceptAll(): void {
-    this.savePreferences({ analytics: true, marketing: true });
-  }
-
-  rejectOptional(): void {
-    this.savePreferences({ analytics: false, marketing: false });
+    window.addEventListener(IUBENDA_PREFERENCES_EVENT, this.handleIubendaPreferencesChanged);
+    this.syncFromIubenda(0);
   }
 
   openPreferences(): void {
-    const iubenda = window as IubendaWindow;
-
-    if (siteConfig.iubenda.siteId && iubenda._iub?.cs?.api?.openPreferences) {
-      iubenda._iub.cs.api.openPreferences();
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
     this.preferencesOpen.set(true);
+    this.openIubendaPreferences(0);
   }
 
-  closePreferences(): void {
-    this.preferencesOpen.set(false);
-  }
-
-  saveCustom(analytics: boolean, marketing: boolean): void {
-    this.savePreferences({ analytics, marketing });
-  }
-
-  private savePreferences(preferences: ConsentPreferences): void {
-    this.preferences.set(preferences);
-    this.applyGoogleConsent(preferences);
-    this.trackGooglePageView(preferences);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(preferences));
-    this.bannerVisible.set(false);
-    this.preferencesOpen.set(false);
-  }
-
-  private readPreferences(): ConsentPreferences | null {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-
-      if (!stored) {
-        return null;
-      }
-
-      const parsed = JSON.parse(stored) as ConsentPreferences;
-      return typeof parsed.analytics === 'boolean' && typeof parsed.marketing === 'boolean' ? parsed : null;
-    } catch {
-      return null;
-    }
-  }
-
-  private applyGoogleConsent(preferences: ConsentPreferences): void {
-    window.gtag?.('consent', 'update', {
-      analytics_storage: preferences.analytics ? 'granted' : 'denied',
-      ad_storage: preferences.marketing ? 'granted' : 'denied',
-      ad_user_data: preferences.marketing ? 'granted' : 'denied',
-      ad_personalization: preferences.marketing ? 'granted' : 'denied',
-    });
-  }
-
-  private trackGooglePageView(preferences: ConsentPreferences): void {
-    if (!preferences.analytics) {
+  ngOnDestroy(): void {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
+    window.removeEventListener(IUBENDA_PREFERENCES_EVENT, this.handleIubendaPreferencesChanged);
+    if (this.syncTimer) clearTimeout(this.syncTimer);
+    if (this.openTimer) clearTimeout(this.openTimer);
+  }
+
+  private syncFromIubenda(attempt = IUBENDA_READY_RETRIES): void {
+    const stored = (window as IubendaWindow)._iub?.cs?.api?.getPreferences?.();
+
+    if (!stored) {
+      if (attempt < IUBENDA_READY_RETRIES) {
+        this.syncTimer = setTimeout(
+          () => this.syncFromIubenda(attempt + 1),
+          IUBENDA_RETRY_DELAY_MS,
+        );
+      }
+      return;
+    }
+
+    const previous = this.preferences();
+    const purposes = stored.purposes;
+    const allOptionalAccepted = stored.consent === true && !purposes;
+    const current = {
+      analytics: purposes?.['4'] === true || allOptionalAccepted,
+      marketing: purposes?.['3'] === true || allOptionalAccepted,
+    };
+
+    this.preferences.set(current);
+    if (!previous.analytics && current.analytics) this.trackGooglePageView();
+  }
+
+  private openIubendaPreferences(attempt: number): void {
+    const api = (window as IubendaWindow)._iub?.cs?.api;
+
+    if (api?.openPreferences) {
+      api.openPreferences();
+      return;
+    }
+
+    if (attempt < IUBENDA_READY_RETRIES) {
+      this.openTimer = setTimeout(
+        () => this.openIubendaPreferences(attempt + 1),
+        IUBENDA_RETRY_DELAY_MS,
+      );
+    } else {
+      this.preferencesOpen.set(false);
+    }
+  }
+
+  private trackGooglePageView(): void {
     window.gtag?.('event', 'page_view', {
       page_location: window.location.href,
       page_path: window.location.pathname,
       page_title: this.document.title,
     });
-  }
-
-  private loadIubenda(): void {
-    const iubenda = window as IubendaWindow;
-    iubenda._iub ??= {};
-    iubenda._iub.csConfiguration = {
-      lang: 'it',
-      siteId: siteConfig.iubenda.siteId,
-      cookiePolicyId: siteConfig.iubenda.cookiePolicyId,
-      countryDetection: true,
-      perPurposeConsent: true,
-      consentOnContinuedBrowsing: false,
-      floatingPreferencesButtonDisplay: 'bottom-left',
-      banner: {
-        acceptButtonDisplay: true,
-        customizeButtonDisplay: true,
-        rejectButtonDisplay: true,
-      },
-    };
-
-    if (this.document.querySelector('script[data-iubenda-cs]')) {
-      return;
-    }
-
-    const script = this.document.createElement('script');
-    script.src = 'https://cdn.iubenda.com/cs/iubenda_cs.js';
-    script.async = true;
-    script.charset = 'UTF-8';
-    script.dataset['iubendaCs'] = 'true';
-    this.document.head.appendChild(script);
   }
 }

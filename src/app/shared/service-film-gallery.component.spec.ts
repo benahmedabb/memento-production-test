@@ -8,20 +8,34 @@ import { ServiceFilmGalleryComponent } from './service-film-gallery.component';
 describe('Service films: playback and consent', () => {
   let fixture: ComponentFixture<ServiceFilmGalleryComponent>;
   let consent: ConsentService;
+  let purposes: Record<string, boolean>;
+  let openPreferences: ReturnType<typeof vi.fn>;
   const players = () => fixture.nativeElement.querySelectorAll('video, iframe');
+  const setConsent = (analytics: boolean, externalContent: boolean) => {
+    purposes = { '3': externalContent, '4': analytics, '5': false };
+    window.dispatchEvent(new CustomEvent('memento:iubenda-preferences-changed'));
+    fixture.detectChanges();
+  };
   const play = (id: string) => {
     fixture.nativeElement.querySelector(`#film-${id} button.film-card__poster`).click();
     fixture.detectChanges();
   };
 
   beforeEach(() => {
-    vi.stubGlobal('localStorage', { getItem: vi.fn(() => null), setItem: vi.fn() });
+    purposes = { '3': false, '4': false, '5': false };
+    openPreferences = vi.fn();
+    Object.assign(window, {
+      _iub: {
+        cs: { api: { getPreferences: () => ({ purposes }), openPreferences } },
+      },
+    });
     vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue();
     TestBed.configureTestingModule({
       imports: [ServiceFilmGalleryComponent],
       providers: [provideRouter([]), { provide: TrackingService, useValue: { track: vi.fn() } }],
     });
     consent = TestBed.inject(ConsentService);
+    consent.initialize();
     fixture = TestBed.createComponent(ServiceFilmGalleryComponent);
     fixture.componentRef.setInput('selections', [
       ...serviceMediaFor('/video/video-aziendali-torino').films,
@@ -31,8 +45,8 @@ describe('Service films: playback and consent', () => {
     fixture.detectChanges();
   });
   afterEach(() => {
+    delete (window as typeof window & { _iub?: unknown })._iub;
     vi.restoreAllMocks();
-    vi.unstubAllGlobals();
   });
 
   it('loads only local covers initially and plays a local Reel without external consent', () => {
@@ -50,33 +64,27 @@ describe('Service films: playback and consent', () => {
   it('gates YouTube, cancels dismissed requests and removes the player when consent is withdrawn', () => {
     play(corporateFilms[0].id);
     expect(consent.preferencesOpen()).toBe(true);
+    expect(openPreferences).toHaveBeenCalledOnce();
     expect(players()).toHaveLength(0);
-    consent.closePreferences();
-    fixture.detectChanges();
-    consent.acceptAll();
-    fixture.detectChanges();
+    setConsent(false, false);
+    setConsent(true, true);
     expect(players()).toHaveLength(0);
-    consent.rejectOptional();
-    fixture.detectChanges();
+    setConsent(false, false);
     play(corporateFilms[0].id);
-    consent.saveCustom(false, true);
-    fixture.detectChanges();
+    setConsent(false, true);
     expect(players()[0].src).toContain('youtube-nocookie.com/embed/XiSIUwAxMhA');
     expect(consent.preferences().analytics).toBe(false);
-    consent.rejectOptional();
-    fixture.detectChanges();
+    setConsent(false, false);
     expect(players()).toHaveLength(0);
   });
 
   it('keeps one player across all selections and replaces it when another film is chosen', () => {
-    consent.acceptAll();
-    fixture.detectChanges();
+    setConsent(true, true);
     play(corporateFilms[0].id);
     play(arabianFilm.id);
     expect(players()).toHaveLength(1);
     expect(players()[0].src).toContain('arabian-luxury-beauty.mp4');
-    consent.rejectOptional();
-    fixture.detectChanges();
+    setConsent(false, false);
     expect(players()).toHaveLength(1); // Local playback does not depend on marketing consent.
     fixture.componentInstance.stop();
     fixture.detectChanges();
@@ -90,8 +98,7 @@ describe('Service films: playback and consent', () => {
     play(socialFilms[0].id);
     expect(consent.preferencesOpen()).toBe(true);
     expect(players()).toHaveLength(0);
-    consent.saveCustom(false, true);
-    fixture.detectChanges();
+    setConsent(false, true);
     expect(players()[0].src).toContain(`/reel/${socialFilms[0].id}/embed`);
     play(arabianFilm.id);
     players()[0].dispatchEvent(new Event('error'));

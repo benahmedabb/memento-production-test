@@ -8,6 +8,7 @@ import { PageMotionDirective } from '../shared/page-motion.directive';
 import { KineticTextComponent } from '../shared/kinetic-text.component';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 import { BrandOrbitComponent } from '../shared/brand-orbit.component';
+import { aiServiceEnabled } from '../core/ai-service-availability';
 
 @Component({
   imports: [BrandOrbitComponent, KineticTextComponent, ScrollSceneDirective, PageMotionDirective, RouterLink],
@@ -46,6 +47,22 @@ import { BrandOrbitComponent } from '../shared/brand-orbit.component';
       </div>
     </section>
 
+    @if (aiServiceEnabled) {
+      <section class="section ai-service-teaser" aria-labelledby="ai-service-teaser-title" appScrollScene>
+        <div class="shell ai-service-teaser__grid">
+          <div appPageMotion="rise">
+            <p class="eyebrow eyebrow--gold">Un servizio in più, una frizione in meno</p>
+            <h2 id="ai-service-teaser-title">Le domande arrivano. La risposta giusta può arrivare con loro.</h2>
+            <p>Progettiamo assistenti IA basati sulle informazioni della tua azienda, per aiutare i clienti a orientarsi e lasciare al team le conversazioni che richiedono una persona.</p>
+            <a class="button button--gold" routerLink="/soluzioni-ia-torino">Scopri le soluzioni IA <span aria-hidden="true">↗&#xFE0E;</span></a>
+          </div>
+          <a class="ai-service-teaser__image" routerLink="/soluzioni-ia-torino" aria-label="Scopri le soluzioni IA per le aziende">
+            <img src="/images/soluzioni-ia-rete-neurale-hero.webp" alt="Rete neurale astratta in vetro, luce verde e connessioni dorate" width="1672" height="941" loading="lazy" decoding="async" />
+          </a>
+        </div>
+      </section>
+    }
+
     <section class="section section--dark chapter-closing" appScrollScene>
       <div class="shell two-column two-column--offset">
         <div><p class="eyebrow eyebrow--gold">Come lavoriamo</p><h2><app-kinetic-text mode="ink" text="Ogni servizio è più efficace quando sa dialogare con gli altri." /></h2></div>
@@ -59,6 +76,7 @@ export class ServicesPageComponent implements OnInit {
   readonly config = siteConfig;
   private readonly seo = inject(SeoService);
   readonly services = serviceEntries.map(item => ({ ...item, children: catalogChildren(item.path) }));
+  readonly aiServiceEnabled = aiServiceEnabled;
 
   ngOnInit(): void {
     this.seo.setPage(pageMetadata.services, {

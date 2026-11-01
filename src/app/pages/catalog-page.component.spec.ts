@@ -100,6 +100,13 @@ describe('Service catalog navigation and SEO', () => {
     expect(
       schema.filter((entry: Record<string, unknown>) => entry['@type'] === 'ImageObject'),
     ).toHaveLength(11);
+    const image = schema.find(
+      (entry: Record<string, unknown>) => entry['@type'] === 'ImageObject',
+    );
+    expect(image.creditText).toBe('Fotografie di Memento Production');
+    expect(image.creator).toEqual(
+      expect.objectContaining({ '@type': 'Organization', name: 'Memento Production' }),
+    );
     expect(
       schema.filter((entry: Record<string, unknown>) => entry['@type'] === 'VideoObject'),
     ).toHaveLength(4);
@@ -108,7 +115,7 @@ describe('Service catalog navigation and SEO', () => {
     );
 
     await harness.navigateByUrl('/video/reel-social-torino', CatalogPageComponent);
-    expect(harness.routeNativeElement?.querySelectorAll('.film-card')).toHaveLength(5);
+    expect(harness.routeNativeElement?.querySelectorAll('.film-card')).toHaveLength(4);
     schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
     const videos = schema.filter(
       (entry: Record<string, unknown>) => entry['@type'] === 'VideoObject',
@@ -137,9 +144,7 @@ describe('Service catalog navigation and SEO', () => {
       harness.routeNativeElement?.querySelector('.catalog-real-work img')?.getAttribute('src'),
     ).toContain('email-social-life-laser-1080.webp');
     expect(harness.routeNativeElement?.querySelectorAll('.film-card')).toHaveLength(3);
-    expect(harness.routeNativeElement?.querySelector('.photo-gallery')?.textContent).toContain(
-      'Life',
-    );
+    expect(harness.routeNativeElement?.querySelector('.photo-gallery')).toBeNull();
 
     await harness.navigateByUrl('/grafica/rebranding-torino', CatalogPageComponent);
     expect(

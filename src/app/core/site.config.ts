@@ -76,7 +76,7 @@ export const siteConfig = {
     gtmId: 'GTM-WNM2C5VK',
   },
   iubenda: {
-    siteId: undefined as number | undefined,
+    siteId: 4570151,
     cookiePolicyId: 93767367,
     privacyPolicyUrl: 'https://www.iubenda.com/privacy-policy/93767367',
     cookiePolicyUrl: 'https://www.iubenda.com/privacy-policy/93767367/cookie-policy',
@@ -361,6 +361,19 @@ export const pageMetadata = {
     title: 'Google Ads e Meta Ads a Torino | Memento Production',
     description: 'Campagne Google e Meta Ads per aziende di Torino, Moncalieri, Pinerolo e Chieri: creatività, pagine di destinazione e monitoraggio. Parliamo del progetto.',
     path: '/google-meta-ads',
+  },
+  aiSolutions: {
+    title: 'Assistenti IA e automazioni per aziende a Torino | Memento',
+    description: 'Assistenti IA per rispondere alle domande sui tuoi servizi, orientare i clienti e passare al team le richieste giuste. Soluzioni su misura a Torino.',
+    path: '/soluzioni-ia-torino',
+    noIndex: true, // Demo Vercel: remove when this service is approved for the public site.
+    socialImage: {
+      src: '/images/soluzioni-ia-rete-neurale-hero.webp',
+      alt: 'Rete neurale astratta in vetro illuminata di verde e oro',
+      width: 1672,
+      height: 941,
+      type: 'image/webp',
+    },
   },
   branding: {
     title: 'Grafica e brand identity a Torino | Memento Production',

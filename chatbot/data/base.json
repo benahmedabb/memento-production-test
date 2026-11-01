@@ -1,5 +1,5 @@
 {
-  "version": "0bbe3956cdda4098",
+  "version": "c44eb70f1f9dc3cc",
   "entries": [
     {
       "id": "s1",
@@ -102,7 +102,7 @@
       "id": "s5",
       "title": "Servizi",
       "path": "/servizi",
-      "text": "Fotografia, Video, Social media, Grafica e branding, Siti web ed e-commerce, Google e Meta Ads.",
+      "text": "Fotografia, Video, Social media, Grafica e branding, Siti web ed e-commerce, Google e Meta Ads, Soluzioni IA.",
       "questions": [
         "Quali servizi offrite?",
         "Di cosa vi occupate?"
@@ -121,6 +121,7 @@
         "googl",
         "meta",
         "ads",
+        "soluzion",
         "offrit",
         "occupat"
       ]
@@ -9811,6 +9812,126 @@
         "durant",
         "servizi",
         "grazi"
+      ]
+    },
+    {
+      "id": "s416",
+      "title": "Soluzioni IA · assistenti per aziende",
+      "path": "/soluzioni-ia-torino",
+      "text": "Memento progetta assistenti IA per siti aziendali. Usano informazioni approvate dall’azienda per rispondere a domande su servizi, processo e contatti, aiutano a orientarsi e indirizzano al team le richieste che richiedono una persona.",
+      "questions": [
+        "Fate assistenti IA per siti web?",
+        "Offrite chatbot per aziende?",
+        "Avete soluzioni IA per rispondere ai clienti?"
+      ],
+      "terms": [
+        "soluzion",
+        "assistent",
+        "aziend",
+        "mement",
+        "progett",
+        "siti",
+        "aziendal",
+        "usan",
+        "informazion",
+        "approvat",
+        "dall",
+        "risponder",
+        "domand",
+        "serviz",
+        "process",
+        "contatt",
+        "aiutan",
+        "orientars",
+        "indirizzan",
+        "team",
+        "richiest",
+        "richiedon",
+        "person",
+        "web",
+        "offrit",
+        "chatbot",
+        "client"
+      ]
+    },
+    {
+      "id": "s417",
+      "title": "Soluzioni IA · come si progetta",
+      "path": "/soluzioni-ia-torino",
+      "text": "Il progetto parte dalle domande ricorrenti e dai contenuti affidabili dell’azienda. Si definiscono tono di voce, limiti di risposta e casi da passare al team; poi l’assistente viene provato anche con domande incomplete o ambigue.",
+      "questions": [
+        "Come progettate un assistente IA?",
+        "L’assistente può rispondere con le informazioni della mia azienda?"
+      ],
+      "terms": [
+        "soluzion",
+        "progett",
+        "part",
+        "dall",
+        "domand",
+        "ricorrent",
+        "dai",
+        "contenut",
+        "affidabil",
+        "dell",
+        "aziend",
+        "definiscon",
+        "tono",
+        "voce",
+        "limit",
+        "rispost",
+        "casi",
+        "passar",
+        "team",
+        "poi",
+        "assistent",
+        "vien",
+        "provat",
+        "incomplet",
+        "ambigu",
+        "puo",
+        "risponder",
+        "informazion",
+        "mia"
+      ]
+    },
+    {
+      "id": "s418",
+      "title": "Soluzioni IA · limiti",
+      "path": "/soluzioni-ia-torino",
+      "text": "Un assistente IA può sbagliare. Per ridurre risposte non pertinenti Memento lavora su fonti selezionate, limiti di risposta, test e aggiornamenti. Le scelte tecniche e privacy dipendono dal progetto e vengono concordate prima della pubblicazione.",
+      "questions": [
+        "L’assistente IA può inventare risposte?",
+        "Come gestite la privacy delle conversazioni?"
+      ],
+      "terms": [
+        "soluzion",
+        "limit",
+        "assistent",
+        "puo",
+        "sbagliar",
+        "ridurr",
+        "rispost",
+        "non",
+        "pertinent",
+        "mement",
+        "lavor",
+        "font",
+        "selezionat",
+        "test",
+        "aggiornament",
+        "scelt",
+        "tecnich",
+        "privacy",
+        "dipendon",
+        "progett",
+        "vengon",
+        "concordat",
+        "prim",
+        "pubblicazion",
+        "inventar",
+        "gestit",
+        "conversazion"
       ]
     }
   ]

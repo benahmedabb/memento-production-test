@@ -6,6 +6,7 @@ import ts from 'typescript';
 import { JSDOM } from 'jsdom';
 
 const { siteConfig: site, pageMetadata } = await import('../src/app/core/site.config.ts');
+const { aiServiceEnabled } = await import('../src/app/core/ai-service-availability.ts');
 const { catalogPages } = await import('../src/app/core/service-catalog.ts');
 const { portfolioCaseStudies } = await import('../src/app/core/portfolio-case-studies.ts');
 const { terms } = await import('../chatbot/shared/protocol.ts');
@@ -21,7 +22,7 @@ add('Contatti · sede', '/contatti', `La sede di Memento Production è in ${site
 add('Contatti · telefono', '/contatti', `Puoi chiamare Memento Production al ${site.contact.phoneDisplay} oppure scrivere su WhatsApp allo stesso numero.`, ['Come posso contattarvi?', 'Qual è il numero di telefono?', 'Avete WhatsApp?']);
 add('Contatti · email', '/contatti', `L’indirizzo email di Memento Production è ${site.contact.email}.`, ['Qual è la vostra email?', 'Come vi scrivo via email?']);
 add('Memento Production', '/contatti', `${site.contact.legalName}. Partita IVA ${site.contact.vatNumber}.`, ['Qual è la partita IVA?']);
-add('Servizi', '/servizi', Object.values(site.services).map(service => service.shortTitle).join(', ') + '.', ['Quali servizi offrite?', 'Di cosa vi occupate?']);
+add('Servizi', '/servizi', [...Object.values(site.services).map(service => service.shortTitle), ...(aiServiceEnabled ? ['Soluzioni IA'] : [])].join(', ') + '.', ['Quali servizi offrite?', 'Di cosa vi occupate?']);
 for (const page of catalogPages) {
   add(page.label, page.path, page.intro);
   for (const part of page.deliverables) add(`${page.label} · ${part.title}`, page.path, `${part.title}: ${part.text}`);
@@ -74,6 +75,17 @@ for (const project of portfolioCaseStudies) {
   if (project.results) add(`Risultati · ${project.client}`, path, `${project.results.context}${project.results.period ? ` (${project.results.period})` : ''}: ${project.results.metrics.map(metric => `${metric.displayValue} ${metric.label}`).join('; ')}. Risultati di questo progetto, non una garanzia per altri progetti.`);
 }
 for (const review of site.reviews) add(`Recensione · ${review.person}`, '/recensioni', review.content);
+if (aiServiceEnabled) {
+  add('Soluzioni IA · assistenti per aziende', pageMetadata.aiSolutions.path,
+    'Memento progetta assistenti IA per siti aziendali. Usano informazioni approvate dall’azienda per rispondere a domande su servizi, processo e contatti, aiutano a orientarsi e indirizzano al team le richieste che richiedono una persona.',
+    ['Fate assistenti IA per siti web?', 'Offrite chatbot per aziende?', 'Avete soluzioni IA per rispondere ai clienti?']);
+  add('Soluzioni IA · come si progetta', pageMetadata.aiSolutions.path,
+    'Il progetto parte dalle domande ricorrenti e dai contenuti affidabili dell’azienda. Si definiscono tono di voce, limiti di risposta e casi da passare al team; poi l’assistente viene provato anche con domande incomplete o ambigue.',
+    ['Come progettate un assistente IA?', 'L’assistente può rispondere con le informazioni della mia azienda?']);
+  add('Soluzioni IA · limiti', pageMetadata.aiSolutions.path,
+    'Un assistente IA può sbagliare. Per ridurre risposte non pertinenti Memento lavora su fonti selezionate, limiti di risposta, test e aggiornamenti. Le scelte tecniche e privacy dipendono dal progetto e vengono concordate prima della pubblicazione.',
+    ['L’assistente IA può inventare risposte?', 'Come gestite la privacy delle conversazioni?']);
+}
 if (entries.length < 100 || !entries.some(entry => entry.text.includes('2022'))) throw new Error('Incomplete knowledge extraction');
 const version = createHash('sha256').update(JSON.stringify(entries)).digest('hex').slice(0, 16);
 const payload = JSON.stringify({ version, entries }, null, 2) + '\n';

@@ -47,6 +47,22 @@ Il sito di prova è [memento-production-test-2.vercel.app](https://memento-produ
 
 Dopo approvazione e pagamento, compilare e caricare il frontend su Hostinger con il flusso abituale. L'indirizzo del backend rimane lo stesso; i domini finali sono già nell'elenco consentito. La gestione degli hostname è descritta nella [documentazione Turnstile](https://developers.cloudflare.com/turnstile/additional-configuration/hostname-management/); il flusso Git nella [documentazione Vercel](https://vercel.com/docs/git).
 
+## Build Hostinger senza chatbot
+
+`main` è l'unica sorgente del sito. La build normale usata da Vercel continua a includere il chatbot:
+
+```sh
+npm run build
+```
+
+Per Hostinger usare invece:
+
+```sh
+npm run build:hostinger
+```
+
+Questa configurazione sostituisce il launcher del chatbot con il pulsante WhatsApp e non copia `public/chatbot`. Le altre funzionalità specifiche della demo IA sono disabilitate nella build Hostinger. I file da caricare si trovano in `dist/memento-production-hostinger/browser`. Lo ZIP di consegna è un artefatto locale e non va aggiunto a Git.
+
 ## Conoscenza e risposte
 
 `npm run chatbot:knowledge` genera `chatbot/data/base.json` e `public/chatbot/faq.json`; viene eseguito prima di `start` e `build`. `node scripts/build-chatbot-knowledge.mjs --check` verifica gli artefatti. La versione è il digest dei contenuti.
@@ -99,7 +115,7 @@ Su un account nuovo, aprire prima la pagina **Workers / Workers & Pages** nel pa
 4. Aggiornare l'informativa Iubenda per i trattamenti effettivi di Workers AI, Turnstile e contatori. La nota aggiunta alla pagina locale non aggiorna Iubenda e non costituisce una verifica legale.
 5. Collaudare l'IA sull'anteprima Vercel descritta sopra prima di consegnare il frontend su Hostinger. Questa configurazione condivide backend e quote. Se in futuro si crea un ambiente di staging indipendente, replicare esplicitamente binding e segreti, non tutti ereditati tra ambienti Wrangler, e usare widget e hostname dedicati.
 6. Dopo il collaudo, impostare `AI_ENABLED: "true"` nell'ambiente scelto. `npm --prefix chatbot run dry-run` prepara il pacchetto senza pubblicare; `npm --prefix chatbot run deploy` pubblica il backend e restituisce l'indirizzo `*.workers.dev`.
-7. Compilare `public/chatbot/config.json`: `apiUrl` uguale a `https://<worker>.<account>.workers.dev/v1/chat`, `turnstileSiteKey` uguale alla chiave pubblica, `allowedOrigins` uguale alle origini del sito effettivamente configurate nel backend e nel widget. Nessun segreto nel file. Eseguire `npm run build` e caricare il contenuto di `dist/memento-production/browser` su Hostinger con il flusso abituale.
+7. Compilare `public/chatbot/config.json`: `apiUrl` uguale a `https://<worker>.<account>.workers.dev/v1/chat`, `turnstileSiteKey` uguale alla chiave pubblica, `allowedOrigins` uguale alle origini del sito effettivamente configurate nel backend e nel widget. Nessun segreto nel file. Vercel usa `npm run build` e `dist/memento-production/browser`; per una consegna Hostinger senza chatbot usare `npm run build:hostinger` e caricare il contenuto di `dist/memento-production-hostinger/browser`.
 
 Se si introduce una Content Security Policy, consentire Worker e domini Turnstile secondo la documentazione ufficiale. Lo script Turnstile viene caricato solo quando una domanda richiede il backend.
 

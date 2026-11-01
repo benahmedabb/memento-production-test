@@ -57,6 +57,42 @@
               ],
               "outputHashing": "all"
             },
+            "hostinger": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all",
+              "outputPath": "dist/memento-production-hostinger",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/shared/chat-launcher.component.ts",
+                  "with": "src/app/shared/chat-launcher.hostinger.component.ts"
+                },
+                {
+                  "replace": "src/app/core/ai-service-availability.ts",
+                  "with": "src/app/core/ai-service-availability.hostinger.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public",
+                  "ignore": [
+                    "chatbot/**",
+                    "images/soluzioni-ia-*.webp"
+                  ]
+                }
+              ]
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,

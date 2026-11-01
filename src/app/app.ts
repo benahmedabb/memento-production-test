@@ -1,11 +1,11 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, DOCUMENT, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ConsentBannerComponent } from './shared/consent-banner.component';
 import { ChatLauncherComponent } from './shared/chat-launcher.component';
 import { PointerHaloComponent } from './shared/pointer-halo.component';
 import { SiteFooterComponent } from './shared/site-footer.component';
 import { SiteHeaderComponent } from './shared/site-header.component';
+import { ConsentService } from './core/consent.service';
 import { TrackingService } from './core/tracking.service';
 
 @Component({
@@ -13,7 +13,6 @@ import { TrackingService } from './core/tracking.service';
     RouterOutlet,
     SiteHeaderComponent,
     SiteFooterComponent,
-    ConsentBannerComponent,
     ChatLauncherComponent,
     PointerHaloComponent,
   ],
@@ -24,6 +23,7 @@ import { TrackingService } from './core/tracking.service';
 export class App {
   constructor() {
     const document = inject(DOCUMENT);
+    inject(ConsentService).initialize();
     inject(TrackingService);
     // Keep linked portfolio projects visible below the sticky navigation.
     inject(ViewportScroller).setOffset(() => [

@@ -1,4 +1,5 @@
 import { catalogChildren, catalogHubs } from '../core/service-navigation';
+import { aiServiceEnabled } from '../core/ai-service-availability';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { IsActiveMatchOptions, RouterLink, RouterLinkActive } from '@angular/router';
 import { serviceEntries } from '../core/site.config';
@@ -128,9 +129,11 @@ export class SiteHeaderComponent {
         links: [
           ...catalogHubs.map(hub => ({ label: hub.label, path: hub.path, children: catalogChildren(hub.path).map(page => ({ label: page.label, path: page.path })) })),
           ...serviceEntries.filter(entry => entry.key === 'ads').map(entry => ({ label: entry.service.shortTitle, path: entry.path })),
+          ...(aiServiceEnabled ? [{ label: 'Soluzioni IA', path: '/soluzioni-ia-torino' }] : []),
         ],
       },
     },
+    ...(aiServiceEnabled ? [{ label: 'Soluzioni IA', path: '/soluzioni-ia-torino' }] : []),
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Recensioni', path: '/recensioni' },
   ];

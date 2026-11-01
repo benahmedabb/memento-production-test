@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "npm run chatbot:knowledge && ng serve",
     "build": "npm run chatbot:knowledge && ng build",
+    "build:hostinger": "ng build --configuration hostinger",
     "chatbot:knowledge": "node scripts/build-chatbot-knowledge.mjs",
     "chatbot:dev": "npm run chatbot:knowledge && npm --prefix chatbot run dev",
     "chatbot:test": "node --import ./scripts/register-types.mjs --test chatbot/test/*.test.mjs",

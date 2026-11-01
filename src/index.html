@@ -42,6 +42,24 @@
   <script>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WNM2C5VK');
   </script>
+  <script>
+    (function () {
+      window._iub = window._iub || [];
+      window._iub.csConfiguration = window._iub.csConfiguration || {};
+      var callbacks = window._iub.csConfiguration.callback || {};
+      var notifyAngular = function () {
+        window.dispatchEvent(new CustomEvent('memento:iubenda-preferences-changed'));
+      };
+      ['onReady', 'onPreferenceExpressed', 'onPreferenceChange'].forEach(function (name) {
+        var existing = callbacks[name];
+        callbacks[name] = function () {
+          if (typeof existing === 'function') existing.apply(this, arguments);
+          notifyAngular();
+        };
+      });
+      window._iub.csConfiguration.callback = callbacks;
+    })();
+  </script>
   <script type="text/javascript" src="https://embeds.iubenda.com/widgets/473ded9f-dca3-486d-8152-ae454c10856e.js"></script>
 </head>
 <body>

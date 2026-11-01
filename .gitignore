@@ -6,6 +6,7 @@
 /out-tsc
 /bazel-out
 /memento-production-deploy-*.zip
+/memento-hostinger-*.zip
 
 # Node
 /node_modules

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ConsentService } from '../core/consent.service';
 import { serviceEntries, siteConfig } from '../core/site.config';
+import { aiServiceEnabled } from '../core/ai-service-availability';
 import { TrackingService } from '../core/tracking.service';
 
 @Component({
@@ -62,7 +63,7 @@ import { TrackingService } from '../core/tracking.service';
         </div>
       </div>
 
-      <nav class="shell footer-services" aria-label="Servizi Memento">@for (entry of services; track entry.path) { <a [routerLink]="entry.path">{{ entry.service.shortTitle }}</a> }</nav>
+      <nav class="shell footer-services" aria-label="Servizi Memento">@for (entry of services; track entry.path) { <a [routerLink]="entry.path">{{ entry.service.shortTitle }}</a> } @if (aiServiceEnabled) { <a routerLink="/soluzioni-ia-torino">Soluzioni IA</a> }</nav>
 
       <div class="shell footer-bottom">
         <span>© {{ currentYear }} Memento Production · P. IVA {{ config.contact.vatNumber }}</span>
@@ -79,6 +80,7 @@ import { TrackingService } from '../core/tracking.service';
 export class SiteFooterComponent {
   readonly config = siteConfig;
   readonly services = serviceEntries;
+  readonly aiServiceEnabled = aiServiceEnabled;
   readonly currentYear = new Date().getFullYear();
   readonly consent = inject(ConsentService);
   readonly tracking = inject(TrackingService);
