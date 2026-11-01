@@ -507,10 +507,7 @@ export const catalogPages: readonly CatalogPage[] = [
       "/social",
       "/google-meta-ads"
     ],
-    "projectSlugs": [
-      "dora-events",
-      "speed-trasporti"
-    ],
+    "projectSlugs": [],
     "heading": "Video",
     "summary": "Storie, persone e idee. Dalla scaletta all’ultima versione."
   },
@@ -600,10 +597,7 @@ export const catalogPages: readonly CatalogPage[] = [
       "/social",
       "/google-meta-ads"
     ],
-    "projectSlugs": [
-      "dora-events",
-      "speed-trasporti"
-    ],
+    "projectSlugs": [],
     "heading": "Video aziendali",
     "summary": "L’azienda, i prodotti e gli eventi, raccontati con una direzione chiara."
   },
@@ -693,10 +687,7 @@ export const catalogPages: readonly CatalogPage[] = [
       "/social",
       "/google-meta-ads"
     ],
-    "projectSlugs": [
-      "il-forte",
-      "speed-trasporti"
-    ],
+    "projectSlugs": [],
     "heading": "Reel per i social",
     "summary": "Format verticali, backstage e rubriche: contenuti da pubblicare con continuità."
   },

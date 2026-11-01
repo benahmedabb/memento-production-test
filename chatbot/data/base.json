@@ -1,5 +1,5 @@
 {
-  "version": "504023022b5d9d7f",
+  "version": "0bbe3956cdda4098",
   "entries": [
     {
       "id": "s1",
@@ -9615,25 +9615,6 @@
     },
     {
       "id": "s408",
-      "title": "Portfolio · Dora Events",
-      "path": "/portfolio#dora-events",
-      "text": "Un progetto video promozionale per accompagnare la comunicazione di un evento automotive.",
-      "questions": [],
-      "terms": [
-        "portfoli",
-        "dora",
-        "events",
-        "progett",
-        "vide",
-        "promozional",
-        "accompagnar",
-        "comunicazion",
-        "event",
-        "automotiv"
-      ]
-    },
-    {
-      "id": "s409",
       "title": "Recensione · Gazmend Cekaj",
       "path": "/recensioni",
       "text": "Momento production gestisce la mia pagina Instagram e cura con estrema attenzione e costanza tutto il materiale fotografico e non solo del mio locale.",
@@ -9662,7 +9643,7 @@
       ]
     },
     {
-      "id": "s410",
+      "id": "s409",
       "title": "Recensione · Studioesteticolife",
       "path": "/recensioni",
       "text": "Collaboriamo con Memento Production per la gestione social e la creazione dei contenuti del nostro centro estetico e non potremmo essere più soddisfatti. Stefan",
@@ -9688,7 +9669,7 @@
       ]
     },
     {
-      "id": "s411",
+      "id": "s410",
       "title": "Recensione · Razvan Grozavu",
       "path": "/recensioni",
       "text": "Agenzia di marketing e creazione contenuti migliore a Torino! Risultati molto soddisfacenti che mi hanno portato un sacco di nuovi clienti.",
@@ -9714,7 +9695,7 @@
       ]
     },
     {
-      "id": "s412",
+      "id": "s411",
       "title": "Recensione · Saccy Volley",
       "path": "/recensioni",
       "text": "Ottimi servizi! Stefan è un vero professionista come pochi qui in zona. Altissima qualità e attenzione al cliente! Consiglio vivamente.",
@@ -9740,7 +9721,7 @@
       ]
     },
     {
-      "id": "s413",
+      "id": "s412",
       "title": "Recensione · Bianca Fartade",
       "path": "/recensioni",
       "text": "Attrezzatura top e affidabilità. studio fotografico che si occupa di privati, ma soprattutto di business e branding . Professionalità top",
@@ -9762,7 +9743,7 @@
       ]
     },
     {
-      "id": "s414",
+      "id": "s413",
       "title": "Recensione · Calogero Alaimo",
       "path": "/recensioni",
       "text": "Professionisti nel curare i dettagli durante il nostro evento sportivo. Soddisfatto per la disponibilità e la professionalità che hanno mostrato. Consigliati!",
@@ -9787,7 +9768,7 @@
       ]
     },
     {
-      "id": "s415",
+      "id": "s414",
       "title": "Recensione · Federico Simonazzi",
       "path": "/recensioni",
       "text": "Stefan persona molto competenze e attentissimo a ogni dettaglio. Anche in sevizi complessi come quello in cui abbiamo collaborato, si è dimostrato eccellente",
@@ -9814,7 +9795,7 @@
       ]
     },
     {
-      "id": "s416",
+      "id": "s415",
       "title": "Recensione · Mary Potenza",
       "path": "/recensioni",
       "text": "I miei clienti si sono divertiti molto durante il vostro servizio! Grazie!",

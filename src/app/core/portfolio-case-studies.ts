@@ -198,21 +198,6 @@ export const portfolioCaseStudies: readonly PortfolioCaseStudy[] = [
     linkLabel: 'Scopri il progetto su Instagram',
     testimonial: true,
   },
-  {
-    slug: 'dora-events',
-    client: 'Dora Events',
-    sector: 'Eventi & automotive',
-    location: 'Dora Motor’s Experience',
-    mediaCaption: 'Il progetto video per Dora Motor’s Experience.',
-    tone: 'ink',
-    title: 'L’evento comincia dal racconto.',
-    summary: siteConfig.portfolio[1].summary,
-    paragraphs: [],
-    tags: ['Eventi', 'Video promozionale'],
-    coverUrl: siteConfig.portfolio[1].coverUrl,
-    url: siteConfig.portfolio[1].instagramPostUrl,
-    linkLabel: 'Guarda il video dell’evento',
-  },
 ];
 
 // Home and portfolio share the same editorial content and cover images.
