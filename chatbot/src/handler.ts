@@ -17,6 +17,8 @@ export interface Environment {
   AI?: { run(model: string, input: { messages: { role: string; content: string }[]; max_tokens: number; temperature: number; stream: false; response_format: { type: 'json_schema'; json_schema: object } }): Promise<ModelResult> };
 }
 export const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+export const INTERPRETATION_TIMEOUT_MS = 15_000;
+export const ANSWER_TIMEOUT_MS = 25_000;
 const encoder = new TextEncoder();
 const MAX_BODY = 16_384;
 
@@ -131,7 +133,7 @@ export async function handle(request: Request, env: Environment, kb: Knowledge, 
     const plan = parsePlan(await infer(env, quota, [
       { role: 'system', content: UNDERSTAND },
       { role: 'user', content: JSON.stringify({ messaggio: input.message, cronologia: history, pagina: input.page }) },
-    ], 220, 10_000, PLAN_SCHEMA));
+    ], 220, INTERPRETATION_TIMEOUT_MS, PLAN_SCHEMA));
     if (!plan) return fail('invalid_model_response', 502);
     // Sensitive commercial/account requests still go to the team after interpretation.
     if (/\b(?:scont\w*|prezz\w*|costa|costano|garant\w*|prenot\w*|disponibil\w*|privat\w*|password|fatturato)\b/.test(normalize(input.message))) {
@@ -158,7 +160,7 @@ export async function handle(request: Request, env: Environment, kb: Knowledge, 
       { role: 'user', content: JSON.stringify({ messaggio: input.message, cronologia: history, interpretazione: plan.intent, fonti: candidates.map(({ id, title, text }) => ({ id, title, text })) }) },
     ];
     // An empty retrieval does not prevent a greeting or a useful clarifying question.
-    const reply = generatedReply(await infer(env, quota, messages, 350, 15_000, answerSchema(candidates, plan)), candidates, kb, plan);
+    const reply = generatedReply(await infer(env, quota, messages, 350, ANSWER_TIMEOUT_MS, answerSchema(candidates, plan)), candidates, kb, plan);
     return send(reply, reply.error ? 502 : 200);
   } catch (error) {
     if (error instanceof BudgetExceeded) return fail('budget_exhausted', 429, Math.ceil((86_400_000 - Date.now() % 86_400_000) / 1000));

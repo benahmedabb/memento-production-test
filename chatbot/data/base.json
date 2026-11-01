@@ -1,5 +1,5 @@
 {
-  "version": "6180172b3d0d51b5",
+  "version": "e4b208a5d7bd2e8f",
   "entries": [
     {
       "id": "s1",
@@ -9818,13 +9818,14 @@
       "id": "s416",
       "title": "Soluzioni IA · assistenti per aziende",
       "path": "/soluzioni-ia-torino",
-      "text": "Memento progetta soluzioni di intelligenza artificiale per siti aziendali, in particolare assistenti IA che usano informazioni approvate dall’azienda per rispondere a domande su servizi, processo e contatti, aiutano a orientarsi e indirizzano al team le richieste che richiedono una persona.",
+      "text": "Memento progetta soluzioni di intelligenza artificiale per siti aziendali, in particolare assistenti IA, chiamati anche agenti IA. Usano informazioni approvate dall’azienda per rispondere a domande su servizi, processo e contatti, aiutano i visitatori a orientarsi e indirizzano al team le richieste che richiedono una persona. Possono offrire un primo orientamento anche fuori orario quando il servizio è disponibile.",
       "questions": [
         "Fate assistenti IA per siti web?",
         "Offrite chatbot per aziende?",
         "Avete soluzioni IA per rispondere ai clienti?",
         "Vi occupate di intelligenza artificiale?",
-        "Fate soluzioni di intelligenza artificiale per aziende?"
+        "Fate soluzioni di intelligenza artificiale per aziende?",
+        "Come possono essere utili gli agenti IA per il mio sito?"
       ],
       "terms": [
         "soluzion",
@@ -9837,6 +9838,8 @@
         "siti",
         "aziendal",
         "particolar",
+        "chiamat",
+        "agent",
         "usan",
         "informazion",
         "approvat",
@@ -9847,17 +9850,31 @@
         "process",
         "contatt",
         "aiutan",
+        "visitator",
         "orientars",
         "indirizzan",
         "team",
         "richiest",
         "richiedon",
         "person",
+        "posson",
+        "offrir",
+        "prim",
+        "orientament",
+        "fuor",
+        "orari",
+        "quand",
+        "servizi",
+        "disponibil",
         "web",
         "offrit",
         "chatbot",
         "client",
-        "occupat"
+        "occupat",
+        "esser",
+        "util",
+        "mio",
+        "sito"
       ]
     },
     {

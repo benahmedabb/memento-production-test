@@ -60,7 +60,7 @@ try {
   };
   for (const item of questions) {
     modelOutput = [];
-    const req = new Request('https://local-evaluation.invalid/v1/chat', { method: 'POST', headers: { origin: env.ALLOWED_ORIGINS, 'content-type': 'application/json', 'CF-Connecting-IP': '203.0.113.12' }, body: JSON.stringify({ message: item.question, history: item.history, turnstileToken: 'local-evaluation' }) });
+    const req = new Request('https://local-evaluation.invalid/v1/chat', { method: 'POST', headers: { origin: env.ALLOWED_ORIGINS, 'content-type': 'application/json', 'CF-Connecting-IP': '203.0.113.12' }, body: JSON.stringify({ message: item.question, page: item.page, history: item.history, turnstileToken: 'local-evaluation' }) });
     const response = await handle(req, env, kb, quota, async () => Response.json({ success: true, hostname: 'mementoproduction.it', action: 'memento_chat' }));
     const reply = await response.json();
     const safeText = !/\b(?:fonte|source|id)\s+s\d+\b|\bs\d+\b/i.test(reply.text);

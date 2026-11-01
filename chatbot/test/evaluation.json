@@ -11,7 +11,8 @@
     { "question": "Ciao, fate siti web?", "expectedPath": "/web" },
     { "question": "Grazie! E per un negozio online?", "expectedPath": "/web" },
     { "question": "La velocità", "expectedMode": "ai", "expectedPath": "/web", "mustNotAsk": true, "history": [{ "role": "user", "content": "Il mio sito fa schifo" }, { "role": "assistant", "content": "Cosa ti convince meno: l'aspetto, la velocità o il fatto che non ti porta contatti?" }] },
-    { "question": "Non vorrei rifarlo da zero", "expectedMode": "ai", "expectedFirstPath": "/web", "mustNotAsk": true, "history": [{ "role": "user", "content": "Il mio sito non mi piace" }, { "role": "assistant", "content": "Qual è l'aspetto che vuoi migliorare per primo?" }] }
+    { "question": "Non vorrei rifarlo da zero", "expectedMode": "ai", "expectedFirstPath": "/web", "mustNotAsk": true, "history": [{ "role": "user", "content": "Il mio sito non mi piace" }, { "role": "assistant", "content": "Qual è l'aspetto che vuoi migliorare per primo?" }] },
+    { "question": "cosa fanno sti agenti ? come possono essermi utile ?", "page": "/soluzioni-ia-torino", "expectedMode": "ai", "expectedPath": "/soluzioni-ia-torino", "mustNotAsk": true }
   ],
   "normal": [
     ["Dove vi trovate?", "/contatti"],
