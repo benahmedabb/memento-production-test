@@ -1,2 +1,2 @@
-// The AI service is shown on the Vercel demo while the offer is under review.
+// The AI service is available on both the demo and the public site.
 export const aiServiceEnabled = true;

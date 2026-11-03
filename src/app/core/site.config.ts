@@ -366,7 +366,6 @@ export const pageMetadata = {
     title: 'Assistenti IA e automazioni per aziende a Torino | Memento',
     description: 'Assistenti IA per rispondere alle domande sui tuoi servizi, orientare i clienti e passare al team le richieste giuste. Soluzioni su misura a Torino.',
     path: '/soluzioni-ia-torino',
-    noIndex: true, // Demo Vercel: remove when this service is approved for the public site.
     socialImage: {
       src: '/images/soluzioni-ia-rete-neurale-hero.webp',
       alt: 'Rete neurale astratta in vetro illuminata di verde e oro',

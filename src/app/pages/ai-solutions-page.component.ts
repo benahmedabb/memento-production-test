@@ -9,8 +9,6 @@ import { PageMotionDirective } from '../shared/page-motion.directive';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
 import { AiSolutionsFollowupComponent } from './ai-solutions-followup.component';
 
-const DEMO_ORIGIN = 'https://memento-production-test-2.vercel.app';
-
 @Component({
   imports: [RouterLink, PageMotionDirective, ScrollSceneDirective, AiSolutionsFollowupComponent],
   styleUrl: './ai-solutions-page.component.scss',
@@ -67,16 +65,16 @@ export class AiSolutionsPageComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    const pageUrl = `${DEMO_ORIGIN}${pageMetadata.aiSolutions.path}`;
+    const pageUrl = `${siteConfig.origin}${pageMetadata.aiSolutions.path}`;
     this.seo.setPage(pageMetadata.aiSolutions, [
-      { '@context': 'https://schema.org', '@type': 'WebPage', name: pageMetadata.aiSolutions.title, description: pageMetadata.aiSolutions.description, url: pageUrl, inLanguage: 'it-IT', primaryImageOfPage: `${DEMO_ORIGIN}${pageMetadata.aiSolutions.socialImage.src}` },
+      { '@context': 'https://schema.org', '@type': 'WebPage', name: pageMetadata.aiSolutions.title, description: pageMetadata.aiSolutions.description, url: pageUrl, inLanguage: 'it-IT', primaryImageOfPage: `${siteConfig.origin}${pageMetadata.aiSolutions.socialImage.src}` },
       { '@context': 'https://schema.org', '@type': 'Service', name: 'Assistenti IA e automazioni per aziende', description: pageMetadata.aiSolutions.description, serviceType: 'Assistenti IA per il sito web e automazione del primo contatto', provider: { '@id': `${siteConfig.origin}/#organization` }, areaServed: serviceAreas, url: pageUrl },
       { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: DEMO_ORIGIN },
-        { '@type': 'ListItem', position: 2, name: 'Servizi', item: `${DEMO_ORIGIN}/servizi` },
+        { '@type': 'ListItem', position: 1, name: 'Home', item: siteConfig.origin },
+        { '@type': 'ListItem', position: 2, name: 'Servizi', item: `${siteConfig.origin}/servizi` },
         { '@type': 'ListItem', position: 3, name: 'Soluzioni IA', item: pageUrl },
       ] },
-    ], DEMO_ORIGIN);
+    ]);
   }
 
   openDemo(): void {

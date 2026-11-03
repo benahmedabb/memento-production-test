@@ -1,21 +1,20 @@
-# Soluzioni IA — demo Vercel
+# Soluzioni IA — sito ufficiale e anteprima
 
 La pagina `/soluzioni-ia-torino` presenta un servizio costruito intorno ai problemi dei clienti: domande ripetute, richieste fuori orario e contatti con poco contesto. È collegata dalla Home, dalla navbar, dal menu Servizi, dalla pagina Servizi e dal footer. Il modulo Contatti include l'opzione “Soluzioni IA” e la preseleziona dai pulsanti della pagina. “Prova l'assistente” apre il chatbot già presente nella demo.
 
-La base di conoscenza locale include ora il nuovo servizio. Dopo il commit che pubblicherà la pagina su Vercel, l'eventuale Worker Cloudflare già distribuito deve essere aggiornato separatamente per usare la nuova base; il deploy del frontend non aggiorna da solo il Worker.
+La base di conoscenza locale e il Worker Cloudflare già pubblicato includono il servizio. Il deploy del frontend non aggiorna da solo il Worker quando la base di conoscenza cambia.
 
-## Pubblicazione controllata
+## Pubblicazione
 
-`src/app/core/ai-service-availability.ts` abilita la pagina sulla demo Vercel. La configurazione Hostinger sostituisce quel file con `ai-service-availability.hostinger.ts`, che la disabilita, ed esclude le due immagini dagli asset. Non caricare le nuove immagini né la pagina separatamente su Hostinger.
+`src/app/core/ai-service-availability.ts` abilita la pagina sia sulla demo Vercel sia nella build Hostinger. La configurazione Hostinger include le due immagini e la pagina. La build Hostinger include anche l'assistente; il backend resta sul Worker Cloudflare.
 
-Durante la revisione la pagina ha `noindex, nofollow`. Il suo canonical, gli URL Open Graph e i dati strutturati della pagina puntano a `https://memento-production-test-2.vercel.app/soluzioni-ia-torino`. Non compare nella sitemap pubblica perché il servizio non è ancora disponibile su `mementoproduction.it`.
+Il canonical, gli URL Open Graph e i dati strutturati puntano a `https://mementoproduction.it/soluzioni-ia-torino`; la pagina è indicizzabile e presente nella sitemap pubblica. La demo Vercel usa lo stesso canonical ufficiale, così la pagina di prova non compete con il sito principale.
 
-Per pubblicarla sul sito ufficiale dopo l'approvazione:
+Prima di caricare la nuova build sul sito ufficiale:
 
-1. Abilitare la pagina anche nella variante Hostinger e includere i due file immagine.
-2. Rimuovere `noIndex` da `pageMetadata.aiSolutions` e usare l'origine pubblica al posto di `DEMO_ORIGIN` nel componente.
-3. Aggiungere l'URL canonico alla sitemap pubblica.
-4. Verificare il testo dell'offerta con l'agenzia, soprattutto confini del servizio, privacy e passaggio al team.
+1. Verificare con l'agenzia il testo dell'offerta, i confini del servizio e il passaggio al team.
+2. Verificare gli hostname ufficiali nel widget Cloudflare Turnstile e aggiornare l'informativa Iubenda per l'uso dell'assistente.
+3. Caricare tutti i file di `dist/memento-production-hostinger/browser`, incluse le cartelle `chatbot` e `images`.
 
 ## Immagini
 
