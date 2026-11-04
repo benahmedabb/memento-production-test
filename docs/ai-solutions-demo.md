@@ -24,3 +24,18 @@ Le immagini sono state create con il tool integrato imagegen e poi ottimizzate i
 - `public/images/soluzioni-ia-flusso-neurale.webp`: rete di cellule traslucide con segnali convergenti in un nodo e pochi percorsi ordinati in uscita, materiali fotografici, palette verde bosco e oro. Nessun testo o logo.
 
 Le scene sono immagini concettuali. La conversazione mostrata nella pagina è segnalata come esempio illustrativo, senza attribuirla a un cliente reale.
+
+## Robot 3D nella hero
+
+La hero usa il modello Higgsfield fornito il 4 novembre 2026, `hf_20261104_002829_9a0e8a1a-628c-405b-8bb1-cf69d6bd0caf.glb`. L'originale nei Download non viene modificato. Non viene usato il precedente robot procedurale.
+
+- `public/models/ai-assistant.glb`: versione web da 2.405.968 byte (2,4 MB; originale 20,2 MB), 62.235 triangoli, geometria compressa con Meshopt e texture WebP. Nessuna semplificazione della mesh; quantizzazione delle coordinate a 14 bit. Texture colore a 1536 px, normale e metallicità/ruvidità a 1024 px, emissione a 512 px.
+- `public/images/ai-robot-poster.webp`: immagine trasparente da circa 52 KB, renderizzata dallo stesso modello. È visibile durante il caricamento e rimane su mobile, con movimento ridotto, risparmio dati, connessione 2G o WebGL indisponibile.
+- `src/app/shared/ai-robot-hero.component.*`: layout, accessibilità, caricamento e ciclo di vita. Contenuti, link e pulsanti esistono anche senza WebGL; la CTA apre il chatbot esistente.
+- `src/app/shared/ai-robot-scene.ts`: importazione GLB, illuminazione e interazione. Il modello e Three.js vengono richiesti solo su desktop con puntatore preciso, dopo il caricamento della pagina e quando la hero è visibile. Il download è annullabile; scena e risorse vengono rilasciate all'uscita dalla pagina.
+
+Il GLB contiene una sola mesh, senza scheletro, occhi separati o animazioni. L'interazione applica una rotazione contenuta al robot intero; **non anima occhi e collo indipendentemente**. Per quel movimento serve un modello articolato. L'illuminazione emissiva reagisce al passaggio sui pulsanti.
+
+Il rendering è limitato a circa 30 fotogrammi al secondo durante il movimento, si arresta quando la posa si stabilizza e si sospende fuori schermo o con scheda nascosta. Non ci sono ombre in tempo reale né postproduzione. Il canvas è decorativo; i metadati, il canonical, i dati strutturati e la sitemap restano quelli della pagina esistente.
+
+La compressione è stata eseguita con glTF Transform, Meshoptimizer e Sharp in una cartella temporanea di strumenti, senza aggiungere dipendenze al progetto. Per sostituire il GLB occorre controllare nuovamente inquadratura, dimensioni, materiali e poster.

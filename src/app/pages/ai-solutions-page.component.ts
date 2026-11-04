@@ -1,37 +1,19 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { SeoService } from '../core/seo.service';
 import { serviceAreas } from '../core/site-schema';
 import { pageMetadata, siteConfig } from '../core/site.config';
-import { TrackingService } from '../core/tracking.service';
 import { PageMotionDirective } from '../shared/page-motion.directive';
 import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
+import { AiRobotHeroComponent } from '../shared/ai-robot-hero.component';
 import { AiSolutionsFollowupComponent } from './ai-solutions-followup.component';
 
 @Component({
-  imports: [RouterLink, PageMotionDirective, ScrollSceneDirective, AiSolutionsFollowupComponent],
+  imports: [AiRobotHeroComponent, PageMotionDirective, ScrollSceneDirective, AiSolutionsFollowupComponent],
   styleUrl: './ai-solutions-page.component.scss',
   template: `
     <article class="ai-page">
-      <section class="ai-hero" aria-labelledby="ai-title" appScrollScene="hero">
-        <img class="ai-hero__image" src="/images/soluzioni-ia-rete-neurale-hero.webp" alt="" width="1672" height="941" fetchpriority="high" />
-        <div class="ai-hero__shade" aria-hidden="true"></div>
-        <div class="ai-hero__orbit" aria-hidden="true"><span></span><span></span><span></span></div>
-        <div class="shell ai-hero__inner">
-          <nav class="ai-breadcrumb" aria-label="Percorso di navigazione"><a routerLink="/">Home</a><span aria-hidden="true">/</span><a routerLink="/servizi">Servizi</a><span aria-hidden="true">/</span><span>Soluzioni IA</span></nav>
-          <div class="ai-hero__copy">
-            <p appPageMotion="hero" [motionDelay]="100" class="eyebrow eyebrow--gold">Soluzioni IA per aziende · Torino</p>
-            <h1 id="ai-title" appPageMotion="hero" [motionDelay]="210">Le domande arrivano sempre. <em>Facciamo trovare una risposta.</em></h1>
-            <p appPageMotion="hero" [motionDelay]="330" class="ai-hero__lead">Il cliente vuole capire se sei la scelta giusta. Il tuo team non può ripetere le stesse risposte tutto il giorno. Progettiamo assistenti IA che conoscono la tua attività, orientano le persone e sanno quando passare la conversazione a te.</p>
-            <div appPageMotion="hero" [motionDelay]="450" class="ai-hero__actions">
-              <a class="button button--gold" routerLink="/contatti" [queryParams]="{ servizio: '/soluzioni-ia-torino' }" (click)="tracking.trackQuote('ai_hero')">Parliamo del tuo caso <span aria-hidden="true">↗&#xFE0E;</span></a>
-              <button class="ai-hero__demo" type="button" (click)="openDemo()">Prova l'assistente del sito <span aria-hidden="true">→</span></button>
-            </div>
-          </div>
-          <p class="ai-hero__index" aria-hidden="true">INTELLIGENZA UTILE / 01</p>
-        </div>
-      </section>
+      <app-ai-robot-hero (demoRequested)="openDemo()" />
 
       <section class="ai-intro ai-section" aria-labelledby="ai-intro-title" appScrollScene>
         <div class="shell ai-intro__grid">
@@ -55,7 +37,6 @@ import { AiSolutionsFollowupComponent } from './ai-solutions-followup.component'
   `,
 })
 export class AiSolutionsPageComponent implements OnInit {
-  readonly tracking = inject(TrackingService);
   private readonly seo = inject(SeoService);
   private readonly document = inject(DOCUMENT);
   readonly problems = [

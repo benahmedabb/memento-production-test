@@ -1,0 +1,29 @@
+<section class="robot-hero" aria-labelledby="ai-title" [class.robot-hero--ready]="ready()">
+  <div class="rh-ambient" aria-hidden="true"></div>
+  <div class="shell rh-layout">
+    <nav class="rh-breadcrumb" aria-label="Percorso di navigazione">
+      <a routerLink="/">Home</a><span aria-hidden="true">/</span><a routerLink="/servizi">Servizi</a><span aria-hidden="true">/</span><span>Soluzioni IA</span>
+    </nav>
+    <div class="rh-copy">
+      <p class="rh-eyebrow"><span aria-hidden="true"></span>Soluzioni IA per aziende</p>
+      <h1 id="ai-title">Il prossimo<br>passo è <em>umano.</em><span>Il supporto è IA.</span></h1>
+      <p class="rh-lead">Meno domande ripetute. Più tempo per le persone.<br class="rh-break"> Un assistente che conosce la tua attività, aiuta i tuoi clienti e sa quando passare la parola a te.</p>
+      <div class="rh-actions">
+        <button class="rh-primary" type="button" (click)="demoRequested.emit()">Conosci il nostro assistente <span aria-hidden="true">↗&#xFE0E;</span></button>
+        <a class="rh-contact" routerLink="/contatti" [queryParams]="{ servizio: '/soluzioni-ia-torino' }" (click)="tracking.trackQuote('ai_hero')">Immaginiamolo per la tua azienda <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="rh-signature"><span aria-hidden="true">M /</span> La tua conoscenza. Una nuova presenza.</div>
+    </div>
+    <div class="rh-visual" aria-hidden="true">
+      <div class="rh-halo"></div>
+      <div class="rh-orbit"></div>
+      <span class="rh-coordinate rh-coordinate--top">MEMENTO / INTELLIGENZA UTILE</span>
+      <img class="rh-poster" src="/images/ai-robot-poster.webp" alt="" width="900" height="1020" fetchpriority="high" decoding="async">
+      <canvas class="rh-canvas"></canvas>
+      <div class="rh-fade"></div>
+      <span class="rh-hint"><span></span>Muovi il cursore. Facciamo conoscenza.</span>
+      <span class="rh-coordinate rh-coordinate--bottom">PROGETTATO INTORNO A TE / 01</span>
+    </div>
+    <a class="rh-discover" href="#ai-intro-title"><span aria-hidden="true">↓</span> Scopri cosa può fare per te</a>
+  </div>
+</section>
