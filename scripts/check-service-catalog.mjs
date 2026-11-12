@@ -23,6 +23,8 @@ const canonical = new Set([
   '/recensioni',
   '/contatti',
   '/privacy-policy',
+  '/licenza-immagini',
+  '/soluzioni-ia-torino',
 ]);
 const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 for (const field of ['path', 'title', 'description', 'heading']) {

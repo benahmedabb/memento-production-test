@@ -8,12 +8,18 @@
 .ai-example__grid > div:first-child > p:not(.eyebrow) { max-width: 28rem; color: #405348; line-height: 1.72; }
 .ai-example .text-link { padding: .7rem 0; border: 0; background: transparent; cursor: pointer; }
 .ai-conversation { display: flex; flex-direction: column; gap: .9rem; padding: clamp(1.2rem, 3vw, 2rem); border: 1px solid #c2c9bb; background: #f8f6f1; box-shadow: 1rem 1rem 0 #11241d1a; }
-.ai-conversation__label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .35rem; margin-bottom: 1.2rem; color: var(--green); font-size: .66rem; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; letter-spacing: .09em; }
+.ai-conversation__header { display: flex; align-items: center; gap: .8rem; padding-bottom: 1rem; margin-bottom: .3rem; border-bottom: 1px solid #c2c9bb; }
+.ai-conversation__header > div { flex: 1; min-width: 0; }
+.ai-conversation__avatar { display: grid; place-items: center; flex: 0 0 2.75rem; height: 2.75rem; border-radius: 50%; color: var(--green-deep); background: var(--gold); }
+.ai-conversation svg { width: 1.35rem; height: 1.35rem; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ai-conversation__label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .35rem; margin: 0; color: var(--green); font-size: .66rem; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; letter-spacing: .09em; }
 .ai-conversation__label span { color: #657569; font-family: var(--font-body); font-weight: 400; letter-spacing: 0; text-transform: none; }
+.ai-conversation__identity { margin: .35rem 0 0; color: #405348; font-size: .72rem; line-height: 1.5; }
 .ai-bubble { max-width: 88%; padding: .95rem 1.1rem; font-size: .82rem; line-height: 1.57; }
 .ai-bubble--user { align-self: flex-end; color: var(--paper); background: var(--green); }
 .ai-bubble--assistant { align-self: flex-start; color: var(--ink); background: #e7e8e1; }
-.ai-bubble span { display: block; margin-bottom: .35rem; color: var(--green); font-size: .61rem; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.ai-bubble__author { display: flex; align-items: center; gap: .4rem; margin-bottom: .5rem; color: var(--green); font-size: .61rem; font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.ai-bubble__author svg { width: 1rem; height: 1rem; }
 .ai-conversation__handoff { align-self: center; margin-top: .6rem; color: var(--green); font-size: .68rem; text-align: center; }
 
 .ai-method { position: relative; padding-block: clamp(5rem, 9vw, 9rem); color: var(--paper); background: #142d22; }

@@ -2,6 +2,7 @@ import { ViewportScroller } from '@angular/common';
 import { Component, DOCUMENT, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ChatLauncherComponent } from './shared/chat-launcher.component';
+import { FloatingWhatsappComponent } from './shared/floating-whatsapp.component';
 import { PointerHaloComponent } from './shared/pointer-halo.component';
 import { SiteFooterComponent } from './shared/site-footer.component';
 import { SiteHeaderComponent } from './shared/site-header.component';
@@ -14,6 +15,7 @@ import { TrackingService } from './core/tracking.service';
     SiteHeaderComponent,
     SiteFooterComponent,
     ChatLauncherComponent,
+    FloatingWhatsappComponent,
     PointerHaloComponent,
   ],
   selector: 'app-root',

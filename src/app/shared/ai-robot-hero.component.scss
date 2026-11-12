@@ -50,17 +50,19 @@ a:focus-visible, button:focus-visible { outline: 2px solid #e4c78f; outline-offs
   .rh-visual { left: 49%; right: -9%; }
 }
 @media (max-width: 899px) {
-  .rh-layout { display: flex; flex-direction: column; min-height: 0; }
+  .rh-layout { display: block; min-height: 0; }
   .rh-breadcrumb { top: 1.25rem; }
-  .rh-copy { align-self: stretch; padding-block: 5rem 0; }
+  .rh-copy { padding-block: 5rem 2rem; }
   .rh-eyebrow { font-size: .58rem; margin-bottom: 1.4rem; }
   h1 { font-size: clamp(3rem, 9vw, 5.1rem); }
   .rh-lead { max-width: 33rem; font-size: .92rem; margin-block: 1.5rem; }
   .rh-signature { margin-top: 1.7rem; }
-  .rh-visual { position: relative; inset: auto; align-self: center; width: min(100vw, 540px); height: 490px; margin-top: -1rem; }
-  .rh-coordinate--top { display: none; }
-  .rh-coordinate--bottom { bottom: 6%; right: 12%; font-size: .45rem; }
-  .rh-discover { position: relative; align-self: flex-start; bottom: auto; margin-block: 0 2rem; }
+  // Keep the lightweight poster inside the hero, behind the copy rather than in a second row.
+  .rh-visual { inset: 3rem clamp(-12rem, -40vw, -6rem) auto auto; z-index: 0; width: min(118vw, 42rem); height: clamp(32rem, 120vw, 42rem); }
+  .rh-poster { object-position: top center; }
+  .rh-fade { inset: 0; background: linear-gradient(0deg, #071d1b, #071d1bf2 24%, #071d1b33 68%, transparent 90%), linear-gradient(90deg, #071d1b, #071d1bd9 24%, #071d1b40 60%, transparent); }
+  .rh-coordinate { display: none; }
+  .rh-discover { position: relative; z-index: 2; bottom: auto; width: fit-content; margin-block: 0 2rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

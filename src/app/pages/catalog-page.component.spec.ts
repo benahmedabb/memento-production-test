@@ -107,6 +107,10 @@ describe('Service catalog navigation and SEO', () => {
     expect(image.creator).toEqual(
       expect.objectContaining({ '@type': 'Organization', name: 'Memento Production' }),
     );
+    expect(image.creator).not.toHaveProperty('@id');
+    expect(image.copyrightNotice).toBe('Memento Production');
+    expect(image.license).toBe('https://mementoproduction.it/licenza-immagini');
+    expect(image.acquireLicensePage).toBe('https://mementoproduction.it/contatti');
     expect(
       schema.filter((entry: Record<string, unknown>) => entry['@type'] === 'VideoObject'),
     ).toHaveLength(4);
@@ -156,5 +160,14 @@ describe('Service catalog navigation and SEO', () => {
     expect(
       harness.routeNativeElement?.querySelector('.photo-gallery figure')?.textContent,
     ).toContain('Prima');
+    schema = JSON.parse(document.getElementById('memento-structured-data')!.textContent!);
+    const rebrandingImages = schema.filter(
+      (entry: Record<string, unknown>) => entry['@type'] === 'ImageObject',
+    );
+    expect(rebrandingImages).toHaveLength(1);
+    expect(rebrandingImages[0]['@id']).toContain('email-rebranding-master-dopo');
+    expect(rebrandingImages[0].license).toBe(
+      'https://mementoproduction.it/licenza-immagini',
+    );
   });
 });

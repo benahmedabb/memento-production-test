@@ -17,6 +17,7 @@ export const routes: Routes = [
   { path: 'recensioni', loadComponent: () => import('./pages/reviews-page.component').then(m => m.ReviewsPageComponent) },
   { path: 'contatti', loadComponent: () => import('./pages/contact-page.component').then(m => m.ContactPageComponent) },
   { path: 'privacy-policy', loadComponent: () => import('./pages/policy-page.component').then(m => m.PolicyPageComponent) },
+  { path: 'licenza-immagini', loadComponent: () => import('./pages/image-license-page.component').then(m => m.ImageLicensePageComponent) },
   { path: '404', loadComponent: () => import('./pages/not-found-page.component').then(m => m.NotFoundPageComponent) },
   { path: '**', redirectTo: '404' },
 ];

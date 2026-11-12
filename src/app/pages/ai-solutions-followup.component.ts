@@ -12,7 +12,28 @@ import { ScrollSceneDirective } from '../shared/scroll-scene.directive';
     <section class="ai-example ai-section" aria-labelledby="ai-example-title" appScrollScene>
       <div class="shell ai-example__grid">
         <div appPageMotion="rise"><p class="eyebrow">Un esempio concreto</p><h2 id="ai-example-title">Dal «mi serve un sito» a una conversazione che ha già un punto di partenza.</h2><p>Un assistente ben progettato non forza una vendita. Aiuta a chiarire il bisogno e lascia alle persone il confronto che conta.</p><button type="button" class="text-link" (click)="demoRequested.emit()">Prova la nostra demo <span aria-hidden="true">↗&#xFE0E;</span></button></div>
-        <div class="ai-conversation" appPageMotion="rise" [motionDelay]="170" aria-label="Esempio illustrativo di conversazione"><p class="ai-conversation__label">Una conversazione possibile <span>● Demo illustrativa</span></p><div class="ai-bubble ai-bubble--user">Il mio sito è vecchio, ma non so se rifarlo da zero.</div><div class="ai-bubble ai-bubble--assistant"><span>Assistente</span>Possiamo partire da quello che oggi non funziona: aspetto, contenuti o richieste che arrivano dal sito. Se vuoi, ti mostro come affrontiamo un restyling.</div><div class="ai-bubble ai-bubble--user">Soprattutto non mi arrivano contatti.</div><div class="ai-bubble ai-bubble--assistant"><span>Assistente</span>Allora guarderei prima il percorso che porta al contatto. Memento può aiutarti a rivedere struttura, messaggi e punti di conversione. Per capire da dove iniziare, puoi parlarne direttamente con il team.</div><div class="ai-conversation__handoff">La conversazione passa a una persona quando serve.</div></div>
+        <div class="ai-conversation" appPageMotion="rise" [motionDelay]="170" aria-label="Esempio illustrativo di conversazione con un assistente IA">
+          <div class="ai-conversation__header">
+            <span class="ai-conversation__avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13a2 2 0 0 1 2-2h1v6H6a2 2 0 0 1-2-2v-2Zm16 0a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2v-2Z"/><path d="M17 17c0 2-1.6 3-4 3h-1"/></svg>
+            </span>
+            <div>
+              <p class="ai-conversation__label">Una conversazione possibile <span>● Demo illustrativa</span></p>
+              <p class="ai-conversation__identity">Risponde un assistente virtuale IA</p>
+            </div>
+          </div>
+          <div class="ai-bubble ai-bubble--user">Il mio sito è vecchio, ma non so se rifarlo da zero.</div>
+          <div class="ai-bubble ai-bubble--assistant">
+            <span class="ai-bubble__author"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13a2 2 0 0 1 2-2h1v6H6a2 2 0 0 1-2-2v-2Zm16 0a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2v-2Z"/><path d="M17 17c0 2-1.6 3-4 3h-1"/></svg>Assistente IA</span>
+            Possiamo partire da quello che oggi non funziona: aspetto, contenuti o richieste che arrivano dal sito. Se vuoi, ti mostro come affrontiamo un restyling.
+          </div>
+          <div class="ai-bubble ai-bubble--user">Soprattutto non mi arrivano contatti.</div>
+          <div class="ai-bubble ai-bubble--assistant">
+            <span class="ai-bubble__author"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13a2 2 0 0 1 2-2h1v6H6a2 2 0 0 1-2-2v-2Zm16 0a2 2 0 0 0-2-2h-1v6h1a2 2 0 0 0 2-2v-2Z"/><path d="M17 17c0 2-1.6 3-4 3h-1"/></svg>Assistente IA</span>
+            Allora guarderei prima il percorso che porta al contatto. Memento può aiutarti a rivedere struttura, messaggi e punti di conversione. Per capire da dove iniziare, puoi parlarne direttamente con il team.
+          </div>
+          <div class="ai-conversation__handoff">La conversazione passa a una persona quando serve.</div>
+        </div>
       </div>
     </section>
 

@@ -404,6 +404,11 @@ export const pageMetadata = {
     description: 'Accedi alle informative privacy e cookie di Memento Production e gestisci le preferenze di consenso.',
     path: '/privacy-policy',
   },
+  imageLicense: {
+    title: 'Licenza e utilizzo delle immagini | Memento Production',
+    description: 'Condizioni per utilizzare fotografie, grafiche e contenuti visivi pubblicati da Memento Production e modalità per richiedere un’autorizzazione.',
+    path: '/licenza-immagini',
+  },
   notFound: {
     title: 'Pagina non trovata | Memento Production',
     description: 'La pagina richiesta non è disponibile.',

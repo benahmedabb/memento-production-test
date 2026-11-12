@@ -59,6 +59,8 @@ export class AiRobotHeroComponent {
     const load = async () => {
       idle = timer = 0;
       if (!active() || scene || loading) return;
+      // A development hot-reload may replace the view while an import is pending.
+      if (!canvas.isConnected) { failed = true; return; }
       loading = true;
       const controller = new AbortController();
       request = controller;
@@ -66,7 +68,11 @@ export class AiRobotHeroComponent {
         const { createAiRobotScene } = await import('./ai-robot-scene');
         if (!active() || controller.signal.aborted) return;
         const created = await createAiRobotScene(canvas, controller.signal);
-        if (!active() || controller.signal.aborted) { created.dispose(); return; }
+        if (!active() || controller.signal.aborted || !canvas.isConnected) {
+          created.dispose();
+          if (!canvas.isConnected) failed = true;
+          return;
+        }
         scene = created;
         scene.setActive(true);
         revealFrame = win.requestAnimationFrame(() => {
@@ -96,27 +102,21 @@ export class AiRobotHeroComponent {
     intersection.observe(root);
     const resize = new ResizeObserver(() => scene?.resize());
     resize.observe(canvas);
+    let pointerX = Number.NaN, pointerY = Number.NaN;
     const point = (event: PointerEvent) => {
-      if (!active() || !scene || event.pointerType === 'touch') return;
+      if (!active() || !scene || event.pointerType !== 'mouse') return;
+      if (event.clientX === pointerX && event.clientY === pointerY) return;
+      pointerX = event.clientX; pointerY = event.clientY;
       const bounds = canvas.getBoundingClientRect();
       scene.point((event.clientX - bounds.left) / bounds.width * 2 - 1, 1 - (event.clientY - bounds.top) / bounds.height * 2);
     };
-    const reset = () => scene?.reset();
-    const engage = (event: Event) => {
-      const target = event.target;
-      if (target instanceof Element && target.closest('.rh-actions')) scene?.engage(true);
-    };
-    const disengage = (event: Event) => {
-      const related = (event as MouseEvent | FocusEvent).relatedTarget;
-      if (!(related instanceof Element) || !related.closest('.rh-actions')) scene?.engage(false);
+    const reset = () => {
+      pointerX = pointerY = Number.NaN;
+      scene?.reset();
     };
     const contextLost = (event: Event) => { event.preventDefault(); failed = true; release(); };
-    root.addEventListener('pointermove', point, { passive: true });
-    root.addEventListener('pointerleave', reset);
-    root.addEventListener('pointerover', engage);
-    root.addEventListener('pointerout', disengage);
-    root.addEventListener('focusin', engage);
-    root.addEventListener('focusout', disengage);
+    win.addEventListener('pointermove', point, { passive: true });
+    this.document.documentElement.addEventListener('pointerleave', reset);
     canvas.addEventListener('webglcontextlost', contextLost);
     win.addEventListener('blur', reset);
     win.addEventListener('load', sync, { once: true });
@@ -128,12 +128,8 @@ export class AiRobotHeroComponent {
       release();
       intersection.disconnect();
       resize.disconnect();
-      root.removeEventListener('pointermove', point);
-      root.removeEventListener('pointerleave', reset);
-      root.removeEventListener('pointerover', engage);
-      root.removeEventListener('pointerout', disengage);
-      root.removeEventListener('focusin', engage);
-      root.removeEventListener('focusout', disengage);
+      win.removeEventListener('pointermove', point);
+      this.document.documentElement.removeEventListener('pointerleave', reset);
       canvas.removeEventListener('webglcontextlost', contextLost);
       win.removeEventListener('blur', reset);
       win.removeEventListener('load', sync);

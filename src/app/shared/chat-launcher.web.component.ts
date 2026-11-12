@@ -17,11 +17,11 @@ import { ChatPanelComponent } from './chat-panel.component';
     }
   `,
   styles: `
-    .chat-launcher { position: fixed; z-index: 40; right: 1.5rem; bottom: calc(4.5rem + env(safe-area-inset-bottom)); display: grid; width: 3.75rem; height: 3.75rem; place-items: center; padding: 0; color: var(--green-deep); background: var(--gold); border: 1px solid rgba(17, 36, 29, .12); border-radius: 50%; box-shadow: 0 12px 28px rgba(17, 36, 29, .26); }
+    .chat-launcher { position: fixed; z-index: 40; right: 1.5rem; bottom: calc(5.25rem + env(safe-area-inset-bottom)); display: grid; width: 3.75rem; height: 3.75rem; place-items: center; padding: 0; color: var(--green-deep); background: var(--gold); border: 1px solid rgba(17, 36, 29, .12); border-radius: 50%; box-shadow: 0 12px 28px rgba(17, 36, 29, .26); }
     svg { width: 1.65rem; height: 1.65rem; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
     @media (prefers-reduced-motion: no-preference) { .chat-launcher { transition: background-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease; } }
     .chat-launcher:hover { color: var(--paper); background: var(--green); box-shadow: 0 15px 34px rgba(17, 36, 29, .32); transform: translateY(-2px); }
-    @media (max-width: 480px) { .chat-launcher { right: 1rem; bottom: calc(4.25rem + env(safe-area-inset-bottom)); } }
+    @media (max-width: 480px) { .chat-launcher { right: 1rem; bottom: calc(5rem + env(safe-area-inset-bottom)); } }
   `,
 })
 export class ChatLauncherComponent {

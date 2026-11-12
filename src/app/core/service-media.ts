@@ -908,31 +908,40 @@ export const serviceMediaFor = (path: string): ServiceMedia => mediaByPath[path]
 
 export function serviceMediaSchema(path: string, media: ServiceMedia): Record<string, unknown>[] {
   const pageUrl = `${siteConfig.origin}${path}`;
+  const imageLicenseUrl = `${siteConfig.origin}/licenza-immagini`;
+  const imageLicenseRequestUrl = `${siteConfig.origin}/contatti`;
   const images =
-    media.photography?.photos.map((photo) => ({
-      '@context': 'https://schema.org',
-      '@type': 'ImageObject',
-      '@id': `${pageUrl}#${photo.slug}`,
-      name: photo.title,
-      description: photo.alt,
-      caption: photo.location,
-      contentUrl: `${siteConfig.origin}${photoSource(photo, 1920)}`,
-      thumbnailUrl: `${siteConfig.origin}${photoSource(photo, 640)}`,
-      width: photo.width,
-      height: photo.height,
-      creditText: media.photography?.credit,
-      // The comparison also contains the client's previous logo, not created by Memento.
-      ...(media.photography?.layout === 'comparison'
-        ? {}
-        : {
-            creator: {
-              '@type': 'Organization',
-              '@id': `${siteConfig.origin}/#organization`,
-              name: 'Memento Production',
-              url: siteConfig.origin,
-            },
-          }),
-    })) ?? [];
+    media.photography?.photos.flatMap((photo) => {
+      const isClientReference =
+        media.photography?.layout === 'comparison' && photo.slug.endsWith('-prima');
+      // The old logo only explains the before/after comparison. Its author and licensing
+      // rights are not asserted by Memento, so it must not expose license metadata.
+      if (isClientReference) return [];
+      return [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'ImageObject',
+          '@id': `${pageUrl}#${photo.slug}`,
+          name: photo.title,
+          description: photo.alt,
+          caption: photo.location,
+          contentUrl: `${siteConfig.origin}${photoSource(photo, 1920)}`,
+          thumbnailUrl: `${siteConfig.origin}${photoSource(photo, 640)}`,
+          width: photo.width,
+          height: photo.height,
+          creditText: media.photography?.layout === 'comparison'
+            ? 'Progetto grafico di Memento Production'
+            : media.photography?.credit,
+          copyrightNotice: 'Memento Production',
+          license: imageLicenseUrl,
+          acquireLicensePage: imageLicenseRequestUrl,
+          creator: {
+            '@type': 'Organization',
+            name: 'Memento Production',
+          },
+        },
+      ];
+    }) ?? [];
   const films = media.films.flatMap((selection) => selection.films);
   const uniqueFilms = [...new Map(films.map((film) => [film.id, film])).values()];
   return [

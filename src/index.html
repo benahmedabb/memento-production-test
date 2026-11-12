@@ -46,6 +46,7 @@
     (function () {
       window._iub = window._iub || [];
       window._iub.csConfiguration = window._iub.csConfiguration || {};
+      window._iub.csConfiguration.floatingPreferencesButtonDisplay = 'bottom-left';
       var callbacks = window._iub.csConfiguration.callback || {};
       var notifyAngular = function () {
         window.dispatchEvent(new CustomEvent('memento:iubenda-preferences-changed'));

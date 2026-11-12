@@ -15,6 +15,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'recensioni', renderMode: RenderMode.Prerender },
   { path: 'contatti', renderMode: RenderMode.Prerender },
   { path: 'privacy-policy', renderMode: RenderMode.Prerender },
+  { path: 'licenza-immagini', renderMode: RenderMode.Prerender },
   { path: '404', renderMode: RenderMode.Prerender },
   { path: '**', renderMode: RenderMode.Client },
 ];

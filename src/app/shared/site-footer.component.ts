@@ -69,6 +69,7 @@ import { TrackingService } from '../core/tracking.service';
         <span>© {{ currentYear }} Memento Production · P. IVA {{ config.contact.vatNumber }}</span>
         <div class="footer-legal">
           <a routerLink="/privacy-policy">Privacy e cookie</a>
+          <a routerLink="/licenza-immagini">Licenza immagini</a>
           <a [href]="config.iubenda.privacyPolicyUrl" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
           <a [href]="config.iubenda.cookiePolicyUrl" target="_blank" rel="noopener noreferrer">Cookie Policy</a>
           <button type="button" class="link-button" (click)="consent.openPreferences()">Modifica preferenze</button>
