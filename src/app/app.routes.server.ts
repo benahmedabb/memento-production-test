@@ -11,6 +11,7 @@ export const serverRoutes: ServerRoute[] = [
   ...serviceRedirects.map(({ from }) => ({ path: from.slice(1), renderMode: RenderMode.Prerender as const })),
   { path: 'google-meta-ads', renderMode: RenderMode.Prerender },
   ...(aiServiceEnabled ? [{ path: 'soluzioni-ia-torino', renderMode: RenderMode.Prerender as const }] : []),
+  { path: 'memento-academy', renderMode: RenderMode.Prerender },
   { path: 'portfolio', renderMode: RenderMode.Prerender },
   { path: 'recensioni', renderMode: RenderMode.Prerender },
   { path: 'contatti', renderMode: RenderMode.Prerender },

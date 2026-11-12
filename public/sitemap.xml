@@ -146,6 +146,10 @@
     <image:image><image:loc>https://mementoproduction.it/images/servizi/email-corporate-vainella-1920.webp</image:loc></image:image>
   </url>
   <url><loc>https://mementoproduction.it/recensioni</loc></url>
+  <url>
+    <loc>https://mementoproduction.it/memento-academy</loc>
+    <image:image><image:loc>https://mementoproduction.it/images/memento-ufficio-hero.webp</image:loc></image:image>
+  </url>
   <url><loc>https://mementoproduction.it/contatti</loc></url>
   <url><loc>https://mementoproduction.it/privacy-policy</loc></url>
   <url><loc>https://mementoproduction.it/licenza-immagini</loc></url>

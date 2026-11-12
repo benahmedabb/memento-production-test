@@ -21,6 +21,7 @@ const canonical = new Set([
   '/google-meta-ads',
   '/portfolio',
   '/recensioni',
+  '/memento-academy',
   '/contatti',
   '/privacy-policy',
   '/licenza-immagini',

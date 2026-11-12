@@ -50,6 +50,7 @@ import { TrackingService } from '../core/tracking.service';
           <a routerLink="/agenzia">Agenzia</a>
           <a routerLink="/agenzia" fragment="chi-siamo">Chi siamo</a>
           <a routerLink="/servizi">Servizi</a>
+          <a routerLink="/memento-academy">Memento Academy</a>
           <a routerLink="/portfolio">Portfolio</a>
           <a routerLink="/contatti">Contatti</a>
         </div>

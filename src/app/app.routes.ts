@@ -13,6 +13,7 @@ export const routes: Routes = [
   ...serviceRedirects.map(({ from, to }) => ({ path: from.slice(1), redirectTo: to, pathMatch: 'full' as const })),
   { path: 'google-meta-ads', loadComponent: () => import('./pages/service-detail-page.component').then(m => m.ServiceDetailPageComponent), data: { serviceKey: 'ads' } },
   ...(aiServiceEnabled ? [{ path: 'soluzioni-ia-torino', loadComponent: () => import('./pages/ai-solutions-page.component').then(m => m.AiSolutionsPageComponent) }] : []),
+  { path: 'memento-academy', loadComponent: () => import('./pages/academy-page.component').then(m => m.AcademyPageComponent) },
   { path: 'portfolio', loadComponent: () => import('./pages/portfolio-page.component').then(m => m.PortfolioPageComponent) },
   { path: 'recensioni', loadComponent: () => import('./pages/reviews-page.component').then(m => m.ReviewsPageComponent) },
   { path: 'contatti', loadComponent: () => import('./pages/contact-page.component').then(m => m.ContactPageComponent) },

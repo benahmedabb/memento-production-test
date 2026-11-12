@@ -134,6 +134,7 @@ export class SiteHeaderComponent {
       },
     },
     ...(aiServiceEnabled ? [{ label: 'Soluzioni IA', path: '/soluzioni-ia-torino' }] : []),
+    { label: 'Academy', path: '/memento-academy' },
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Recensioni', path: '/recensioni' },
   ];

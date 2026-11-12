@@ -374,6 +374,11 @@ export const pageMetadata = {
       type: 'image/webp',
     },
   },
+  academy: {
+    title: 'Corsi online e formazione | Memento Academy',
+    description: 'Scopri Memento Academy: tre nuovi corsi online in preparazione. Argomenti, programmi e modalità di accesso saranno pubblicati presto.',
+    path: '/memento-academy',
+  },
   branding: {
     title: 'Grafica e brand identity a Torino | Memento Production',
     description: 'Logo, identità visiva e materiali grafici per aziende di Torino e provincia. Da Moncalieri, per progetti anche a Pinerolo e Chieri. Chiedi un preventivo.',
